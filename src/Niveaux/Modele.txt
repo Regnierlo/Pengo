@@ -1,0 +1,5 @@
+Niveau-int
+Monstre-int
+JoueurCoop-int(compris entre 1 et 3 [1;3]) -> Nombre maximum de joueur en coop : 4
+Carte de 10x16
+F (Caractere de fin de fichier)
