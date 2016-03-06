@@ -112,15 +112,15 @@ public class Game_Engine {
     }
     
     private void loadMap(int lvl){
-        BufferedReader br=null;
-        FileReader fr;
-        int niveau=0;
-        int nbMonstre=0;
-        int nbPengo=1;
+        BufferedReader br = null ; // permettra de lire le fichier
+        FileReader fr ; // pas nécessaire de cette façon mais va aider à lire le fichier
+        int niveau = 0 ; // niveau qui va être pris
+        int nbMonstre = 0 ;
+        int nbPengo = 1 ;
             
         try {
-            if(lvl==1){
-                fr=new FileReader(new File(getClass().getResource("/Niveaux//test.txt").toURI()));
+            if(lvl == 1){
+                fr = new FileReader(new File(getClass().getResource("/Niveaux//test.txt").toURI()));
                 //Accede a la ressource du niveau et le lit avec br
                 br = new BufferedReader(fr);
                 //Recupere les informations
@@ -140,11 +140,11 @@ public class Game_Engine {
             threadPengo = new P_Pengo[nbPengo];
             threadMonstres = new P_Snobees[nbMonstre];
             int iThreadPengo = 0;
-            int iThreadMonstre =0;
+            int iThreadMonstre = 0;
             int iMur=0;
             Positions pos=new Positions();
             //Initialisation du char de lecture
-            char cm='0';
+            char cm='0' ;
             
             while(cm!='F'){
                 

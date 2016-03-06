@@ -58,7 +58,6 @@ public abstract class Personnage extends Thread{
     
     public abstract void run();
     
-    
     /**
      * Permet de detruire un bloc
      */

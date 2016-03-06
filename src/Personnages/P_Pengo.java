@@ -21,9 +21,6 @@ import javax.imageio.ImageIO;
 public class P_Pengo extends Personnage
                     implements KeyListener{
 
-    
-    
-    
     public P_Pengo(boolean joueur, Positions p){
         try {
             this.joueur = joueur;
@@ -36,7 +33,6 @@ public class P_Pengo extends Personnage
             } catch (IOException ex) {
             Logger.getLogger(P_Pengo.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
     }
     
     @Override
