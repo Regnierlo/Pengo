@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 public class Ecran extends JFrame{
     
     private Map m;
+    private Hud h;
     
     public Ecran(KeyListener[] k){
         //Dimension de la fenetre
@@ -39,15 +40,21 @@ public class Ecran extends JFrame{
         //Panel du HUD
         JPanel panHud = new JPanel();
         panHud.setBackground(Color.red);
+        //Creation du hud
+        h = new Hud();
+        //Ajout du hud au panel du hud
+        panHud.add(h);
+        //Ajout de panHud en haut de la fenetre
+        this.getContentPane().add(BorderLayout.NORTH, panHud);
         //Panel de la carte
         JPanel panMap = new JPanel();
         panMap.setBackground(Color.black);
-        //Ajout de panHud en haut de la fenetre
-        this.getContentPane().add(BorderLayout.NORTH, panHud);
+        //Creation de la carte
+        m = new Map();
+        //Ajout de la carte au panel de la carte
+        panMap.add(m);
         //Ajout de panMap au centre de la fenetre
         this.getContentPane().add(BorderLayout.CENTER, panMap);
-        //Creation de la carte
-        m = new Map(this.getContentPane().get
         
         
         

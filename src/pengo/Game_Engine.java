@@ -52,8 +52,8 @@ public class Game_Engine {
         
         //Gestion du jeu
         do{
-            //update();
-            checkMove();
+            update();
+            //checkMove();
         }while (!jeuFini);
         
     }
@@ -86,26 +86,19 @@ public class Game_Engine {
     
     private void afficheCarte(KeyListener[] k){
         ec = new Ecran(k);
-        Positions p = new Positions();
-        p.setX(10);p.setY(10);
-        ec.afficheMap(p);
-        /*for(Mur rm : ressourcesMur){
-            if(rm != null)
-                ec.afficheMap(rm.getPositions());
-                //ec.afficheMap(rm.getPositions(), new Rectangle(rm.getPositions().getX(), rm.getPositions().getY(), (rm.getPositions().getX()+rm.getImg().getWidth(ec)), (rm.getPositions().getY()+rm.getImg().getHeight(ec))));
-        }*/
     }
     
     private void update(){
         for(P_Pengo t : threadPengo){
             if(t != null)
                 ec.afficheMap(t.getPositions());
+            
         }
-        for(P_Snobees t : threadMonstres){
+        /*for(P_Snobees t : threadMonstres){
             if(t != null)
                 ec.afficheMap(t.getPositions());
         }
-        /*for(Mur rm : ressourcesMur){
+        for(Mur rm : ressourcesMur){
             if(rm != null)
                 ec.afficheMap(rm.getPositions());
                 //ec.afficheMap(rm.getPositions(), new Rectangle(rm.getPositions().getX(), rm.getPositions().getY(), (rm.getPositions().getX()+rm.getImg().getWidth(ec)), (rm.getPositions().getY()+rm.getImg().getHeight(ec))));
@@ -113,6 +106,9 @@ public class Game_Engine {
         
         
         //A faire la meme chose pour les blocs
+        
+        
+        ec.repaint();
     }
     
     private void loadMap(int lvl){

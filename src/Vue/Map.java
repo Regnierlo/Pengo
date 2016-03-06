@@ -8,10 +8,7 @@ package Vue;
 import Personnages.P_Pengo;
 import Ressources.Positions;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
 import javax.swing.JPanel;
 
 /**
@@ -25,11 +22,11 @@ public class Map extends JPanel{
      */
     public void paintComponent(Graphics g, Positions p, Rectangle r){
         g.drawImage(P_Pengo.img, p.getX(), p.getY(), this);
-        repaint();
+        //repaint();
     }
     
     public void paintComponent(Graphics g, Positions p){
         g.drawImage(P_Pengo.img, p.getX(), p.getY(), this);
-        repaint();
+        //repaint();
     }
 }
