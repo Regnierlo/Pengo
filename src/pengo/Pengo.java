@@ -5,6 +5,9 @@
  */
 package pengo;
 
+import GestionJeux.GameTest;
+import javax.swing.JFrame;
+
 /**
  *
  * @author loisr
@@ -16,7 +19,7 @@ public class Pengo {
      */
     public static void main(String[] args) {
         
-        
+        new GameTest();
         
         //System.out.print("\033[2J\033[1;1H"); // Clear console
     }

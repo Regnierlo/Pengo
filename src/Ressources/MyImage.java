@@ -6,6 +6,7 @@
 package Ressources;
 
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.image.ImageObserver;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -19,20 +20,20 @@ import javax.imageio.ImageIO;
 public class MyImage {
     
     private ImageObserver observer;
+    private Rectangle rec;
     private Image img;
-    private int width;
-    private int height;
+    private final int width = 16;
+    private final int height = 16;
     
     /**
      * Constructeur de MyImage, passe l'URL de l'image, l'URL doit etre un lien dans le projet.
      * 
      * @param urlImageRessource 
      */
-    public MyImage(String urlImageRessource){
+    public MyImage(String urlImageRessource, Coordonnees c){
         try {
             img = ImageIO.read(getClass().getResource(urlImageRessource));
-            width = img.getWidth(this.observer);
-            height = img.getHeight(this.observer);
+            rec = new Rectangle(c.getX(), c.getY(), width, height);
         } catch (IOException ex) {
             Logger.getLogger(MyImage.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -76,5 +77,19 @@ public class MyImage {
      */
     public int getHeight() {
         return height;
+    }
+
+    /**
+     * Retourne le rectangle de la taille de l'image.
+     * 
+     * @return the rec
+     * @version 1.0
+     */
+    public Rectangle getRec() {
+        return rec;
+    }
+    
+    public void Move(Coordonnees c){
+        this.rec.setLocation(c.getX(), c.getY());
     }
 }
