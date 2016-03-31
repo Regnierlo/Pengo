@@ -134,6 +134,45 @@ public class MapEngine {
         
     }
     
+    public synchronized void pousser(P_Pengo p){
+        
+        Coordonnees c = new Coordonnees();
+            
+            switch (p.getDirectionActuel()) {
+                case dirBas:
+                    c.setX((p.getCoordonnees().getX()));
+                    c.setY((p.getCoordonnees().getY())+(1*p.getVitesse()));
+                    break;
+                case dirHaut:
+                    c.setX((p.getCoordonnees().getX()));
+                    c.setY((p.getCoordonnees().getY())+(-1*p.getVitesse()));
+                    break;
+                case dirDroite:
+                    c.setX((p.getCoordonnees().getX())+(1*p.getVitesse()));
+                    c.setY((p.getCoordonnees().getY()));
+                    break;
+                case dirGauche:
+                    c.setX((p.getCoordonnees().getX())+(-1*p.getVitesse()));
+                    c.setY((p.getCoordonnees().getY()));
+                    break;
+            }
+            
+            Rectangle rec = new Rectangle(c.getX(), c.getY(), (int)p.getMyImage().getRec().getWidth(), (int)p.getMyImage().getRec().getHeight());
+            
+            for(int i =0;i<pt.length;i++){
+                //Si la case du tableau n'est pas null, on continue le traitement
+                if(pt[i]!=null){
+                    //Si la case du tableau n'est pas le même objet que l'objet qu'on traite, on continue le traitement
+                    if(!(pt[i].equals(p))){
+                        //On vérifie si une intersection a lieu entre la nouvelle coordonnée et l'objet a détruire
+                        if(rec.intersects(pt[i].getMyImage().getRec())){
+                            pt[i].setPousse(new Coordonnees(pt[i].getCoordonnees().getX()-10, pt[i].getCoordonnees().getY()-10));
+                        }
+                    }
+                }
+            }
+    }
+    
     private void nouvellesInformations(){
         this.nouvellesInformations = true;
     }

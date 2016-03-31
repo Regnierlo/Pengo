@@ -79,8 +79,14 @@ public class P_Pengo extends Personnage{
         }
         if(joueur && (e.getKeyCode() == KeyEvent.VK_SPACE)){
             
-            mapEngine.detruire(this);
+            //mapEngine.detruire(this);
+            mapEngine.pousser(this);
         }
+    }
+    
+    public void setPousse(Coordonnees c){
+        this.getCoordonnees().setX(c.getX());
+        this.getCoordonnees().setY(c.getY());
     }
     
     public int getVie(){
