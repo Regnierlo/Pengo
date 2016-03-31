@@ -10,6 +10,8 @@ import Ressources.Coordonnees;
 import Vue.EcranTest;
 import Vue.MapTest;
 import java.awt.event.KeyListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -43,7 +45,7 @@ public class GameTest {
         }
         
         afficheCarte(threadPengo);
-        
+        repaintGT();
         do{
             update();
         }while(!jeuFini);
@@ -61,7 +63,26 @@ public class GameTest {
                 ec.afficheMap(t);
         }
         
-        ec.repaint();
+        //ec.repaint();
+    }
+    
+    /**
+     * Appelle la fonction repaint toute les 25millisecondes (évite au maximum le scintillement)
+     */
+    public void repaintGT(){
+        Thread t = new Thread(){
+            public void run(){
+                while(!jeuFini){
+                    try {
+                        Thread.sleep(25);
+                        ec.repaint();
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(GameTest.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        };
+        t.start();
     }
     
     public void afficheCarte(KeyListener[] k){

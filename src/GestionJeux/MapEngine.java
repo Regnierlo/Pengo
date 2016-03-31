@@ -41,41 +41,49 @@ public class MapEngine {
      * 
      * @param o Object que l'on va tester
      * @param c Nouvelles coordonnées voulu par l'objet appelant
-     * @deprecated Modifier pour les blocs  
+     * deprecated Modifier pour les blocs  
     * @return true s'il y a une collision, false sinon
      */
     public synchronized boolean collisionDetect(Object o, Coordonnees c){
-        Boolean res=true;
+        Boolean collision=true;
+        Boolean collisionTotale = false;
         //System.out.println("\t\tRestart res : "+res);
         if(o instanceof P_Pengo){
             P_Pengo p = (P_Pengo)o;
-            Rectangle rec = new Rectangle(c.getX(), c.getY(), (int)p.getMyImage().getRec().getWidth(), (int)p.getMyImage().getRec().getHeight());
-            
+            Rectangle rec = new Rectangle(c.getX(), c.getY(),
+                                          (int)p.getMyImage().getRec().getWidth(),
+                                          (int)p.getMyImage().getRec().getHeight());
+
             if(this.nbInPt >= 2){
                 for (int i=0;i<pt.length;i++) {
-                    //Si la case du tableau n'est pas null, on continue le traitement
+                    // Si la case du tableau n'est pas null, 
+                    // on continue le traitement
                     if (pt[i] != null) {
-                        System.out.println("i non null : "+i);
-                        //Si la case du tableau n'est pas le même objet que l'objet qu'on traite, on continue le traitement
+                        // System.out.println("i non null : "+i);
+                        // Si la case du tableau n'est pas le même objet 
+                        // que l'objet qu'on traite, on continue le traitement
                         if (!(pt[i].equals(p))) {
-                            //On vérifie si une intersection a lieu entre la nouvelle coordonnée et l'objet a détruire
+
+                            collision  = true;
+                            // On vérifie si une intersection a lieu entre 
+                            // la nouvelle coordonnée et l'objet a détruire
                             if (!(rec.intersects(pt[i].getMyImage().getRec()))) {
-                                res = false;
+                                collision = false;
                             }
+
+                            collisionTotale = collisionTotale || collision;
                         }
                     }
                 }
             }
-            else{
-                res = false;
-                System.out.println("else");
-            }
         }
-        return res;
+        
+        return collisionTotale;
     }
     
     /**
-     * @deprecated modifier pour les blocs
+     * @eprecated modifier pour les blocs
+     * @eprecated a optimiser pour savoir quel bloc manger (la où l'intersection est la plus grande)
      * @param o 
      */
     public synchronized void detruire(Object o){
@@ -104,7 +112,7 @@ public class MapEngine {
             }
             
             Rectangle rec = new Rectangle(c.getX(), c.getY(), (int)p.getMyImage().getRec().getWidth(), (int)p.getMyImage().getRec().getHeight());
-            
+            Boolean dejaDetruit = false;
             for(int i =0;i<pt.length;i++){
                 //Si la case du tableau n'est pas null, on continue le traitement
                 if(pt[i]!=null){
@@ -112,21 +120,15 @@ public class MapEngine {
                     if(!(pt[i].equals(p))){
                         //On vérifie si une intersection a lieu entre la nouvelle coordonnée et l'objet a détruire
                         if(rec.intersects(pt[i].getMyImage().getRec())){
-                            this.pt[i] = null;
-                            this.nouvellesInformations();
-                            this.nbInPt--;
+                            if(!dejaDetruit){
+                                this.pt[i] = null;
+                                this.nouvellesInformations();
+                                this.nbInPt--;
+                                dejaDetruit = true;
+                            }
                         }
                     }
                 }
-                /*if(!(rt.equals(p.getMyImage().getRec()))){
-                    if(rec.intersects(rt[i])){
-                        if(!(pt[i].equals(p))){
-                            this.pt[i] = null;
-                            this.rt[i] = null;
-                            this.nouvellesInformations();
-                        }
-                    }
-                }*/
             }
         }
         

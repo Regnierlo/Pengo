@@ -46,40 +46,36 @@ public class P_Pengo extends Personnage{
             Coordonnees nc = new Coordonnees(this.getCoordonnees().getX(), (this.getCoordonnees().getY()+(-1*this.vitesse)));
             
             collision = mapEngine.collisionDetect(this, nc);
-            if(!collision){
+            if(!collision)
                 this.Move(0, (-1*this.vitesse));
-                this.directionActuel = Directions.dirHaut;
-            }
+            this.directionActuel = Directions.dirHaut;
         }
         if(joueur && (e.getKeyCode() == KeyEvent.VK_S)){
             
             Coordonnees nc = new Coordonnees(this.getCoordonnees().getX(), (this.getCoordonnees().getY()+(1*this.vitesse)));
             
             collision = mapEngine.collisionDetect(this, nc);
-            if(!collision){
+            if(!collision)
                 this.Move(0, (1*this.vitesse));
-                this.directionActuel = Directions.dirBas;
-            }
+            this.directionActuel = Directions.dirBas;
         }
         if(joueur && (e.getKeyCode() == KeyEvent.VK_D)){
             
             Coordonnees nc = new Coordonnees(this.getCoordonnees().getX()+(1*this.vitesse), (this.getCoordonnees().getY()));
             
             collision = mapEngine.collisionDetect(this, nc);
-            if(!collision){
+            if(!collision)
                 this.Move((1*this.vitesse), 0);
-                this.directionActuel = Directions.dirDroite;
-            }
+            this.directionActuel = Directions.dirDroite;
         }
         if(joueur && (e.getKeyCode() == KeyEvent.VK_Q)){
             
             Coordonnees nc = new Coordonnees(this.getCoordonnees().getX()+(-1*this.vitesse), (this.getCoordonnees().getY()));
             
             collision = mapEngine.collisionDetect(this, nc);
-            if(!collision){
+            if(!collision)
                 this.Move((-1*this.vitesse), 0);
-                this.directionActuel = Directions.dirGauche;
-            }
+            this.directionActuel = Directions.dirGauche;
         }
         if(joueur && (e.getKeyCode() == KeyEvent.VK_SPACE)){
             

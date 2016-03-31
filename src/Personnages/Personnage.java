@@ -28,7 +28,7 @@ public abstract class Personnage extends Thread
     /**
      * Enumeration pour les directions
      */
-    protected enum Directions {
+    public enum Directions {
         //Liste des énumérations
         dirHaut ("HAUT"),
         dirBas ("BAS"),
