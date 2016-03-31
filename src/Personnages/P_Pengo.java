@@ -6,8 +6,7 @@
 package Personnages;
 
 import Ressources.Coordonnees;
-import Ressources.MapTestC;
-import java.awt.Rectangle;
+import GestionJeux.MapEngine;
 import java.awt.event.KeyEvent;
 
 /**
@@ -17,15 +16,15 @@ import java.awt.event.KeyEvent;
 public class P_Pengo extends Personnage{
 
     private int vie;
-    private MapTestC col;
+    private MapEngine mapEngine;
     
     public P_Pengo(Coordonnees c, boolean joueur){
         super("/Images/Pengo_Face_D.png", c, joueur, 2);
         //this.col = col;
     }
     
-    public void setMapTestC(MapTestC c){
-        this.col = c;
+    public void setMapTestC(MapEngine c){
+        this.mapEngine = c;
     }
     
     @Override
@@ -33,6 +32,10 @@ public class P_Pengo extends Personnage{
         
     }
 
+    /**
+     * Optimiser pour les coordonnées
+     * @param e 
+     */
     @Override
     public void keyPressed(KeyEvent e) {
        
@@ -42,33 +45,45 @@ public class P_Pengo extends Personnage{
             //Verifier bord
             Coordonnees nc = new Coordonnees(this.getCoordonnees().getX(), (this.getCoordonnees().getY()+(-1*this.vitesse)));
             
-            collision = col.collisionDetect(this, nc);
-            if(!collision)
+            collision = mapEngine.collisionDetect(this, nc);
+            if(!collision){
                 this.Move(0, (-1*this.vitesse));
+                this.directionActuel = Directions.dirHaut;
+            }
         }
         if(joueur && (e.getKeyCode() == KeyEvent.VK_S)){
             
             Coordonnees nc = new Coordonnees(this.getCoordonnees().getX(), (this.getCoordonnees().getY()+(1*this.vitesse)));
             
-            collision = col.collisionDetect(this, nc);
-            if(!collision)
+            collision = mapEngine.collisionDetect(this, nc);
+            if(!collision){
                 this.Move(0, (1*this.vitesse));
+                this.directionActuel = Directions.dirBas;
+            }
         }
         if(joueur && (e.getKeyCode() == KeyEvent.VK_D)){
             
             Coordonnees nc = new Coordonnees(this.getCoordonnees().getX()+(1*this.vitesse), (this.getCoordonnees().getY()));
             
-            collision = col.collisionDetect(this, nc);
-            if(!collision)
+            collision = mapEngine.collisionDetect(this, nc);
+            if(!collision){
                 this.Move((1*this.vitesse), 0);
+                this.directionActuel = Directions.dirDroite;
+            }
         }
         if(joueur && (e.getKeyCode() == KeyEvent.VK_Q)){
             
             Coordonnees nc = new Coordonnees(this.getCoordonnees().getX()+(-1*this.vitesse), (this.getCoordonnees().getY()));
             
-            collision = col.collisionDetect(this, nc);
-            if(!collision)
+            collision = mapEngine.collisionDetect(this, nc);
+            if(!collision){
                 this.Move((-1*this.vitesse), 0);
+                this.directionActuel = Directions.dirGauche;
+            }
+        }
+        if(joueur && (e.getKeyCode() == KeyEvent.VK_SPACE)){
+            
+            mapEngine.detruire(this);
         }
     }
     

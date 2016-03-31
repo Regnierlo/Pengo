@@ -26,6 +26,35 @@ public abstract class Personnage extends Thread
      */
     protected Coordonnees coord;
     /**
+     * Enumeration pour les directions
+     */
+    protected enum Directions {
+        //Liste des énumérations
+        dirHaut ("HAUT"),
+        dirBas ("BAS"),
+        dirDroite ("DROITE"),
+        dirGauche ("GAUCHE");
+        
+        //Utilisé pour le constructeur
+        private final String name;       
+        
+        //Constructeurs
+        private Directions(String s) {
+            name = s;
+        }
+        
+        //Comparateur
+        public boolean equalsName(String otherName) {
+            return (otherName == null) ? false : name.equals(otherName);
+        }
+
+        public String toString() {
+           return this.name;
+        }
+    }
+    
+    protected Directions directionActuel;
+    /**
      * Vitesse du personnage.
      */
     protected int vitesse;
@@ -45,6 +74,7 @@ public abstract class Personnage extends Thread
     protected Personnage(String urlImageRessource, Coordonnees c, boolean j, int v){
         this.coord = c;
         this.img = new MyImage(urlImageRessource, this.coord);
+        this.directionActuel = Directions.dirHaut;
         this.vitesse = v;
         this.joueur = j;
     }
@@ -75,6 +105,22 @@ public abstract class Personnage extends Thread
      */
     public void arreter(){
         fini=true;
+    }
+    
+    /**
+     * 
+     * @return La direction du personnage (où il regarde)
+     */
+    public Directions getDirectionActuel(){
+        return this.directionActuel;
+    }
+    
+    /**
+     * 
+     * @return La vitesse de déplacement du personnage
+     */
+    public int getVitesse(){
+        return this.vitesse;
     }
     
     /**

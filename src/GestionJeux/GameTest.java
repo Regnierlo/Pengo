@@ -7,7 +7,6 @@ package GestionJeux;
 
 import Personnages.P_Pengo;
 import Ressources.Coordonnees;
-import Ressources.MapTestC;
 import Vue.EcranTest;
 import Vue.MapTest;
 import java.awt.event.KeyListener;
@@ -21,7 +20,7 @@ public class GameTest {
     private Boolean jeuFini = false;
     private EcranTest ec;
     private P_Pengo[] threadPengo;
-    private MapTestC mtc;
+    private MapEngine mapEngine;
     
     public GameTest(){
         newGame();
@@ -30,13 +29,17 @@ public class GameTest {
     public void newGame(){
         
         
-        threadPengo = new P_Pengo[2];
-        threadPengo[0]=new P_Pengo(new Coordonnees(150, 150), true);
+        threadPengo = new P_Pengo[4];
+        threadPengo[0]=new P_Pengo(new Coordonnees(100, 100+16), true);
         threadPengo[1]=new P_Pengo(new Coordonnees(100, 100), false);
+        threadPengo[2]=new P_Pengo(new Coordonnees(100, 100-17), false);
+        threadPengo[3]=new P_Pengo(new Coordonnees(100-17, 100), false);
         
-        mtc = new MapTestC(threadPengo);
+        mapEngine = new MapEngine(threadPengo);
+        
         for(int i=0;i<threadPengo.length;i++){
-            threadPengo[i].setMapTestC(mtc);
+            if(this.threadPengo[i] != null)
+                threadPengo[i].setMapTestC(mapEngine);
         }
         
         afficheCarte(threadPengo);
@@ -47,6 +50,12 @@ public class GameTest {
     }
     
     private void update(){
+        
+        if(mapEngine.getNouvellesInformations()){
+            this.threadPengo = this.mapEngine.getTabP_Pengo();
+            this.mapEngine.informationsRecupere();
+        }
+        
         for(P_Pengo t : threadPengo){
             if(t!=null)
                 ec.afficheMap(t);
