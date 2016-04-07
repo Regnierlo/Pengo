@@ -91,5 +91,6 @@ public class MyImage {
     
     public void Move(Coordonnees c){
         this.rec.setLocation(c.getX(), c.getY());
+        
     }
 }

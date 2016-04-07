@@ -5,6 +5,7 @@
  */
 package Personnages;
 
+import GestionJeux.GameTest;
 import Ressources.*;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
@@ -17,6 +18,13 @@ import java.awt.event.KeyListener;
 public abstract class Personnage extends Thread
                         implements KeyListener{
 
+    
+    private GameTest gametest;
+    public void setGametest(GameTest gametest) {
+        this.gametest = gametest;
+    }
+    
+    
     /**
      * Image utilisé par le personnage.
      */
@@ -70,6 +78,10 @@ public abstract class Personnage extends Thread
      * Permet d'orienter le personnage.
      */
     protected Orientation orientation;
+    /**
+     * Tableau contenant les images pour les animations
+     */
+    protected MyImage[] animation;
     
     protected Personnage(String urlImageRessource, Coordonnees c, boolean j, int v){
         this.coord = c;
@@ -79,13 +91,47 @@ public abstract class Personnage extends Thread
         this.joueur = j;
     }
     
+    /**
+     * 
+     * @version 2.0 Permet de se déplacer d'un point a un autre automatiquement
+     * @param x
+     * @param y 
+     */
     protected void Move(int x, int y){
         int nx = this.coord.getX()+x;
         int ny = this.coord.getY()+y;
+        int reste;
+        if((this.coord.getX()-nx) != 0)
+            reste = x;
+        else
+            reste = y;
+        if(reste < 0)
+            reste *= (-1);
         
+        for(int i = 0;i<this.getMyImage().getHeight();i++){
+            
+            gametest.clearBlock(this.coord);
+            
+            
+            this.coord.setX(this.coord.getX()+(x/reste));
+            this.coord.setY(this.coord.getY()+(y/reste));
+            this.getMyImage().Move(new Coordonnees(this.coord.getX(), this.coord.getY()));
+            //gametest.getEc().revalidate();
+            System.out.println(this.coord);            
+            gametest.update();
+            
+            try {
+                Thread.sleep(16*this.vitesse);
+            } catch (Exception e) {
+            }
+        }
+        
+        /*
+        //Ancienne version
         this.coord.setX(nx);
         this.coord.setY(this.coord.getY()+y);
         this.getMyImage().Move(new Coordonnees(nx, ny));
+        */
     }
     
     /**

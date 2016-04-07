@@ -5,8 +5,11 @@
  */
 package Vue;
 
+import Personnages.Personnage;
 import Ressources.Coordonnees;
 import Ressources.MyImage;
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.KeyListener;
 import javax.swing.JFrame;
@@ -28,11 +31,29 @@ public class EcranTest extends JFrame{
             this.addKeyListener(k[i]);
         }
         m=new MapTest();
+        this.add(m);
+        this.validate(); // because you added panel after setVisible was called
+        this.repaint(); // because you added panel after setVisible was called
         this.setVisible(true);
+
+        
+          
+        
     }
     
-    public void afficheMap(Object o){
-        m.paintComponent(this.getGraphics(), o);
+    
+    public void clearBlock(Coordonnees c) {
+        Graphics2D g = (Graphics2D) m.getGraphics();
+        g.clearRect(c.getX(), c.getY(), 16, 16);
     }
+
+    
+    
+    
+    public MapTest getM() {
+        return m;
+    }
+    
+    
     
 }

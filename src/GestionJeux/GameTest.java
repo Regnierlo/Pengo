@@ -9,6 +9,8 @@ import Personnages.P_Pengo;
 import Ressources.Coordonnees;
 import Vue.EcranTest;
 import Vue.MapTest;
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.event.KeyListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,6 +29,12 @@ public class GameTest {
     public GameTest(){
         newGame();
     }
+
+    public EcranTest getEc() {
+        return ec;
+    }
+    
+    
     
     public void newGame(){
         
@@ -41,51 +49,39 @@ public class GameTest {
         
         for(int i=0;i<threadPengo.length;i++){
             if(this.threadPengo[i] != null)
+                
+                threadPengo[i].setGametest(this);
                 threadPengo[i].setMapTestC(mapEngine);
         }
         
-        afficheCarte(threadPengo);
-        repaintGT();
-        do{
-            update();
-        }while(!jeuFini);
+        
+        
+
+        ec = new EcranTest(threadPengo);
+        for (int i = 0; i < 4; i++) {
+          ec.getM().personages.add(threadPengo[i]);
+        }
+        
+        update();
     }
     
-    private void update(){
-        
+    public void update(){
+
+        ec.getM().paintComponent(this.getEc().getM().getGraphics());
+
         if(mapEngine.getNouvellesInformations()){
             this.threadPengo = this.mapEngine.getTabP_Pengo();
             this.mapEngine.informationsRecupere();
         }
         
-        for(P_Pengo t : threadPengo){
-            if(t!=null)
-                ec.afficheMap(t);
-        }
         
-        //ec.repaint();
+        ec.repaint();
     }
     
-    /**
-     * Appelle la fonction repaint toute les 25millisecondes (évite au maximum le scintillement)
-     */
-    public void repaintGT(){
-        Thread t = new Thread(){
-            public void run(){
-                while(!jeuFini){
-                    try {
-                        Thread.sleep(25);
-                        ec.repaint();
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(GameTest.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-        };
-        t.start();
+
+    public void clearBlock(Coordonnees coord) {
+        ec.clearBlock(coord);
     }
+   
     
-    public void afficheCarte(KeyListener[] k){
-        ec = new EcranTest(k);
-    }
 }
