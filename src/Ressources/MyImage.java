@@ -22,8 +22,8 @@ public class MyImage {
     private ImageObserver observer;
     private Rectangle rec;
     private Image img;
-    private final int width = 16;
-    private final int height = 16;
+    private final int width=32;
+    private final int height=32;
     
     /**
      * Constructeur de MyImage, passe l'URL de l'image, l'URL doit etre un lien dans le projet.
@@ -57,6 +57,20 @@ public class MyImage {
      */
     public Image getImg() {
         return img;
+    }
+    
+    /**
+     * Change l'image
+     * 
+     * @param i nouvelle image
+     * @version 1.0
+     */
+    public void setImg(String i){
+        try {
+            this.img = ImageIO.read(getClass().getResource(i));
+        } catch (IOException ex) {
+            Logger.getLogger(MyImage.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

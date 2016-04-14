@@ -5,8 +5,8 @@
  */
 package Personnages;
 
+import GestionJeux.GameEngine;
 import Ressources.Coordonnees;
-import GestionJeux.MapEngine;
 import java.awt.event.KeyEvent;
 
 /**
@@ -16,16 +16,29 @@ import java.awt.event.KeyEvent;
 public class P_Pengo extends Personnage{
 
     private int vie;
-    private MapEngine mapEngine;
     
-    public P_Pengo(Coordonnees c, boolean joueur){
-        super("/Images/Pengo_Face_D.png", c, joueur, 2);
-        //this.col = col;
+    public P_Pengo(Coordonnees c, boolean joueur, GameEngine g){
         
-    }
-    
-    public void setMapTestC(MapEngine c){
-        this.mapEngine = c;
+        super("/Images/Pengo_Face_Pied_Droit.png", c, joueur, 2, g);
+        
+        String[][] t = new String[4][2];
+        
+        t[0][0] = "/Images/Pengo_Face_Pied_Droit.png";
+        t[0][1] = "/Images/Pengo_Face_Pied_Gauche.png";
+        t[1][0] = "/Images/Pengo_Derriere_Pied_Droit.png";
+        t[1][1] = "/Images/Pengo_Derriere_Pied_Gauche.png";
+        t[2][0] = "/Images/Pengo_Droit_Pieds_Ecartes.png";
+        t[2][1] = "/Images/Pengo_Droit_Pieds_Ensembles.png";
+        t[3][0] = "/Images/Pengo_Gauche_Pieds_Ecartes.png";
+        t[3][1] = "/Images/Pengo_Gauche_Pieds_Ensembles.png";
+        
+        for(int i=0;i<4;i++){
+            for(int k=0;i<2;i++){
+                
+                    animationMouvement[i][k] = t[i][k];
+            }
+        }
+        //this.col = col;
     }
     
     @Override
@@ -39,49 +52,25 @@ public class P_Pengo extends Personnage{
      */
     @Override
     public void keyPressed(KeyEvent e) {
-       
-        Boolean collision;
         
         if(joueur && (e.getKeyCode() == KeyEvent.VK_Z)){
-            //Verifier bord
-            Coordonnees nc = new Coordonnees(this.getCoordonnees().getX(), (this.getCoordonnees().getY()+(-1*this.vitesse)));
-            
-            collision = mapEngine.collisionDetect(this, nc);
-            this.directionActuel = Directions.dirHaut;
-            if(!collision)
-                this.Move(0, (-1*this.vitesse));
+            directionActuel = Directions.dirHaut;
+            this.ge.action(this, directionActuel, Actions.bouger);
         }
         if(joueur && (e.getKeyCode() == KeyEvent.VK_S)){
-            
-            Coordonnees nc = new Coordonnees(this.getCoordonnees().getX(), (this.getCoordonnees().getY()+(1*this.vitesse)));
-            
-            collision = mapEngine.collisionDetect(this, nc);
-            this.directionActuel = Directions.dirBas;
-            if(!collision)
-                this.Move(0, (1*this.vitesse));
+            directionActuel = Directions.dirBas;
+            this.ge.action(this, directionActuel, Actions.bouger);
         }
-        if(joueur && (e.getKeyCode() == KeyEvent.VK_D)){
-            
-            Coordonnees nc = new Coordonnees(this.getCoordonnees().getX()+(1*this.vitesse), (this.getCoordonnees().getY()));
-            
-            collision = mapEngine.collisionDetect(this, nc);
-            this.directionActuel = Directions.dirDroite;
-            if(!collision)
-                this.Move((1*this.vitesse), 0);
+        if(joueur && (e.getKeyCode() == KeyEvent.VK_D )){
+            directionActuel = Directions.dirDroite;
+            this.ge.action(this, directionActuel, Actions.bouger);
         }
         if(joueur && (e.getKeyCode() == KeyEvent.VK_Q)){
-            
-            Coordonnees nc = new Coordonnees(this.getCoordonnees().getX()+(-1*this.vitesse), (this.getCoordonnees().getY()));
-            
-            collision = mapEngine.collisionDetect(this, nc);
-            this.directionActuel = Directions.dirGauche;
-            if(!collision)
-                this.Move((-1*this.vitesse), 0);
+            directionActuel = Directions.dirGauche;
+            this.ge.action(this, directionActuel, Actions.bouger);
         }
         if(joueur && (e.getKeyCode() == KeyEvent.VK_SPACE)){
-            
-            //mapEngine.detruire(this);
-            mapEngine.pousser(this);
+            this.ge.action(this, directionActuel, Actions.pousser_detruire);
         }
     }
     

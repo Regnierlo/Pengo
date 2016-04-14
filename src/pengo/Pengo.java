@@ -5,8 +5,7 @@
  */
 package pengo;
 
-import GestionJeux.GameTest;
-import javax.swing.JFrame;
+import GestionJeux.GameEngine;
 
 /**
  *
@@ -19,7 +18,7 @@ public class Pengo {
      */
     public static void main(String[] args) {
         
-        new GameTest();
+        new GameEngine();
         
         //System.out.print("\033[2J\033[1;1H"); // Clear console
     }

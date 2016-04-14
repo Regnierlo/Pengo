@@ -5,9 +5,8 @@
  */
 package Personnages;
 
-import GestionJeux.GameTest;
+import GestionJeux.GameEngine;
 import Ressources.*;
-import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -18,13 +17,7 @@ import java.awt.event.KeyListener;
 public abstract class Personnage extends Thread
                         implements KeyListener{
 
-    
-    private GameTest gametest;
-    public void setGametest(GameTest gametest) {
-        this.gametest = gametest;
-    }
-    
-    
+    protected boolean stop;
     /**
      * Image utilisé par le personnage.
      */
@@ -33,6 +26,27 @@ public abstract class Personnage extends Thread
      * Coordonnees du personnage.
      */
     protected Coordonnees coord;
+    
+    public enum Actions {
+        bouger ("BOUGER"),
+        pousser_detruire ("POUSSER_DETRUIRE");
+        
+        private final String name;
+        
+        private Actions(String s){
+            name = s;
+        }
+        
+        public boolean equalsName(String otherName) {
+            return (otherName == null) ? false : name.equals(otherName);
+        }
+
+        @Override
+        public String toString() {
+           return this.name;
+        }
+    }
+    
     /**
      * Enumeration pour les directions
      */
@@ -81,15 +95,23 @@ public abstract class Personnage extends Thread
     /**
      * Tableau contenant les images pour les animations
      */
-    protected MyImage[] animation;
+    protected String[][] animationMouvement;
+    protected int currentImage;
     
-    protected Personnage(String urlImageRessource, Coordonnees c, boolean j, int v){
+    protected final GameEngine ge;
+    
+    protected Personnage(String urlImageRessource, Coordonnees c, boolean j, int v, GameEngine g){
+        this.stop = false;
         this.coord = c;
         this.img = new MyImage(urlImageRessource, this.coord);
         this.directionActuel = Directions.dirHaut;
         this.vitesse = v;
-        this.joueur = j;
+        this.joueur = j; 
+        this.ge = g;
+        currentImage = 0;
+        animationMouvement = new String[4][2];
     }
+    
     
     /**
      * 
@@ -98,6 +120,7 @@ public abstract class Personnage extends Thread
      * @param y 
      */
     protected void Move(int x, int y){
+
         int nx = this.coord.getX()+x;
         int ny = this.coord.getY()+y;
         int reste;
@@ -107,18 +130,40 @@ public abstract class Personnage extends Thread
             reste = y;
         if(reste < 0)
             reste *= (-1);
-        
+
         for(int i = 0;i<this.getMyImage().getHeight();i++){
-            
-            gametest.clearBlock(this.coord);
-            
-            
+
+            //gametest.clearBlock(this.coord);
+
+
             this.coord.setX(this.coord.getX()+(x/reste));
             this.coord.setY(this.coord.getY()+(y/reste));
             this.getMyImage().Move(new Coordonnees(this.coord.getX(), this.coord.getY()));
-            //gametest.getEc().revalidate();
-            System.out.println(this.coord);            
-            gametest.update();
+            //System.out.println(this.coord);            
+            //gametest.update();
+            
+            if(currentImage==1)
+                currentImage= 0;
+            else
+                currentImage = 1;
+            
+            /*System.out.println(currentImage);
+            
+            switch(directionActuel){
+                case dirHaut :
+                    
+                    break;
+                
+                case dirBas :
+                    break;
+                    
+                case dirDroite :
+                    this.img.setImg(this.animationMouvement[2][currentImage]);
+                    break;
+                    
+                case dirGauche :
+                    break;
+            }*/
             
             try {
                 Thread.sleep(16*this.vitesse);
@@ -187,5 +232,9 @@ public abstract class Personnage extends Thread
     
     public Boolean getJoueur(){
         return joueur;
+    }
+    
+    public void stopper(){
+        this.stop = true;
     }
 }

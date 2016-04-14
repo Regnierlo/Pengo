@@ -75,6 +75,22 @@ public class Coordonnees {
         this.y = y;
     }
     
+    public void setCoordonnees(Coordonnees c){
+        this.x = c.getX();
+        this.y = c.getY();
+    }
+    
+    public boolean comp(Coordonnees c){
+        boolean r = false;
+        
+        if(this.x == c.getX())
+            if(this.y == c.getY())
+                r=true;
+        
+        return r;
+    }
+    
+    @Override
     public String toString(){
         return "["+this.x+";"+this.y+"]";
     }
