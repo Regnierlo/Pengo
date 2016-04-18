@@ -97,11 +97,13 @@ public abstract class Personnage extends Thread
      */
     protected String[][] animationMouvement;
     protected int currentImage;
+    protected boolean pause;
     
     protected final GameEngine ge;
     
     protected Personnage(String urlImageRessource, Coordonnees c, boolean j, int v, GameEngine g){
         this.stop = false;
+        this.pause = false;
         this.coord = c;
         this.img = new MyImage(urlImageRessource, this.coord);
         this.directionActuel = Directions.dirHaut;
@@ -198,6 +200,14 @@ public abstract class Personnage extends Thread
         fini=true;
     }
     
+    public void pause(){
+        pause = true;
+    }
+    
+    public void reprise(){
+        pause = false;
+    }
+    
     /**
      * 
      * @return La direction du personnage (où il regarde)
@@ -236,5 +246,9 @@ public abstract class Personnage extends Thread
     
     public void stopper(){
         this.stop = true;
+    }
+    
+    public boolean getStopper(){
+        return stop;
     }
 }

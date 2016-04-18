@@ -53,6 +53,7 @@ public class P_Pengo extends Personnage{
     @Override
     public void keyPressed(KeyEvent e) {
         
+        
         if(joueur && (e.getKeyCode() == KeyEvent.VK_Z)){
             directionActuel = Directions.dirHaut;
             this.ge.action(this, directionActuel, Actions.bouger);
@@ -71,6 +72,9 @@ public class P_Pengo extends Personnage{
         }
         if(joueur && (e.getKeyCode() == KeyEvent.VK_SPACE)){
             this.ge.action(this, directionActuel, Actions.pousser_detruire);
+        }
+        if(joueur && (e.getKeyCode() == KeyEvent.VK_CONTROL)){
+            this.ge.afficheInfo();
         }
     }
     

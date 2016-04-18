@@ -5,6 +5,8 @@
  */
 package Ressources;
 
+import Personnages.Personnage;
+
 /**
  *
  * @author loisr
@@ -12,10 +14,12 @@ package Ressources;
 public class Bloc {
     private boolean enMouvement;
     private Coordonnees coord;
+    private Personnage.Directions dir;
     
     public Bloc(Coordonnees c){
         coord = c;
         enMouvement = false;
+        dir = Personnage.Directions.dirHaut;
     }
     
     public void setCoordonnees(Coordonnees c){
@@ -33,8 +37,12 @@ public class Bloc {
     public boolean getEnMouvement(){
         return this.enMouvement;
     }
-
-    public Object stream() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
+    public Personnage.Directions getDirection(){
+        return dir;
+    }
+    
+    public void setDirection(Personnage.Directions d){
+        dir = d;
     }
 }

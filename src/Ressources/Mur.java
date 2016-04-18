@@ -10,5 +10,17 @@ package Ressources;
  * @author loisr
  */
 public class Mur {
+    boolean tremble;
     
+    public Mur(){
+        tremble=false;
+    }
+    
+    public void setTremble(boolean t){
+        tremble = t;
+    }
+    
+    public boolean getTremble(){
+        return tremble;
+    }
 }
