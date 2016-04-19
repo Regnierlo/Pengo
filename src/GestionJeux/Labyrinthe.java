@@ -42,7 +42,19 @@ public class Labyrinthe {
         labyrinthe = new String[nbLigne][nbColonne] ;
     }
     
-    public void initialisation(){
+    public String[][] generation_labyrinthe(int nbPengo, int nbBlocGlace, int nbSnoBees, int nbBlocEmpoisonne){
+        initialisation() ;
+        creationLabyrinthe() ;
+        finalisation() ;
+        pengo(nbPengo) ;
+        snoBees(nbSnoBees) ;
+        companionCube() ;
+        blocEmpoisonne(nbBlocEmpoisonne) ;
+        
+        return labyrinthe ;
+    }
+    
+    private void initialisation(){
         for(int i = 0 ; i < nbLigneTemp ; i++){
             for(int j = 0 ; j < nbColonneTemp ; j++){
                 labyrinthe_temporaire[i][j] = 'x' ;
@@ -55,7 +67,7 @@ public class Labyrinthe {
         nbCasesNonVisitee-- ;
     } 
     
-    public void companionCube(){
+    private void companionCube(){
         int randomLigne = 8 ;
         int randomLigneTemp = 8 ;
         int randomColonne = 5;
@@ -86,7 +98,7 @@ public class Labyrinthe {
         }while(nbCompanionCube>0) ; 
     }
     
-    public void Pengo(int nbPengo){
+    private void pengo(int nbPengo){
         int ligne ;
         int colonne ;
         char direction ;
@@ -130,7 +142,7 @@ public class Labyrinthe {
         }         
     }
     
-    public void blocEmpoisonne(int nbBE){
+    private void blocEmpoisonne(int nbBE){
         int randomLigne = (int)(Math.random()*14)+1 ;
         int randomLigneTemp ;
         int randomColonneTemp ;
@@ -153,7 +165,7 @@ public class Labyrinthe {
         } while(nbBE >0) ;
     }
     
-    public void SnoBees(int nbSB){
+    private void snoBees(int nbSB){
         int randomLigne = (int)(Math.random()*15)+1 ;
         int randomLigneTemp ;
         int randomColonneTemp ;
@@ -177,7 +189,7 @@ public class Labyrinthe {
         }while(nbSB >0);
     }
     
-    public void finalisation(){
+    private void finalisation(){
         for(int i = 0 ; i < nbLigne ; i++)
             for(int j = 0 ; j < nbColonne ; j++){
                 if(i==0 || i == (nbLigne-1) || j==0 || j==(nbColonne-1))
@@ -205,7 +217,7 @@ public class Labyrinthe {
         }
     }
     
-    public void setPosition(int x, int y){
+    private void setPosition(int x, int y){
         position[0][casePosition] = x ;
         position[1][casePosition] = y ;
         labyrinthe_temporaire[x][y] = '.' ;
@@ -213,7 +225,7 @@ public class Labyrinthe {
         nbCasesNonVisitee-- ;
     }
   
-    public void mettreMurIntersection(int x, int y){
+    private void mettreMurIntersection(int x, int y){
         if(x>=1 && x<=(nbLigneTemp-2) && y>=1 && y<=(nbColonneTemp-2)){
             if( labyrinthe_temporaire[x][y]=='.' ){
                 
@@ -242,7 +254,7 @@ public class Labyrinthe {
         
     }
     
-    public void mettreMurTriangle(int x, int y){
+    private void mettreMurTriangle(int x, int y){
         
         ////// VOIR SI TRIANGLE 
         if(x>=1 && x<=(nbLigneTemp-2) && y>=1 && y<=(nbColonneTemp-2)){
@@ -272,7 +284,7 @@ public class Labyrinthe {
                 }       
     }
     
-    public void setMur(int x, int y){
+    private void setMur(int x, int y){
         if( ( x>= 0 ) && ( x < nbLigneTemp )  && ( y >= 0 ) && ( y < nbColonneTemp ) ){
             if( labyrinthe_temporaire[x][y]=='x' ){
                 labyrinthe_temporaire[x][y] = 'X' ; 
@@ -283,7 +295,7 @@ public class Labyrinthe {
         }
     }
     
-    public void creationLabyrinthe(){
+    private void creationLabyrinthe(){
         int ligne ;
         int colonne ;
         char anciennePosition = '/' ;
@@ -378,7 +390,7 @@ public class Labyrinthe {
         while(nbCasesNonVisitee>0);
     }
     
-    public char regardeAutour(int x, int y){
+    private char regardeAutour(int x, int y){
         int i ;
         boolean test ;
         boolean[] nonVisite = new boolean[4] ; // 0 = en haut, 1 = à droite, 2 = en bas, 3 = à gauche
