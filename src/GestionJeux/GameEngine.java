@@ -29,6 +29,8 @@ public class GameEngine {
     private final Niveaux n;
     private final Map m;
     private final Score s;
+    private int nbSnoBeesActif;
+    private int nbSnoBeesCache;
     private boolean bonusBlocsSpeciaux;
     private long chronometre;
     private String name;
@@ -40,11 +42,13 @@ public class GameEngine {
     
     public GameEngine(){
         //Instanciation des variables
+        nbSnoBeesActif=0;
+        nbSnoBeesCache=0;
         p = new ArrayList<>();
         b = new ArrayList<>();
         mur = new ArrayList<>() ;
         n = new Niveaux();
-        m = new Map(3, n);
+        m = new Map(-1, n);
         s = new Score();
         chronometre = 0;
         vue = new Carte(this);
@@ -62,6 +66,8 @@ public class GameEngine {
         System.out.println("Nombre de thread : "+p.size());
         System.out.println("Nombre de Pengo : "+m.getNbPengo());
         System.out.println("Nombre de SnoBees : "+(p.size()-m.getNbPengo()));
+        System.out.println("Nombre de SnoBees cachés : "+nbSnoBeesCache);
+        System.out.println("Nombre de SnoBees actif : "+nbSnoBeesActif);
         System.out.println("Nombre de Bloc : "+b.size());
         System.out.println("Bloc Speciaux alligné : "+bonusBlocsSpeciaux);
         System.out.println("--------------------- INFORMATIONS SCORE ---------------------");
@@ -97,9 +103,9 @@ public class GameEngine {
      * Permet d'initialiser le niveau (création des threads de Pengo et de SnoBees et des différents blocs).
      */
     private void init(){
-        try (Scanner scan = new Scanner(System.in)) {
+        /*try (Scanner scan = new Scanner(System.in)) {
             name = scan.nextLine();
-        }
+        }*/
         p = m.initThread(this);
         b = m.initBloc();
         mur = m.initMur() ;
@@ -109,8 +115,13 @@ public class GameEngine {
         for(int i=0;i<p.size();i++){
             if(p.get(i) instanceof SnoBees){
                 SnoBees sb = (SnoBees)p.get(i);
-                if(!sb.getCacheDansBloc())
+                if(!sb.getCacheDansBloc()){
                     sb.start();
+                    nbSnoBeesActif++;
+                }
+                else{
+                    nbSnoBeesCache++;
+                }
             }
             else
                 p.get(i).start();
@@ -173,6 +184,7 @@ public class GameEngine {
             sb.setVaMourirParBloc(true);
         }
         else{
+            snoBeesMort(p.get(i_sno).getCoordonnees());
             p.remove(i_sno);
             snobeesEcrase();
         }
@@ -196,13 +208,12 @@ public class GameEngine {
     }
     
     public void snobeesEcrase(){
-        int snobeesTue = (p.size()-m.getNbPengo());
         s.pointSnobeesEcrase();
         checkFinJeu();
     }
     
     private void checkFinJeu(){
-        if((p.size()-m.getNbPengo())<=0){
+        if((nbSnoBeesActif+nbSnoBeesCache) <= 0){
             niveauFini=true;
             finNiveau();
         }
@@ -210,10 +221,50 @@ public class GameEngine {
     
     public void snoBeesMort(Coordonnees c){
         for(int i=0;i<p.size();i++){
-            if(p.get(i).getCoordonnees().comp(c)){
-                p.get(i).arreter();
-                p.remove(i);
-                checkFinJeu();
+            if(p.get(i) instanceof SnoBees){
+                SnoBees sn = (SnoBees)p.get(i);
+                if(p.get(i).getCoordonnees().comp(c)){
+                    p.get(i).arreter();
+                    if(sn.getCacheDansBloc()){
+                        nbSnoBeesCache--;
+                        p.remove(i);
+                    }
+                    else if(sn.getParlyse()){
+                        p.remove(i);
+                    }
+                    else if(!sn.getCacheDansBloc()){
+                        nbSnoBeesActif--;
+                        if(nbSnoBeesCache>0){
+                            naissanceSnobees();
+                            nbSnoBeesCache--;
+                            nbSnoBeesActif++;
+                        }
+                    }
+                    checkFinJeu();
+                }
+            }
+        }
+    }
+    
+    private void naissanceSnobees(){
+        for(int i=0;i<b.size();i++){
+            if(b.get(i) instanceof BlocGlace){
+                BlocGlace bg = (BlocGlace)b.get(i);
+                if(bg.getContientSnobees()){
+                    m.transformBlocGlaceEnSnoBees(bg.getCoordonnees());
+                    for(int j=0;j<p.size();j++){
+                        if(p.get(j) instanceof SnoBees){
+                            SnoBees sb = (SnoBees)p.get(j);
+                            if(sb.getCoordonnees().comp(bg.getCoordonnees())){
+                                sb.setCacheDansBloc(false);
+                                sb.start();
+                                bg.setContientSnoBees(false);
+                                bg.vaEtreDetruitParNaissance(true);
+                                destructionBloc(bg.getCoordonnees());
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -252,9 +303,10 @@ public class GameEngine {
      * @version 1.0
      */
     public void majAfficheCarte(){
-    //    System.out.print("\033[2J\033[1;1H"); // Clear console
-    //    System.out.println(m);
-        vue.setImages(m.getCarte());
+        if(!niveauFini){
+            System.out.print("\033[2J\033[1;1H"); // Clear console
+            System.out.println(m);
+        }
     }
     
     /**
@@ -266,8 +318,14 @@ public class GameEngine {
         int i_b=-1;
         for (int i=0;i<b.size();i++) {
             if(b.get(i).getCoordonnees().comp(c)){
-                m.detruireBloc(c, this);
-                i_b = i;
+                if(b.get(i) instanceof BlocGlace){
+                    m.detruireBloc(c, this);
+                    i_b = i;
+                    BlocGlace bg = (BlocGlace)b.get(i);
+                    if(bg.getContientSnobees()){
+                        snoBeesMort(c);
+                    }
+                }
             }
         }
         if(i_b!=-1){
@@ -285,6 +343,17 @@ public class GameEngine {
         b.stream().filter((lb) -> (lb.getCoordonnees().comp(c))).forEach((lb) -> {
             m.pousseBloc(lb, c, dir, this);
         });
+    }
+    
+    public SnoBees getSnobees(Coordonnees c){
+        SnoBees r=null;
+        
+        for(int i=0;i<p.size();i++){
+            if(p.get(i).getCoordonnees().comp(c))
+                r=(SnoBees)p.get(i);
+        }
+        
+        return r;
     }
     
     /**
@@ -470,16 +539,17 @@ public class GameEngine {
             
             if(p.get(i).getCoordonnees().comp(c)){
                 if(p.get(i) instanceof SnoBees){
-                    if(e.equals(Map.elementCarte.SnoBeesParalyse)){
-                        SnoBees sn = (SnoBees)p.get(i);
-                        sn.setParalyse(true);
-                        m.changeSnoBees(c, Map.elementCarte.SnoBeesParalyse);
-                    }
-                    else if(e.equals(Map.elementCarte.snoBees)){
-                        SnoBees sn = (SnoBees)p.get(i);
-                        sn.setParalyse(false);
-                        m.changeSnoBees(c, Map.elementCarte.snoBees);
-                    }
+                    SnoBees sn = (SnoBees)p.get(i);
+                    if(!sn.getCacheDansBloc()){
+                        if(e.equals(Map.elementCarte.SnoBeesParalyse)){
+                            sn.setParalyse(true);
+                            m.changeSnoBees(c, Map.elementCarte.SnoBeesParalyse);
+                        }
+                        else if(e.equals(Map.elementCarte.snoBees)){
+                            sn.setParalyse(false);
+                            m.changeSnoBees(c, Map.elementCarte.snoBees);
+                        }
+                        }
                 }
             }
         }

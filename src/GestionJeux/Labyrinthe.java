@@ -23,6 +23,11 @@ public class Labyrinthe {
     
     String[][] labyrinthe;
     
+    /**
+     * 
+     * @param n Nombre de Colonne
+     * @param m Nombre de ligne
+     */
     public Labyrinthe(int n, int m){
         
         nbColonne = n ;
@@ -75,7 +80,7 @@ public class Labyrinthe {
                 
                 do{
                     randomLigneTemp=(int)(Math.random()*14)+1 ;
-                    System.out.println(randomLigneTemp) ;
+                    //System.out.println(randomLigneTemp) ;
                 }while( randomLigne==(randomLigneTemp+1) || randomLigne==(randomLigneTemp-1) ) ;
                 
                 do{

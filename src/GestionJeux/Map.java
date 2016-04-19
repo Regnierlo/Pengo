@@ -208,17 +208,21 @@ public class Map {
         }
         else if(o instanceof BlocGlace){
             BlocGlace bg = (BlocGlace) o;
-            
-            if(elementCarte.rien.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
-                carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = " ";
-                carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = "G";
-                valideMove = true;
+            if(!bg.getUnSnoBeesVaNaitre()){
+                if(elementCarte.rien.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
+                    carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = " ";
+                    carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = "G";
+                    valideMove = true;
+                }
+                else if(elementCarte.snoBees.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
+                    g.snobeesPousserParBloc(nouvellesCoord, bg.getDirection());
+                    carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = "G";
+                    carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = " ";
+                    valideMove = true;
+                }
             }
-            else if(elementCarte.snoBees.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
-                g.snobeesPousserParBloc(nouvellesCoord, bg.getDirection());
-                carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = "G";
+            else{
                 carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = " ";
-                valideMove = true;
             }
         }
         else if(o instanceof BlocSpecial){
@@ -246,8 +250,9 @@ public class Map {
      * @param g GameEngine nécessaire à la mis à jour de la carte
      */
     public void detruireBloc(Coordonnees c, GameEngine g){
-        if(!(elementCarte.snoBees.equalsName(carteActuelle[c.getY()][c.getX()])))
-            carteActuelle[c.getY()][c.getX()] = " ";
+        if(!(elementCarte.snoBees.equalsName(carteActuelle[c.getY()][c.getX()]))){
+            carteActuelle[c.getY()][c.getX()] = Map.elementCarte.rien.toString();
+        }
         g.majAfficheCarte();
     }
     
@@ -366,6 +371,10 @@ public class Map {
         return res;
     }
     
+    public void transformBlocGlaceEnSnoBees(Coordonnees c){
+        carteActuelle[c.getY()][c.getX()] = elementCarte.snoBees.toString();
+    }
+    
     /**
      * Pousse le bloc.
      * 
@@ -390,6 +399,14 @@ public class Map {
                             moveOK = move(b, c, coord,g);
                             c.setY(c.getY()-1);
                             if(moveOK){
+                                if(b instanceof BlocGlace){
+                                    BlocGlace bg = (BlocGlace)b;
+                                    if(bg.getContientSnobees()){
+                                        SnoBees sb = g.getSnobees(b.getCoordonnees());
+                                        if(sb != null)
+                                            sb.getCoordonnees().setCoordonnees(coord);
+                                    }
+                                }
                                 b.setEnMouvement(true);
                                 b.getCoordonnees().setCoordonnees(coord);
                                 g.majAfficheCarte();
@@ -410,6 +427,14 @@ public class Map {
                             moveOK = move(b, c, coord,g);
                             c.setY(c.getY()+1);
                             if(moveOK){
+                                if(b instanceof BlocGlace){
+                                    BlocGlace bg = (BlocGlace)b;
+                                    if(bg.getContientSnobees()){
+                                        SnoBees sb = g.getSnobees(b.getCoordonnees());
+                                        if(sb != null)
+                                            sb.getCoordonnees().setCoordonnees(coord);
+                                    }
+                                }
                                 b.setEnMouvement(true);
                                 b.getCoordonnees().setCoordonnees(coord);
                                 g.majAfficheCarte();
@@ -430,6 +455,14 @@ public class Map {
                             moveOK = move(b, c, coord,g);
                             c.setX(c.getX()+1);
                             if(moveOK){
+                                if(b instanceof BlocGlace){
+                                    BlocGlace bg = (BlocGlace)b;
+                                    if(bg.getContientSnobees()){
+                                        SnoBees sb = g.getSnobees(b.getCoordonnees());
+                                        if(sb != null)
+                                            sb.getCoordonnees().setCoordonnees(coord);
+                                    }
+                                }
                                 b.setEnMouvement(true);
                                 b.getCoordonnees().setCoordonnees(coord);
                                 g.majAfficheCarte();
@@ -450,6 +483,14 @@ public class Map {
                             moveOK = move(b, c, coord,g);
                             c.setX(c.getX()-1);
                             if(moveOK){
+                                if(b instanceof BlocGlace){
+                                    BlocGlace bg = (BlocGlace)b;
+                                    if(bg.getContientSnobees()){
+                                        SnoBees sb = g.getSnobees(b.getCoordonnees());
+                                        if(sb != null)
+                                            sb.getCoordonnees().setCoordonnees(coord);
+                                    }
+                                }
                                 b.setEnMouvement(true);
                                 b.getCoordonnees().setCoordonnees(coord);
                                 g.majAfficheCarte();
