@@ -10,7 +10,15 @@ package Ressources;
  * @author loisr
  */
 public class BlocGlace extends Bloc{
-    public BlocGlace(Coordonnees c){
+    
+    private boolean contientSnobees;
+    
+    public BlocGlace(Coordonnees c, boolean snobees){
         super(c);
+        contientSnobees = snobees;
+    }
+    
+    public boolean getContientSnobees(){
+        return contientSnobees;
     }
 }
