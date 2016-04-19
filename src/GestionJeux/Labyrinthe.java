@@ -23,6 +23,11 @@ public class Labyrinthe {
     
     String[][] labyrinthe;
     
+    /**
+     * 
+     * @param n Nombre de Colonne
+     * @param m Nombre de ligne
+     */
     public Labyrinthe(int n, int m){
         
         nbColonne = n ;

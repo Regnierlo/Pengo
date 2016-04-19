@@ -11,6 +11,12 @@ package GestionJeux;
  */
 public class Niveaux {
     
+    private final Labyrinthe lab;
+    
+    public Niveaux(){
+        lab = new Labyrinthe(10, 16);
+    }
+    
     public String[][] getMap(int i){
         return this.choixNiveau(i);
     }
@@ -110,7 +116,7 @@ public class Niveaux {
             case 3:
                 String[][] choix3 = {
                     {"M", "M", "M", "M", "M", "M", "M", "M", "M", "M"},
-                    {"M", "P", " ", " ", "C", " ", " ", " ", " ", "M"},
+                    {"M", "P", "E", " ", "C", " ", " ", " ", " ", "M"},
                     {"M", " ", " ", " ", " ", " ", " ", " ", " ", "M"},
                     {"M", " ", " ", " ", " ", " ", " ", " ", " ", "M"},
                     {"M", " ", " ", " ", " ", " ", " ", " ", " ", "M"},
