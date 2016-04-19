@@ -89,7 +89,7 @@ public class Labyrinthe {
              case 1 : {
                  ligne = 8 ; colonne = 6 ;
                  do{
-                    if(labyrinthe[ligne][colonne].equals(" ")){
+                    if(labyrinthe[ligne][colonne].equals(Map.elementCarte.rien.toString())){
                         nbPengo-- ;
                         labyrinthe[ligne][colonne]=Map.elementCarte.pengo.toString() ;
                     }
@@ -132,7 +132,7 @@ public class Labyrinthe {
         int randomColonne = (int)(Math.random()*8)+1 ;
         do{
            if(labyrinthe[randomLigne][randomColonne].equals(Map.elementCarte.blocGlace.toString())){
-               labyrinthe[randomLigne][randomColonne]="C" ;
+               labyrinthe[randomLigne][randomColonne]=Map.elementCarte.blocAvecSnoBees.toString();
                do{
                     randomLigneTemp=(int)(Math.random()*14)+1 ;
                 }while( randomLigne==(randomLigneTemp+3) || randomLigne==(randomLigneTemp-3) ) ;
@@ -154,8 +154,8 @@ public class Labyrinthe {
         int randomColonneTemp ;
         int randomColonne = (int)(Math.random()*8)+1 ;
         do{
-           if(labyrinthe[randomLigne][randomColonne].equals(" ")){
-               labyrinthe[randomLigne][randomColonne]="E" ;
+           if(labyrinthe[randomLigne][randomColonne].equals(Map.elementCarte.rien.toString())){
+               labyrinthe[randomLigne][randomColonne]=Map.elementCarte.snoBees.toString() ;
                do{
                     randomLigneTemp=(int)(Math.random()*14)+1;
                 }while( randomLigne==(randomLigneTemp+3) || randomLigne==(randomLigneTemp-3) ) ;
