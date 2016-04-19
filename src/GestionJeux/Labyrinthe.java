@@ -42,7 +42,7 @@ public class Labyrinthe {
         labyrinthe = new String[nbLigne][nbColonne] ;
     }
     
-    public String[][] generation_labyrinthe(int nbPengo, int nbBlocGlace, int nbSnoBees, int nbBlocEmpoisonne){
+    public String[][] generation_labyrinthe(int nbPengo, int nbSnoBees, int nbBlocEmpoisonne){
         initialisation() ;
         creationLabyrinthe() ;
         finalisation() ;
@@ -80,7 +80,7 @@ public class Labyrinthe {
                 
                 do{
                     randomLigneTemp=(int)(Math.random()*14)+1 ;
-                    System.out.println(randomLigneTemp) ;
+                    //System.out.println(randomLigneTemp) ;
                 }while( randomLigne==(randomLigneTemp+1) || randomLigne==(randomLigneTemp-1) ) ;
                 
                 do{

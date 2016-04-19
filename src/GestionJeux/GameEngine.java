@@ -44,7 +44,7 @@ public class GameEngine {
         p = new ArrayList<>();
         b = new ArrayList<>();
         n = new Niveaux();
-        m = new Map(3, n);
+        m = new Map(-1, n);
         s = new Score();
         chronometre = 0;
         
@@ -223,6 +223,9 @@ public class GameEngine {
                         nbSnoBeesCache--;
                         p.remove(i);
                     }
+                    else if(sn.getParlyse()){
+                        p.remove(i);
+                    }
                     else if(!sn.getCacheDansBloc()){
                         nbSnoBeesActif--;
                         if(nbSnoBeesCache>0){
@@ -309,9 +312,9 @@ public class GameEngine {
         int i_b=-1;
         for (int i=0;i<b.size();i++) {
             if(b.get(i).getCoordonnees().comp(c)){
-                m.detruireBloc(c, this);
-                i_b = i;
                 if(b.get(i) instanceof BlocGlace){
+                    m.detruireBloc(c, this);
+                    i_b = i;
                     BlocGlace bg = (BlocGlace)b.get(i);
                     if(bg.getContientSnobees()){
                         snoBeesMort(c);

@@ -37,7 +37,9 @@ null 5000
 L 4400
 L 4000
 Lois 3600
+null 2800
 L 2400
 null 2400
 L 2000
+null 1800
 null 1400
