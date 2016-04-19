@@ -15,7 +15,6 @@ import javax.swing.JPanel;
 
 public class Carte extends JPanel{
     private GameEngine jesus ;
-    private char animation = '/' ;
     private MyImage[][] tabImage ;
     
     public Carte(GameEngine gameEngine){
@@ -27,10 +26,12 @@ public class Carte extends JPanel{
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g ;
-        
+        g2.drawImage(tabImage[0][0].getImg(),0, 0, tabImage[0][0].getObserver());
         for(int i = 0 ; i < 16 ; i++){
             for(int j = 0 ; j < 10 ; j++){
-                g2.drawImage(tabImage[i][j].getImg(),i*32, j*32, tabImage[i][j].getObserver());
+                if(tabImage[i][j]!=null){
+                    g2.drawImage(tabImage[i][j].getImg(),i*32, j*32, tabImage[i][j].getObserver());
+                }
             }
         }
     }
@@ -41,6 +42,7 @@ public class Carte extends JPanel{
                 switch (s[i][j]){
                     case "P" : {
                         if(jesus.getPengo() instanceof P_Pengo){
+                            
                             tabImage[i][j] = jesus.getPengo().getMyImage() ;
                         }
                     } break ;

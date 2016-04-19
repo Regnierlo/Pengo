@@ -52,8 +52,8 @@ public class GameEngine {
         chronometre = 0;
         fenetre_principale = new Fenetre(this) ;
         
-        
         //Initialisation de la carte
+        
         init() ;
     }
     
@@ -132,7 +132,7 @@ public class GameEngine {
             if(p.get(i).getJoueur())
                 fenetre_principale.addKeyListener(p.get(i));
            
-            
+        
         ///////////////
     }
     

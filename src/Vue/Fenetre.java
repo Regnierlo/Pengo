@@ -18,37 +18,32 @@ import javax.swing.JPanel ;
  */
 public class Fenetre extends JFrame{
     
-    private Carte carte = null ;
+    private Carte map  ;
     
     public Fenetre(GameEngine gameEngine){
+        super("Pengo") ;
+        build() ;
         
-        this.setTitle("Pengo") ;
+        map = new Carte(gameEngine) ;
+        map.setSize(320,512);
+        map.setBackground(Color.black);
+        this.getContentPane().add(map);
+        this.setVisible(true) ;
+        
+        
+    }
+    
+    
+    public void setCarte(String[][] carteString){
+        map.setImages(carteString) ;
+    }
+    
+    private void build(){
         this.setSize(400,700) ;
         this.setLocationRelativeTo(null) ;
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE) ;
         this.setResizable(false) ;
         this.setAlwaysOnTop(true) ;
         this.setBackground(Color.BLACK);
-        //this.setUndecorated(true) ;
-        
-        /*Hud hud = new Hud() ;
-        hud.setSize(400,100);
-        hud.setBackground(Color.BLACK);
-        
-        this.setContentPane(hud) ;
-        */
-        
-        carte = new Carte(gameEngine) ;
-        
-        this.setContentPane(carte) ;
-        //carte.setSize(320,512);
- 
-        
-        this.setVisible(true) ;
     }
-    
-    public void setCarte(String[][] carteString){
-        carte.setImages(carteString) ;
-    }
-    
 }
