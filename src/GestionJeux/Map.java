@@ -36,6 +36,7 @@ public class Map {
         snoBees("E"),
         SnoBeesParalyse("3"),
         blocGlace("G"),
+        blocAvecSnoBees("C"),
         blocSpecial("S"),
         mur("M"),
         murTremble("W"),
@@ -107,9 +108,13 @@ public class Map {
         for(int i=0;i<carteActuelle.length;i++){
             for(int j=0;j<carteActuelle[0].length;j++){
                 if(elementCarte.blocGlace.equalsName(carteActuelle[i][j]))
-                    l.add(new BlocGlace(new Coordonnees(j, i)));
+                    l.add(new BlocGlace(new Coordonnees(j, i), false));
                 if(elementCarte.blocSpecial.equalsName(carteActuelle[i][j]))
                     l.add(new BlocSpecial(new Coordonnees(j, i)));
+                if(elementCarte.blocAvecSnoBees.equalsName((carteActuelle[i][j]))){
+                    l.add(new BlocGlace(new Coordonnees(j, i), true));
+                    carteActuelle[i][j] = elementCarte.blocGlace.toString();
+                }
             }
         }
         
@@ -130,7 +135,9 @@ public class Map {
                 if(elementCarte.pengo.equalsName(carteActuelle[i][j]))
                     l.add(new P_Pengo(new Coordonnees(j, i), true, ge));
                 if(elementCarte.snoBees.equalsName(carteActuelle[i][j]))
-                    l.add(new SnoBees(new Coordonnees(j, i), false, ge));
+                    l.add(new SnoBees(new Coordonnees(j, i), false, ge, false));
+                if(elementCarte.blocAvecSnoBees.equalsName(carteActuelle[i][j]))
+                    l.add(new SnoBees(new Coordonnees(j, i), false, ge, true));
             }
         }
         

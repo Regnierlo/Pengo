@@ -30,6 +30,9 @@ public class GameEngine {
     private long chronometre;
     private String name;
     
+    //TEMPORAIRE
+    private JFrame f = new JFrame();
+    
     private boolean niveauFini;
     
     public GameEngine(){
@@ -37,7 +40,7 @@ public class GameEngine {
         p = new ArrayList<>();
         b = new ArrayList<>();
         n = new Niveaux();
-        m = new Map(1, n);
+        m = new Map(3, n);
         s = new Score();
         chronometre = 0;
         
@@ -98,24 +101,32 @@ public class GameEngine {
         bonusBlocsSpeciaux = false;
         
         for(int i=0;i<p.size();i++){
-            p.get(i).start();
+            if(p.get(i) instanceof SnoBees){
+                SnoBees sb = (SnoBees)p.get(i);
+                if(!sb.getCacheDansBloc())
+                    sb.start();
+            }
+            else
+                p.get(i).start();
         }
         chronometre = java.lang.System.currentTimeMillis();
         
         //TEMPORAIRE
-            JFrame f = new JFrame();
             for (int i=0;i<p.size();i++)
                 if(p.get(i).getJoueur())
                     f.addKeyListener(p.get(i));
             f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             f.setVisible(true);
+            
         ///////////////
     }
     
     private void finNiveau(){
-        for(int i=0;i<p.size();i++)
+        for(int i=0;i<p.size();i++){
             p.get(i).arreter();
-        
+            if(p.get(i).getJoueur())
+                f.removeKeyListener(p.get(i));
+        }
         s.pointFinNiveau(tempsSec(), name);
         System.out.println("\n\n\n\n\n\n\n\n\n\nVous avez vaincus "+name+" !");
         System.out.println("Fini en : "+temps());

@@ -19,11 +19,13 @@ public class SnoBees extends Personnage{
     
     private boolean paralyse;
     private boolean vaMourirParBloc;
+    private boolean cacheDansBloc;
     
-    public SnoBees(Coordonnees c, boolean joueur, GameEngine g){
+    public SnoBees(Coordonnees c, boolean joueur, GameEngine g, boolean cache){
         super("",c,joueur,3,g);
         paralyse = false;
         vaMourirParBloc = false;
+        cacheDansBloc = cache;
     }
 
     @Override
@@ -62,6 +64,14 @@ public class SnoBees extends Personnage{
     
     public boolean getParlyse(){
         return paralyse;
+    }
+    
+    public void setCacheDansBloc(boolean b){
+        cacheDansBloc = b;
+    }
+    
+    public boolean getCacheDansBloc(){
+        return cacheDansBloc;
     }
 
     @Override
