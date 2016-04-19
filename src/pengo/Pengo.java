@@ -20,7 +20,6 @@ public class Pengo {
     public static void main(String[] args) {
         
         new GameEngine();
-        Fenetre fen = new Fenetre() ;
         
         //System.out.print("\033[2J\033[1;1H"); // Clear console
     }

@@ -8,6 +8,7 @@ package GestionJeux;
 import Personnages.*;
 import Ressources.*;
 import Vue.Carte;
+import Vue.Fenetre;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -34,9 +35,7 @@ public class GameEngine {
     private boolean bonusBlocsSpeciaux;
     private long chronometre;
     private String name;
-    
-    //TEMPORAIRE
-    private JFrame f = new JFrame();
+    private Fenetre fenetre_principale ;
     
     private boolean niveauFini;
     
@@ -51,10 +50,11 @@ public class GameEngine {
         m = new Map(-1, n);
         s = new Score();
         chronometre = 0;
-        vue = new Carte(this);
+        fenetre_principale = new Fenetre(this) ;
+        
         
         //Initialisation de la carte
-        init();
+        init() ;
     }
     
     public void afficheInfo(){
@@ -127,13 +127,11 @@ public class GameEngine {
                 p.get(i).start();
         }
         chronometre = java.lang.System.currentTimeMillis();
-        
-        //TEMPORAIRE
-            for (int i=0;i<p.size();i++)
-                if(p.get(i).getJoueur())
-                    f.addKeyListener(p.get(i));
-            f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            f.setVisible(true);
+
+        for (int i=0;i<p.size();i++)
+            if(p.get(i).getJoueur())
+                fenetre_principale.addKeyListener(p.get(i));
+           
             
         ///////////////
     }
@@ -142,7 +140,7 @@ public class GameEngine {
         for(int i=0;i<p.size();i++){
             p.get(i).arreter();
             if(p.get(i).getJoueur())
-                f.removeKeyListener(p.get(i));
+                fenetre_principale.removeKeyListener(p.get(i));
         }
         s.pointFinNiveau(tempsSec(), name);
         System.out.println("\n\n\n\n\n\n\n\n\n\nVous avez vaincus "+name+" !");
@@ -299,13 +297,12 @@ public class GameEngine {
      * Affiche la carte actuelle en console.
      * Evolution à venir -> retourner la carte afin d'effectuer un affichage graphique
      * 
-     * @deprecated 
-     * @version 1.0
      */
     public void majAfficheCarte(){
         if(!niveauFini){
-            System.out.print("\033[2J\033[1;1H"); // Clear console
-            System.out.println(m);
+            //System.out.print("\033[2J\033[1;1H"); // Clear console
+            //System.out.println(m);
+            fenetre_principale.setCarte(m.getCarte());
         }
     }
     

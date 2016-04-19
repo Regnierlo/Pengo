@@ -23,13 +23,14 @@ public class Carte extends JPanel{
         tabImage = new MyImage[16][10] ;
     }
     
+    @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g ;
         
         for(int i = 0 ; i < 16 ; i++){
             for(int j = 0 ; j < 10 ; j++){
-                g2.drawImage(tabImage[i][j].getImg(),i*tabImage[i][j].getHeight(), j*32, tabImage[i][j].getObserver());
+                g2.drawImage(tabImage[i][j].getImg(),i*32, j*32, tabImage[i][j].getObserver());
             }
         }
     }

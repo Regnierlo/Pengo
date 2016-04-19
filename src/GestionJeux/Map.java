@@ -133,9 +133,6 @@ public class Map {
             for(int j = 0 ; j < carteActuelle[0].length ; j++){
                 if(elementCarte.mur.equalsName(carteActuelle[i][j]))
                     m.add(new Mur(new Coordonnees(j,i)));
-                
-                
-                
             }
         }
         

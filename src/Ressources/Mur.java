@@ -18,7 +18,7 @@ public class Mur {
     public Mur(Coordonnees c){
         tremble=false;
         coord = c;
-        imgStatique = new MyImage("/Images/mur_de_droite", c) ;
+        imgStatique = new MyImage("/Images/mur_de_droite.JPG", c) ;
     }
     
     public Coordonnees getCoordonnees(){

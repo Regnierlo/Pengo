@@ -18,7 +18,9 @@ import javax.swing.JPanel ;
  */
 public class Fenetre extends JFrame{
     
-    public Fenetre(){
+    private Carte carte = null ;
+    
+    public Fenetre(GameEngine gameEngine){
         
         this.setTitle("Pengo") ;
         this.setSize(400,700) ;
@@ -35,11 +37,18 @@ public class Fenetre extends JFrame{
         
         this.setContentPane(hud) ;
         */
-        //GameEngine ge = new GameEngine();
-        //Carte carte = new Carte(ge) ;
-        //carte.setSize(320,512);
         
+        carte = new Carte(gameEngine) ;
+        
+        this.setContentPane(carte) ;
+        //carte.setSize(320,512);
+ 
         
         this.setVisible(true) ;
     }
+    
+    public void setCarte(String[][] carteString){
+        carte.setImages(carteString) ;
+    }
+    
 }
