@@ -27,6 +27,8 @@ public class SnoBees extends Personnage{
         vaMourirParBloc = false;
         cacheDansBloc = cache;
     }
+    
+    
 
     @Override
     public synchronized void run() {

@@ -10,10 +10,19 @@ package Ressources;
  * @author loisr
  */
 public class Mur {
-    boolean tremble;
+    private boolean tremble;
+    private Coordonnees coord;
+    private MyImage imgStatique ;
+    private MyImage imgTremble ;
     
-    public Mur(){
+    public Mur(Coordonnees c){
         tremble=false;
+        coord = c;
+        imgStatique = new MyImage("/Images/mur_de_droite", c) ;
+    }
+    
+    public Coordonnees getCoordonnees(){
+        return coord;
     }
     
     public void setTremble(boolean t){
@@ -22,5 +31,9 @@ public class Mur {
     
     public boolean getTremble(){
         return tremble;
+    }
+    
+    public MyImage getMyImage(){
+        return imgStatique ;
     }
 }

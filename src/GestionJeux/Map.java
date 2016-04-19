@@ -12,6 +12,7 @@ import Ressources.Bloc;
 import Ressources.BlocGlace;
 import Ressources.BlocSpecial;
 import Ressources.Coordonnees;
+import Ressources.Mur;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,6 +82,10 @@ public class Map {
         return niveauActuel;
     }
     
+    public String[][] getCarte(){
+        return carteActuelle;
+    }
+    
     /**
      * Met à jour le nombre de pengo et de snobees
      */
@@ -121,8 +126,25 @@ public class Map {
         return l;
     }
     
+    public List initMur(){
+        List<Ressources.Mur> m = new ArrayList<>() ;
+        
+        for(int i = 0 ; i < carteActuelle.length ; i++){
+            for(int j = 0 ; j < carteActuelle[0].length ; j++){
+                if(elementCarte.mur.equalsName(carteActuelle[i][j]))
+                    m.add(new Mur(new Coordonnees(j,i)));
+                
+                
+                
+            }
+        }
+        
+        
+        return m ;
+    }
+    
     /**
-     * Initialise la lise de thread (pengo et snobees) dans une liste
+     * Initialise la liste de thread (pengo et snobees) dans une liste
      * 
      * @param ge GameEngine nécessaire pour créer les threads
      * @return La liste générée contenant les thread de snobees et pengo
@@ -171,7 +193,7 @@ public class Map {
                 valideMove = true;
             }
             else if(elementCarte.snoBees.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
-                g.pengoDied();
+                g.pengoIsDead();
             }
         }
         else if(o instanceof SnoBees){

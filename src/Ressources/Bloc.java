@@ -12,9 +12,10 @@ import Personnages.Personnage;
  * @author loisr
  */
 public class Bloc {
-    private boolean enMouvement;
-    private Coordonnees coord;
-    private Personnage.Directions dir;
+    protected boolean enMouvement;
+    protected Coordonnees coord;
+    protected Personnage.Directions dir;
+    protected MyImage img;
     
     public Bloc(Coordonnees c){
         coord = c;
@@ -44,5 +45,9 @@ public class Bloc {
     
     public void setDirection(Personnage.Directions d){
         dir = d;
+    }
+    
+    public MyImage getMyImage(){
+        return img;
     }
 }

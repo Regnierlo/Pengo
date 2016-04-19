@@ -7,6 +7,7 @@ package GestionJeux;
 
 import Personnages.*;
 import Ressources.*;
+import Vue.Carte;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -23,6 +24,8 @@ public class GameEngine {
     // Déclaration des variables
     private List<Personnage> p;
     private List<Bloc> b;
+    private List<Mur> mur ;
+    private Carte vue;
     private final Niveaux n;
     private final Map m;
     private final Score s;
@@ -39,10 +42,12 @@ public class GameEngine {
         //Instanciation des variables
         p = new ArrayList<>();
         b = new ArrayList<>();
+        mur = new ArrayList<>() ;
         n = new Niveaux();
         m = new Map(3, n);
         s = new Score();
         chronometre = 0;
+        vue = new Carte(this);
         
         //Initialisation de la carte
         init();
@@ -97,6 +102,7 @@ public class GameEngine {
         }
         p = m.initThread(this);
         b = m.initBloc();
+        mur = m.initMur() ;
         niveauFini = false;
         bonusBlocsSpeciaux = false;
         
@@ -212,7 +218,7 @@ public class GameEngine {
         }
     }
     
-    public void pengoDied(){
+    public void pengoIsDead(){
         int i_pen=0;
         
         for (int i = 0; i < p.size(); i++) {
@@ -246,8 +252,9 @@ public class GameEngine {
      * @version 1.0
      */
     public void majAfficheCarte(){
-        System.out.print("\033[2J\033[1;1H"); // Clear console
-        System.out.println(m);
+    //    System.out.print("\033[2J\033[1;1H"); // Clear console
+    //    System.out.println(m);
+        vue.setImages(m.getCarte());
     }
     
     /**
@@ -476,5 +483,46 @@ public class GameEngine {
                 }
             }
         }
+    }
+    
+    public P_Pengo getPengo(){
+        P_Pengo r = null ;
+        for(int i = 0 ; i < p.size() ; i++){
+            if(p.get(i) instanceof P_Pengo){
+                r = (P_Pengo)p.get(i) ;
+                
+            }
+        }
+        return r ;
+    }
+    
+    public SnoBees getSnoBees(Coordonnees c){
+        SnoBees sb = null ;
+        for(int i = 0 ; i < p.size() ; i++){
+            if(p.get(i) instanceof SnoBees){
+                if(p.get(i).getCoordonnees().comp(c))
+                    sb=(SnoBees)p.get(i);
+            }
+        }
+        return sb ;
+    }
+    
+    public Mur getMur(Coordonnees c){
+        Mur m = null ;
+        for(int i = 0 ; i < mur.size() ; i++){
+            if(mur.get(i).getCoordonnees().comp(c))
+                m=mur.get(i);
+        }
+        return m ; 
+    }
+    
+    public Bloc getBloc(Coordonnees c){
+        Bloc bc = null;
+        for(int i=0;i<b.size();i++){
+            if(b.get(i).getCoordonnees().comp(c)){
+                bc=b.get(i);
+            }
+        }
+        return bc;
     }
 }

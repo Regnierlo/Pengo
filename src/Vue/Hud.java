@@ -5,7 +5,10 @@
  */
 package Vue;
 
-import java.awt.Color;
+import java.awt.Graphics ;
+import java.awt.Font ;
+import java.awt.Color ;
+
 import javax.swing.JPanel;
 
 /**
@@ -13,12 +16,14 @@ import javax.swing.JPanel;
  * @author Marie
  */
 public class Hud extends JPanel{
-    public Hud(){
-        
-        JPanel pan = new JPanel();
-        pan.setSize(450,50);
-        pan.setBackground(Color.BLACK);
-        
+    public void paintComponent(Graphics g){
+        super.paintComponents(g);
+        System.out.println("Je suis vivant, mwhahaha");
+        Font font = new Font("Courier", Font.BOLD,20);
+        g.setFont(font);
+        g.setColor(Color.white);
+        g.drawString("Appuyez sur Entrée", this.getWidth()/3,(this.getHeight()/4)*3) ;
+       
         
     }
 }

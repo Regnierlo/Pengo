@@ -10,7 +10,9 @@ package Ressources;
  * @author loisr
  */
 public class BlocSpecial extends Bloc{
+    
     public BlocSpecial(Coordonnees c){
         super(c);
+        img = new MyImage("/Images/companion_cube.png", c);
     }
 }

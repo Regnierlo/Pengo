@@ -37,7 +37,7 @@ public class Labyrinthe {
         labyrinthe = new String[nbLigne][nbColonne] ;
     }
     
-    public String[][] generation_labyrinthe(int nbPengo, int nbBlocGlace, int nbSnoBees, int nbBlocEmpoisonne){
+    public String[][] generation_labyrinthe(int nbPengo, int nbSnoBees, int nbBlocEmpoisonne){
         initialisation() ;
         creationLabyrinthe() ;
         finalisation() ;
