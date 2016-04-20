@@ -111,55 +111,100 @@ public class Calcul_Vue {
                     switch (s[i][j]){
                         case "P" : {
                             if(jesus.getPengo() instanceof P_Pengo){
-                                /// Si Pengo va en haut
-                                if(jesus.getPengo().getDirectionActuel().equals(Personnage.Directions.dirHaut)){
-                                    if(jesus.getPengo().getAncienneDirection().equals(jesus.getPengo().getDirectionActuel()) && jesus.getPengo().getBoolDirection()==true){
+                                
+                                
+                                /*if(jesus.getPengo().getPousseDetruire()==true && jesus.getPengo().getFinPousseDetruit()==false){
+                                    
+                                    if(jesus.getPengo().getDirectionActuel().equals(Personnage.Directions.dirHaut)){
                                         tabCoordonnees[0][nbCoordonnees]= 1 ;
-                                        tabCoordonnees[1][nbCoordonnees]= 0 ;
+                                        tabCoordonnees[1][nbCoordonnees]= 19 ;
                                     }
                                     else{
-                                        tabCoordonnees[0][nbCoordonnees]= 0 ;
-                                        tabCoordonnees[1][nbCoordonnees]= 0 ;
-                                    }  
-                                } /// FIN si va en haut 
+                                        if(jesus.getPengo().getDirectionActuel().equals(Personnage.Directions.dirBas)){
+                                            tabCoordonnees[0][nbCoordonnees]= 1 ;
+                                            tabCoordonnees[1][nbCoordonnees]= 22 ;
+                                        }
+                                        else{
+                                            if(jesus.getPengo().getDirectionActuel().equals(Personnage.Directions.dirDroite)){
+                                                
+                                                tabCoordonnees[0][nbCoordonnees]= 1 ;
+                                                tabCoordonnees[1][nbCoordonnees]= 20 ;
+                                            }
+                                            else{
+                                                if(jesus.getPengo().getDirectionActuel().equals(Personnage.Directions.dirDroite)){
+                                                    tabCoordonnees[0][nbCoordonnees]= 1 ;
+                                                    tabCoordonnees[1][nbCoordonnees]= 21 ;
+                                                }  
+                                            }
+                                        }
+                                    }
+                                }
+                                else {*/
+                                    /// Si Pengo va en haut
+                                    if(jesus.getPengo().getDirectionActuel().equals(Personnage.Directions.dirHaut)){
+                                        if(jesus.getPengo().getPousseDetruire()){
+                                            tabCoordonnees[0][nbCoordonnees]= 1 ;
+                                            tabCoordonnees[1][nbCoordonnees]= 19 ;
+                                        } 
+                                
+                                        else{
+                                            if(jesus.getPengo().getFinPousseDetruit()){
+                                                tabCoordonnees[0][nbCoordonnees]= 0 ;
+                                                tabCoordonnees[1][nbCoordonnees]= 19 ;
+                                            }
+                                            else{
+                                                if(jesus.getPengo().getAncienneDirection().equals(jesus.getPengo().getDirectionActuel()) && jesus.getPengo().getBoolDirection()==true){
+                                                    tabCoordonnees[0][nbCoordonnees]= 1 ;
+                                                    tabCoordonnees[1][nbCoordonnees]= 0 ;
+                                                }
+                                                else{
+                                                    tabCoordonnees[0][nbCoordonnees]= 0 ;
+                                                    tabCoordonnees[1][nbCoordonnees]= 0 ;
+                                                }  
+                                            }
+                                             
+                                        }
+                                        
+                                       
+                                    } /// FIN si va en haut 
 
-                                /// Si Pengo va à droite
-                                if(jesus.getPengo().getDirectionActuel().equals(Personnage.Directions.dirDroite)){
-                                    if(jesus.getPengo().getAncienneDirection().equals(jesus.getPengo().getDirectionActuel())&& jesus.getPengo().getBoolDirection()==true){
-                                        tabCoordonnees[0][nbCoordonnees]= 1 ;
-                                        tabCoordonnees[1][nbCoordonnees]= 1 ;
-                                    }
-                                    else{
-                                        tabCoordonnees[0][nbCoordonnees]= 0 ;
-                                        tabCoordonnees[1][nbCoordonnees]= 1 ;
-                                    }  
-                                } /// FIN si va à droite
+                                    /// Si Pengo va à droite
+                                    if(jesus.getPengo().getDirectionActuel().equals(Personnage.Directions.dirDroite)){
+                                        if(jesus.getPengo().getAncienneDirection().equals(jesus.getPengo().getDirectionActuel())&& jesus.getPengo().getBoolDirection()==true){
+                                            tabCoordonnees[0][nbCoordonnees]= 1 ;
+                                            tabCoordonnees[1][nbCoordonnees]= 1 ;
+                                        }
+                                        else{
+                                            tabCoordonnees[0][nbCoordonnees]= 0 ;
+                                            tabCoordonnees[1][nbCoordonnees]= 1 ;
+                                        }  
+                                    } /// FIN si va à droite
 
-                                /// Si Pengo va en bas
-                                if(jesus.getPengo().getDirectionActuel().equals(Personnage.Directions.dirBas)){
-                                    if(jesus.getPengo().getAncienneDirection().equals(jesus.getPengo().getDirectionActuel())&& jesus.getPengo().getBoolDirection()==true){
-                                        tabCoordonnees[0][nbCoordonnees]= 1 ;
-                                        tabCoordonnees[1][nbCoordonnees]= 2 ;
-                                    }
-                                    else{
-                                        tabCoordonnees[0][nbCoordonnees]= 0 ;
-                                        tabCoordonnees[1][nbCoordonnees]= 2 ;
-                                    }
-                                } /// FIN si va en bas
+                                    /// Si Pengo va en bas
+                                    if(jesus.getPengo().getDirectionActuel().equals(Personnage.Directions.dirBas)){
+                                        if(jesus.getPengo().getAncienneDirection().equals(jesus.getPengo().getDirectionActuel())&& jesus.getPengo().getBoolDirection()==true){
+                                            tabCoordonnees[0][nbCoordonnees]= 1 ;
+                                            tabCoordonnees[1][nbCoordonnees]= 2 ;
+                                        }
+                                        else{
+                                            tabCoordonnees[0][nbCoordonnees]= 0 ;
+                                            tabCoordonnees[1][nbCoordonnees]= 2 ;
+                                        }
+                                    } /// FIN si va en bas
 
-                                /// Si Pengo va à gauche
-                                if(jesus.getPengo().getDirectionActuel().equals(Personnage.Directions.dirGauche)){
-                                    if(jesus.getPengo().getAncienneDirection().equals(jesus.getPengo().getDirectionActuel())&& jesus.getPengo().getBoolDirection()==true){
-                                        tabCoordonnees[0][nbCoordonnees]= 1 ;
-                                        tabCoordonnees[1][nbCoordonnees]= 3 ;
-                                    }
-                                    else{
-                                        tabCoordonnees[0][nbCoordonnees]= 0 ;
-                                        tabCoordonnees[1][nbCoordonnees]= 3 ;
-                                    }
-                                } /// FIN si va à gauche
-                            }
-                            
+                                    /// Si Pengo va à gauche
+                                    if(jesus.getPengo().getDirectionActuel().equals(Personnage.Directions.dirGauche)){
+                                        if(jesus.getPengo().getAncienneDirection().equals(jesus.getPengo().getDirectionActuel())&& jesus.getPengo().getBoolDirection()==true){
+                                            tabCoordonnees[0][nbCoordonnees]= 1 ;
+                                            tabCoordonnees[1][nbCoordonnees]= 3 ;
+                                        }
+                                        else{
+                                            tabCoordonnees[0][nbCoordonnees]= 0 ;
+                                            tabCoordonnees[1][nbCoordonnees]= 3 ;
+                                        }
+                                    } /// FIN si va à gauche
+                                }
+                            //}
                         } break ;
                         case "E" : {
                                 if(jesus.getSnobees(new Coordonnees(j,i)).getNaissance()<7){

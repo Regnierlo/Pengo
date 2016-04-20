@@ -100,6 +100,7 @@ public abstract class Personnage extends Thread
     protected boolean pause;
     
     protected final GameEngine ge;
+    protected boolean finPousseDetruit ;
     
     protected Personnage(String urlImageRessource, Coordonnees c, boolean j, int v, GameEngine g){
         this.stop = false;
@@ -114,6 +115,7 @@ public abstract class Personnage extends Thread
         currentImage = 0;
         animationMouvement = new String[4][2];
         pousseDetruit = false;
+        finPousseDetruit = false ;
     }
     
    
@@ -188,10 +190,20 @@ public abstract class Personnage extends Thread
     }
     
     public void setPousseDetruire(boolean b){
+       
         pousseDetruit = b;
+        
     }
     
     public boolean getPousseDetruire(){
         return pousseDetruit;
+    }
+    
+    public void setFinPousseDetruit(boolean b){
+        finPousseDetruit = b ;
+    }
+    
+    public boolean getFinPousseDetruit(){
+        return finPousseDetruit ;
     }
 }

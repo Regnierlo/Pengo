@@ -393,6 +393,9 @@ public class GameEngine {
             boolean vieEnMoins = false;
             //Cast de l'objet passé en paramètre pour l'utiliser
             P_Pengo pen = (P_Pengo) o;
+            pen.setFinPousseDetruit(false);
+            pen.setPousseDetruire(false);
+            
             
             switch(dir){
                 case dirHaut :
@@ -425,7 +428,7 @@ public class GameEngine {
                         } catch (InterruptedException ex) {
                             Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        pen.setPousseDetruire(true);
+                        pen.setFinPousseDetruit(true);
                     }
                     
                     break;
@@ -459,7 +462,7 @@ public class GameEngine {
                         } catch (InterruptedException ex) {
                             Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        pen.setPousseDetruire(true);
+                        pen.setPousseDetruire(false);
                     }
                     
                     break;
@@ -493,7 +496,7 @@ public class GameEngine {
                         } catch (InterruptedException ex) {
                             Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        pen.setPousseDetruire(true);
+                        pen.setPousseDetruire(false);
                     }
                     
                     break;
@@ -522,13 +525,14 @@ public class GameEngine {
                         else{
                             m.faireTremblerMur(dir, this);
                         }
-                        pen.setPousseDetruire(true);
+                        pen.setPousseDetruire(false);
                     }
                     
                     break;
                 default:
                     moveOk = false;
             }
+            
             checkFinJeu();
         }
         //Si l'objet est un SnoBees
