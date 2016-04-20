@@ -334,9 +334,13 @@ public class GameEngine {
         for (int i=0;i<b.size();i++) {
             if(b.get(i).getCoordonnees().comp(c)){
                 if(b.get(i) instanceof BlocGlace){
+                    BlocGlace bg = (BlocGlace)b.get(i);
+                    if(!bg.getContientSnobees()){
+                        for(int j=0;j<bg.getFinDestruction();j++)
+                            majAfficheCarte();
+                    }
                     m.detruireBloc(c, this);
                     i_b = i;
-                    BlocGlace bg = (BlocGlace)b.get(i);
                     if(bg.getContientSnobees()){
                         snoBeesMort(c);
                     }
