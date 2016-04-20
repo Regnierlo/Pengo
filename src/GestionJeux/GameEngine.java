@@ -263,21 +263,25 @@ public class GameEngine {
     }
     
     private void naissanceSnobees(){
+        boolean uneNaissance=false;
         for(int i=0;i<b.size();i++){
-            if(b.get(i) instanceof BlocGlace){
-                BlocGlace bg = (BlocGlace)b.get(i);
-                if(bg.getContientSnobees()){
-                    m.transformBlocGlaceEnSnoBees(bg.getCoordonnees());
-                    for(int j=0;j<p.size();j++){
-                        if(p.get(j) instanceof SnoBees){
-                            SnoBees sb = (SnoBees)p.get(j);
-                            if(sb.getCoordonnees().comp(bg.getCoordonnees())){
-                                sb.setCacheDansBloc(false);
-                                sb.setNait(true);
-                                sb.start();
-                                bg.setContientSnoBees(false);
-                                bg.vaEtreDetruitParNaissance(true);
-                                destructionBloc(bg.getCoordonnees());
+            if(!uneNaissance){
+                if(b.get(i) instanceof BlocGlace){
+                    BlocGlace bg = (BlocGlace)b.get(i);
+                    if(bg.getContientSnobees()){
+                        m.transformBlocGlaceEnSnoBees(bg.getCoordonnees());
+                        for(int j=0;j<p.size();j++){
+                            if(p.get(j) instanceof SnoBees){
+                                SnoBees sb = (SnoBees)p.get(j);
+                                if(sb.getCoordonnees().comp(bg.getCoordonnees())){
+                                    uneNaissance=true;
+                                    sb.setCacheDansBloc(false);
+                                    sb.setNait(true);
+                                    sb.start();
+                                    bg.setContientSnoBees(false);
+                                    bg.vaEtreDetruitParNaissance(true);
+                                    destructionBloc(bg.getCoordonnees());
+                                }
                             }
                         }
                     }
