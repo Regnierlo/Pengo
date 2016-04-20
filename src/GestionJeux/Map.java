@@ -34,6 +34,7 @@ public class Map {
 
     public enum elementCarte{
         pengo("P"),
+        pengoPousse("D"),
         snoBees("E"),
         SnoBeesParalyse("3"),
         blocGlace("G"),

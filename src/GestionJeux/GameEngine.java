@@ -405,6 +405,7 @@ public class GameEngine {
                             moveOk = false;
                     }
                     else if(act.equals(Personnage.Actions.pousser_detruire)){
+                        pen.setPousseDetruire(true);
                         if(!m.isMur(c, dir)){
                             if(m.objet(c)){
                                 if(m.objet(new Coordonnees(c.getX(), c.getY()-1))){
@@ -418,6 +419,12 @@ public class GameEngine {
                         else{
                             m.faireTremblerMur(dir, this);
                         }
+                        try {
+                            Thread.sleep(750);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        pen.setPousseDetruire(true);
                     }
                     
                     break;
@@ -431,6 +438,7 @@ public class GameEngine {
                             moveOk = false;
                     }
                     else if(act.equals(Personnage.Actions.pousser_detruire)){
+                        pen.setPousseDetruire(true);
                         if(!m.isMur(c, dir)){
                             if(m.objet(c)){
                                 if(m.objet(new Coordonnees(c.getX(), c.getY()+1))){
@@ -444,6 +452,12 @@ public class GameEngine {
                         else{
                             m.faireTremblerMur(dir, this);
                         }
+                        try {
+                            Thread.sleep(750);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        pen.setPousseDetruire(true);
                     }
                     
                     break;
@@ -457,6 +471,7 @@ public class GameEngine {
                             moveOk = false;
                     }
                     else if(act.equals(Personnage.Actions.pousser_detruire)){
+                        pen.setPousseDetruire(true);
                         if(!m.isMur(c, dir)){
                             if(m.objet(c)){
                                 if(m.objet(new Coordonnees(c.getX()+1, c.getY()))){
@@ -470,6 +485,12 @@ public class GameEngine {
                         else{
                             m.faireTremblerMur(dir, this);
                         }
+                        try {
+                            Thread.sleep(750);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        pen.setPousseDetruire(true);
                     }
                     
                     break;
@@ -483,6 +504,7 @@ public class GameEngine {
                             moveOk = false;
                     }
                     else if(act.equals(Personnage.Actions.pousser_detruire)){
+                        pen.setPousseDetruire(true);
                         if(!m.isMur(c, dir)){
                             if(m.objet(c)){
                                 if(m.objet(new Coordonnees(c.getX()-1, c.getY()))){
@@ -496,6 +518,12 @@ public class GameEngine {
                         else{
                             m.faireTremblerMur(dir, this);
                         }
+                        try {
+                            Thread.sleep(750);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        pen.setPousseDetruire(true);
                     }
                     
                     break;
@@ -542,9 +570,8 @@ public class GameEngine {
             }
         }
         
-        if(moveOk){
-            this.majAfficheCarte();
-        }
+        this.majAfficheCarte();
+        
         return moveOk;
     }
 

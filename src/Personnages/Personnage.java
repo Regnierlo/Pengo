@@ -18,6 +18,7 @@ public abstract class Personnage extends Thread
                         implements KeyListener{
 
     protected boolean stop;
+    protected boolean pousseDetruit;
     /**
      * Image utilisé par le personnage.
      */
@@ -116,6 +117,7 @@ public abstract class Personnage extends Thread
         this.ge = g;
         currentImage = 0;
         animationMouvement = new String[4][2];
+        pousseDetruit = false;
     }
     
     
@@ -260,5 +262,13 @@ public abstract class Personnage extends Thread
     
     public Directions getAncienneDirection(){
         return ancienneDirection ;
+    }
+    
+    public void setPousseDetruire(boolean b){
+        pousseDetruit = b;
+    }
+    
+    public boolean getPousseDetruire(){
+        return pousseDetruit;
     }
 }
