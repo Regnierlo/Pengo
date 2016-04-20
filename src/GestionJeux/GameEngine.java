@@ -149,7 +149,7 @@ public class GameEngine {
             if(p.get(i).getJoueur())
                 fenetre_principale.addKeyListener(p.get(i));
            
-        
+        majAfficheCarte();
         ///////////////
         majAfficheCarte();
     }
