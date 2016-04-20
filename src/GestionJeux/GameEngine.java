@@ -393,8 +393,7 @@ public class GameEngine {
             boolean vieEnMoins = false;
             //Cast de l'objet passé en paramètre pour l'utiliser
             P_Pengo pen = (P_Pengo) o;
-            pen.setFinPousseDetruit(false);
-            pen.setPousseDetruire(false);
+            
             
             
             switch(dir){
@@ -424,11 +423,20 @@ public class GameEngine {
                             m.faireTremblerMur(dir, this);
                         }
                         try {
-                            Thread.sleep(750);
+                            Thread.sleep(500);
                         } catch (InterruptedException ex) {
                             Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                         }
+                        pen.setPousseDetruire(false);
+                        majAfficheCarte();
                         pen.setFinPousseDetruit(true);
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        pen.setFinPousseDetruit(false);
+                        
                     }
                     
                     break;
