@@ -19,10 +19,7 @@ public abstract class Personnage extends Thread
 
     protected boolean stop;
     protected boolean pousseDetruit;
-    /**
-     * Image utilisé par le personnage.
-     */
-    protected MyImage img;
+
     /**
      * Coordonnees du personnage.
      */
@@ -108,7 +105,6 @@ public abstract class Personnage extends Thread
         this.stop = false;
         this.pause = false;
         this.coord = c;
-        this.img = new MyImage(urlImageRessource, this.coord);
         this.directionActuel = Directions.dirDroite;
         this.ancienneDirection = Directions.dirHaut ;
         direction = false ;
@@ -120,73 +116,7 @@ public abstract class Personnage extends Thread
         pousseDetruit = false;
     }
     
-    
-    /**
-     * 
-     * @version 2.0 Permet de se déplacer d'un point a un autre automatiquement
-     * @param x
-     * @param y 
-     */
-    protected void Move(int x, int y){
-
-        int nx = this.coord.getX()+x;
-        int ny = this.coord.getY()+y;
-        int reste;
-        if((this.coord.getX()-nx) != 0)
-            reste = x;
-        else
-            reste = y;
-        if(reste < 0)
-            reste *= (-1);
-
-        for(int i = 0;i<this.getMyImage().getHeight();i++){
-
-            //gametest.clearBlock(this.coord);
-
-
-            this.coord.setX(this.coord.getX()+(x/reste));
-            this.coord.setY(this.coord.getY()+(y/reste));
-            this.getMyImage().Move(new Coordonnees(this.coord.getX(), this.coord.getY()));
-            //System.out.println(this.coord);            
-            //gametest.update();
-            
-            if(currentImage==1)
-                currentImage= 0;
-            else
-                currentImage = 1;
-            
-            /*System.out.println(currentImage);
-            
-            switch(directionActuel){
-                case dirHaut :
-                    
-                    break;
-                
-                case dirBas :
-                    break;
-                    
-                case dirDroite :
-                    this.img.setImg(this.animationMouvement[2][currentImage]);
-                    break;
-                    
-                case dirGauche :
-                    break;
-            }*/
-            
-            try {
-                Thread.sleep(16*this.vitesse);
-            } catch (Exception e) {
-            }
-        }
-        
-        /*
-        //Ancienne version
-        this.coord.setX(nx);
-        this.coord.setY(this.coord.getY()+y);
-        this.getMyImage().Move(new Coordonnees(nx, ny));
-        */
-    }
-    
+   
     /**
      * Fonction run du thread.
      */
@@ -240,13 +170,6 @@ public abstract class Personnage extends Thread
         return coord;
     }
     
-    /**
-     * 
-     * @return l'instance de MyImage
-     */
-    public MyImage getMyImage(){
-        return img;
-    }
     
     public Boolean getJoueur(){
         return joueur;

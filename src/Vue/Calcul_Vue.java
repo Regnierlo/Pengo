@@ -17,6 +17,7 @@ public class Calcul_Vue {
     private int nbCoordonnees ;
     private int[][] tabCoordonnees;
     GameEngine jesus ;
+    int naissance ;
     
     public Calcul_Vue(GameEngine gameEngine){
         nbCoordonnees = 0 ;
@@ -34,56 +35,82 @@ public class Calcul_Vue {
         for(int i = 0 ; i < s.length ; i++){
             for(int j = 0 ; j < s[0].length ; j++){
                 if(i==0 || i==15 || j==0 ||j==9){
-                    if(i==0){
-                        if(j==0){
-                            tabCoordonnees[0][nbCoordonnees]= 0 ;
-                            tabCoordonnees[1][nbCoordonnees]= 15 ;
+                    if(s[i][j].equals("W")){
+                        if(i==0 && j>0 && j<9){
+                            tabCoordonnees[0][nbCoordonnees]= 1 ;
+                            tabCoordonnees[1][nbCoordonnees]= 12 ;
                         }
-                        else {
-                            if(j==9){
+                        else{
+                            if(i==15 && j>0 && j<9){
                                 tabCoordonnees[0][nbCoordonnees]= 1 ;
-                                tabCoordonnees[1][nbCoordonnees]= 15 ;
+                                tabCoordonnees[1][nbCoordonnees]= 10 ;
                             }
                             else{
-                                tabCoordonnees[0][nbCoordonnees]= 0 ;
-                                tabCoordonnees[1][nbCoordonnees]= 12 ;
+                                if(i>0 && i<15 && j==0){
+                                    tabCoordonnees[0][nbCoordonnees]= 1 ;
+                                    tabCoordonnees[1][nbCoordonnees]= 13 ;
+                                }
+                                else{
+                                    if(j==9 && i>0 && i<15){
+                                        tabCoordonnees[0][nbCoordonnees]= 1 ;
+                                        tabCoordonnees[1][nbCoordonnees]= 11 ;
+                                    }
+                                }
                             }
                         }
                     }
                     else{
-                        if(j==0){
-                            if(i==15){
-                                tabCoordonnees[0][nbCoordonnees]= 0 ;
-                                tabCoordonnees[1][nbCoordonnees]= 14 ;
+                        if(i==0){
+                            if(j==0){
+                                    tabCoordonnees[0][nbCoordonnees]= 0 ;
+                                    tabCoordonnees[1][nbCoordonnees]= 15 ;    
                             }
-                            else{
-                                tabCoordonnees[0][nbCoordonnees]= 0 ;
-                                tabCoordonnees[1][nbCoordonnees]= 13 ;
-                            }
-                        }
-                        else {
-                            if(i==15){
+                            else {
                                 if(j==9){
                                     tabCoordonnees[0][nbCoordonnees]= 1 ;
-                                    tabCoordonnees[1][nbCoordonnees]= 14 ;
+                                    tabCoordonnees[1][nbCoordonnees]= 15 ;
                                 }
                                 else{
                                     tabCoordonnees[0][nbCoordonnees]= 0 ;
-                                    tabCoordonnees[1][nbCoordonnees]= 10 ;
+                                    tabCoordonnees[1][nbCoordonnees]= 12 ;
                                 }
                             }
-                            else{
-                                tabCoordonnees[0][nbCoordonnees]= 0 ;
-                                tabCoordonnees[1][nbCoordonnees]= 11 ;
+                        }
+                        else{
+                            if(j==0){
+                                if(i==15){
+                                    tabCoordonnees[0][nbCoordonnees]= 0 ;
+                                    tabCoordonnees[1][nbCoordonnees]= 14 ;
+                                }
+                                else{ 
+                                    tabCoordonnees[0][nbCoordonnees]= 0 ;
+                                    tabCoordonnees[1][nbCoordonnees]= 13 ;
+                                }
+                            }
+
+                            else {
+                                if(i==15){
+                                    if(j==9){
+                                        tabCoordonnees[0][nbCoordonnees]= 1 ;
+                                        tabCoordonnees[1][nbCoordonnees]= 14 ;
+                                    }
+                                    else{
+                                        tabCoordonnees[0][nbCoordonnees]= 0 ;
+                                        tabCoordonnees[1][nbCoordonnees]= 10 ;
+                                    }
+                                }
+                                else{
+                                    tabCoordonnees[0][nbCoordonnees]= 0 ;
+                                    tabCoordonnees[1][nbCoordonnees]= 11 ;
+                                }
                             }
                         }
-                    }
-                }    
+                    }   
+                }
                 else {
                     switch (s[i][j]){
                         case "P" : {
                             if(jesus.getPengo() instanceof P_Pengo){
-                                
                                 /// Si Pengo va en haut
                                 if(jesus.getPengo().getDirectionActuel().equals(Personnage.Directions.dirHaut)){
                                     if(jesus.getPengo().getAncienneDirection().equals(jesus.getPengo().getDirectionActuel()) && jesus.getPengo().getBoolDirection()==true){
@@ -135,56 +162,95 @@ public class Calcul_Vue {
                             
                         } break ;
                         case "E" : {
-                                /// Si le snobee va en haut
-                                if(jesus.getSnoBees(new Coordonnees(i,j)).getDirectionActuel().equals(Personnage.Directions.dirHaut)){
-                                    if(jesus.getSnoBees(new Coordonnees(i,j)).getAncienneDirection().equals(jesus.getSnoBees(new Coordonnees(i,j)).getDirectionActuel())){
-                                        tabCoordonnees[0][nbCoordonnees]= 1 ;
-                                        tabCoordonnees[1][nbCoordonnees]= 4 ;
+                                if(jesus.getSnobees(new Coordonnees(j,i)).getNaissance()<7){
+                                    naissance = jesus.getSnobees(new Coordonnees(j,i)).getNaissance() ;
+                                    System.out.println(naissance);
+                                    if(naissance == 1){
+                                        tabCoordonnees[0][nbCoordonnees]= 0 ;
+                                        tabCoordonnees[1][nbCoordonnees]= 16 ; 
                                     }
                                     else{
-                                        tabCoordonnees[0][nbCoordonnees]= 0 ;
-                                        tabCoordonnees[1][nbCoordonnees]= 4 ;
+                                        if(naissance==2){
+                                            tabCoordonnees[0][nbCoordonnees]= 1 ;
+                                            tabCoordonnees[1][nbCoordonnees]= 16 ;
+                                        }
+                                        else{
+                                            if(naissance==3){
+                                                tabCoordonnees[0][nbCoordonnees]= 0 ;
+                                                tabCoordonnees[1][nbCoordonnees]= 17 ;
+                                            }
+                                            else{
+                                                if(naissance==4){
+                                                    tabCoordonnees[0][nbCoordonnees]= 1 ;
+                                                    tabCoordonnees[1][nbCoordonnees]= 17 ;
+                                                }
+                                                else{
+                                                    if(naissance==5){
+                                                        tabCoordonnees[0][nbCoordonnees]= 0 ;
+                                                        tabCoordonnees[1][nbCoordonnees]= 18 ;
+                                                    }
+                                                    else{
+                                                        tabCoordonnees[0][nbCoordonnees]= 1 ;
+                                                        tabCoordonnees[1][nbCoordonnees]= 18 ;
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
-                                } /// FIN si va en haut 
+                                    
+                                }
+                                else{
+                                    /// Si le snobee va en haut
+                                    if(jesus.getSnobees(new Coordonnees(j,i)).getDirectionActuel().equals(Personnage.Directions.dirHaut)){
+                                       
+                                        if(jesus.getSnobees(new Coordonnees(j,i)).getAncienneDirection().equals(jesus.getSnobees(new Coordonnees(j,i)).getDirectionActuel())){
+                                            tabCoordonnees[0][nbCoordonnees]= 1 ;
+                                            tabCoordonnees[1][nbCoordonnees]= 4 ;
+                                        }
+                                        else{
+                                            tabCoordonnees[0][nbCoordonnees]= 0 ;
+                                            tabCoordonnees[1][nbCoordonnees]= 4 ;
+                                        }
+                                    } /// FIN si va en haut 
 
-                                /// Si le snobee va à droite
-                                if(jesus.getSnoBees(new Coordonnees(i,j)).getDirectionActuel().equals(Personnage.Directions.dirDroite)){
+                                    /// Si le snobee va à droite
+                                    if(jesus.getSnobees(new Coordonnees(j,i)).getDirectionActuel().equals(Personnage.Directions.dirDroite)){
 
-                                    if(jesus.getSnoBees(new Coordonnees(i,j)).getAncienneDirection().equals(jesus.getSnoBees(new Coordonnees(i,j)).getDirectionActuel())){
-                                        tabCoordonnees[0][nbCoordonnees]= 1 ;
-                                        tabCoordonnees[1][nbCoordonnees]= 5 ;
-                                    }
-                                    else{
-                                        tabCoordonnees[0][nbCoordonnees]= 0 ;
-                                        tabCoordonnees[1][nbCoordonnees]= 5 ;
-                                    }
-                                } /// FIN si va à droite
+                                        if(jesus.getSnobees(new Coordonnees(j,i)).getAncienneDirection().equals(jesus.getSnobees(new Coordonnees(j,i)).getDirectionActuel())){
+                                            tabCoordonnees[0][nbCoordonnees]= 1 ;
+                                            tabCoordonnees[1][nbCoordonnees]= 5 ;
+                                        }
+                                        else{
+                                            tabCoordonnees[0][nbCoordonnees]= 0 ;
+                                            tabCoordonnees[1][nbCoordonnees]= 5 ;
+                                        }
+                                    } /// FIN si va à droite
 
-                                /// Si le snobee va en bas
-                                if(jesus.getSnoBees(new Coordonnees(i,j)).getDirectionActuel().equals(Personnage.Directions.dirBas)){
-                                    if(jesus.getSnoBees(new Coordonnees(i,j)).getAncienneDirection().equals(jesus.getSnoBees(new Coordonnees(i,j)).getDirectionActuel())){
-                                        tabCoordonnees[0][nbCoordonnees]= 1 ;
-                                        tabCoordonnees[1][nbCoordonnees]= 6 ;
-                                    }
-                                    else{
-                                        tabCoordonnees[0][nbCoordonnees]= 0 ;
-                                        tabCoordonnees[1][nbCoordonnees]= 6 ;
-                                    }
-                                } /// FIN si va en bas
+                                    /// Si le snobee va en bas
+                                    if(jesus.getSnobees(new Coordonnees(j,i)).getDirectionActuel().equals(Personnage.Directions.dirBas)){
+                                        if(jesus.getSnobees(new Coordonnees(j,i)).getAncienneDirection().equals(jesus.getSnobees(new Coordonnees(j,i)).getDirectionActuel())){
+                                            tabCoordonnees[0][nbCoordonnees]= 1 ;
+                                            tabCoordonnees[1][nbCoordonnees]= 6 ;
+                                        }
+                                        else{
+                                            tabCoordonnees[0][nbCoordonnees]= 0 ;
+                                            tabCoordonnees[1][nbCoordonnees]= 6 ;
+                                        }
+                                    } /// FIN si va en bas
 
-                                /// Si le snobee va à gauche
-                                if(jesus.getSnoBees(new Coordonnees(i,j)).getDirectionActuel().equals(Personnage.Directions.dirGauche)){
-                                    if(jesus.getSnoBees(new Coordonnees(i,j)).getAncienneDirection().equals(jesus.getSnoBees(new Coordonnees(i,j)).getDirectionActuel())){
-                                        tabCoordonnees[0][nbCoordonnees]= 1 ;
-                                        tabCoordonnees[1][nbCoordonnees]= 7 ;
-                                        
-                                    }
-                                    else{
-                                        tabCoordonnees[0][nbCoordonnees]= 0 ;
-                                        tabCoordonnees[1][nbCoordonnees]= 7 ;
-                                    }
-                                } /// FIN si va à gauche
+                                    /// Si le snobee va à gauche
+                                    if(jesus.getSnobees(new Coordonnees(j,i)).getDirectionActuel().equals(Personnage.Directions.dirGauche)){
+                                        if(jesus.getSnobees(new Coordonnees(j,i)).getAncienneDirection().equals(jesus.getSnobees(new Coordonnees(j,i)).getDirectionActuel())){
+                                            tabCoordonnees[0][nbCoordonnees]= 1 ;
+                                            tabCoordonnees[1][nbCoordonnees]= 7 ;
 
+                                        }
+                                        else{
+                                            tabCoordonnees[0][nbCoordonnees]= 0 ;
+                                            tabCoordonnees[1][nbCoordonnees]= 7 ;
+                                        }
+                                    } /// FIN si va à gauche
+                            }
                         } break ;
                         
                         case "G" : {

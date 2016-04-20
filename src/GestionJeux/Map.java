@@ -265,13 +265,14 @@ public class Map {
         Thread t = new Thread(){
             @Override
             public void run(){
-                int tpsAttente = 1000;
+                int tpsAttente = 800;
                 
                 switch(dir){
                     case dirHaut:
                         for(int i=0;i<3;i++){
                             for(int j=0;j<carteActuelle[0].length;j++){
                                 carteActuelle[0][j] = "W";
+                                g.murTremble(new Coordonnees(0,j),true);
                                 g.snobeesParalyse(new Coordonnees(1, j), elementCarte.SnoBeesParalyse);
                             }
                             g.majAfficheCarte();
@@ -281,6 +282,7 @@ public class Map {
                             }
                             for(int j=0;j<carteActuelle[0].length;j++){
                                 carteActuelle[0][j] = "M";
+                                g.murTremble(new Coordonnees(0,j),false);
                             }
                             g.majAfficheCarte();
                         }
@@ -293,6 +295,7 @@ public class Map {
                         for(int i=0;i<3;i++){
                             for(int j=0;j<carteActuelle[0].length;j++){
                                 carteActuelle[15][j] = "W";
+                                g.murTremble(new Coordonnees(15,j),true);
                                 g.snobeesParalyse(new Coordonnees(14, j), elementCarte.SnoBeesParalyse);
                             }
                             g.majAfficheCarte();
@@ -302,6 +305,7 @@ public class Map {
                             }
                             for(int j=0;j<carteActuelle[0].length;j++){
                                 carteActuelle[15][j] = "M";
+                                g.murTremble(new Coordonnees(15,j),false);
                             }
                             g.majAfficheCarte();
                         }
@@ -313,7 +317,9 @@ public class Map {
                     case dirDroite:
                         for(int i=0;i<3;i++){
                             for(int j=0;j<carteActuelle.length;j++){
+                                System.out.println(j);
                                 carteActuelle[j][9] = "W";
+                                g.murTremble(new Coordonnees(j,9),true);
                                 g.snobeesParalyse(new Coordonnees(j, 8), elementCarte.SnoBeesParalyse);
                             }
                             g.majAfficheCarte();
@@ -323,10 +329,11 @@ public class Map {
                             }
                             for(int j=0;j<carteActuelle.length;j++){
                                 carteActuelle[j][9] = "M";
+                                g.murTremble(new Coordonnees(j,9),false);
                             }
                             g.majAfficheCarte();
                         }
-                        for(int j=0;j<carteActuelle[0].length;j++){
+                        for(int j=0;j<carteActuelle.length;j++){
                             g.snobeesParalyse(new Coordonnees(j, 8), elementCarte.snoBees);
                         }
                         g.majAfficheCarte();
@@ -335,6 +342,7 @@ public class Map {
                         for(int i=0;i<3;i++){
                             for(int j=0;j<carteActuelle.length;j++){
                                 carteActuelle[j][0] = "W";
+                                g.murTremble(new Coordonnees(j,0),true);
                                 g.snobeesParalyse(new Coordonnees(j, 1), elementCarte.SnoBeesParalyse);
                             }
                             g.majAfficheCarte();
@@ -344,10 +352,11 @@ public class Map {
                             }
                             for(int j=0;j<carteActuelle.length;j++){
                                 carteActuelle[j][0] = "M";
+                                g.murTremble(new Coordonnees(j,0),false);
                             }
                             g.majAfficheCarte();
                         }
-                        for(int j=0;j<carteActuelle[0].length;j++){
+                        for(int j=0;j<carteActuelle.length;j++){
                             g.snobeesParalyse(new Coordonnees(j, 1), elementCarte.snoBees);
                         }
                         g.majAfficheCarte();

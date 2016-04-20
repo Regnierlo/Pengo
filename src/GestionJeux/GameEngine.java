@@ -27,7 +27,6 @@ public class GameEngine {
     private List<Personnage> p;
     private List<Bloc> b;
     private List<Mur> mur ;
-    private Carte vue;
     private final Niveaux n;
     private final Map m;
     private final Score s;
@@ -364,16 +363,7 @@ public class GameEngine {
         });
     }
     
-    public SnoBees getSnobees(Coordonnees c){
-        SnoBees r=null;
-        
-        for(int i=0;i<p.size();i++){
-            if(p.get(i).getCoordonnees().comp(c))
-                r=(SnoBees)p.get(i);
-        }
-        
-        return r;
-    }
+    
     
     /**
      * Permet aux Pengo, aux Snobees d'effectuer des actions
@@ -610,16 +600,15 @@ public class GameEngine {
         }
         return r ;
     }
-    
-    public SnoBees getSnoBees(Coordonnees c){
-        SnoBees sb = null ;
-        for(int i = 0 ; i < p.size() ; i++){
-            if(p.get(i) instanceof SnoBees){
-                if(p.get(i).getCoordonnees().comp(c))
-                    sb=(SnoBees)p.get(i);
-            }
+    public SnoBees getSnobees(Coordonnees c){
+        SnoBees r=null;
+        
+        for(int i=0;i<p.size();i++){
+            if(p.get(i).getCoordonnees().comp(c))
+                r=(SnoBees)p.get(i);
         }
-        return sb ;
+        
+        return r;
     }
     
     public Mur getMur(Coordonnees c){
@@ -629,6 +618,15 @@ public class GameEngine {
                 m=mur.get(i);
         }
         return m ; 
+    }
+    
+    public void murTremble(Coordonnees c,boolean b){
+        for(int i = 0 ; i < mur.size() ; i++) {
+            if(mur.get(i).getCoordonnees().comp(c)){
+                mur.get(i).setTremble(b);
+                majAfficheCarte();
+            }
+        }    
     }
     
     public Bloc getBloc(Coordonnees c){

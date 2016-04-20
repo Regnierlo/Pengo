@@ -28,11 +28,9 @@ public class SnoBees extends Personnage{
         paralyse = false;
         vaMourirParBloc = false;
         cacheDansBloc = cache;
-        naissance = 0;
+        naissance = 1;
         naissanceFini = 7;
     }
-    
-    
 
     @Override
     public synchronized void run() {
@@ -81,11 +79,14 @@ public class SnoBees extends Personnage{
     public boolean getCacheDansBloc(){
         return cacheDansBloc;
     }
+    public int getNaissanceFinie(){
+        return naissanceFini ;
+    }
     
     private void naissance(){
         for(int i=0;i<naissanceFini;i++){
             try {
-                Thread.sleep(750);
+                Thread.sleep(150);
             } catch (InterruptedException ex) {
                 Logger.getLogger(SnoBees.class.getName()).log(Level.SEVERE, null, ex);
             }

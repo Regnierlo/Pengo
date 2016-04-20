@@ -14,8 +14,8 @@ public class Mur {
     private Coordonnees coord;
     
     public Mur(Coordonnees c){
-        tremble=false;
-        coord = c;
+        this.tremble=false;
+        this.coord = c;
     }
     
     public Coordonnees getCoordonnees(){
@@ -27,7 +27,7 @@ public class Mur {
     }
     
     public boolean getTremble(){
-        return tremble;
+        return this.tremble;
     }
     
 }

@@ -15,7 +15,6 @@ public class Bloc {
     protected boolean enMouvement;
     protected Coordonnees coord;
     protected Personnage.Directions dir;
-    protected MyImage img;
     
     public Bloc(Coordonnees c){
         coord = c;
@@ -45,9 +44,5 @@ public class Bloc {
     
     public void setDirection(Personnage.Directions d){
         dir = d;
-    }
-    
-    public MyImage getMyImage(){
-        return img;
     }
 }

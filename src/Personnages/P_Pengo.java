@@ -21,24 +21,6 @@ public class P_Pengo extends Personnage{
         
         super("/Images/Pengo_Face_Pied_Droit.png", c, joueur, 2, g);
         
-        String[][] t = new String[4][2];
-        
-        t[0][0] = "/Images/Pengo_Face_Pied_Droit.png";
-        t[0][1] = "/Images/Pengo_Face_Pied_Gauche.png";
-        t[1][0] = "/Images/Pengo_Derriere_Pied_Droit.png";
-        t[1][1] = "/Images/Pengo_Derriere_Pied_Gauche.png";
-        t[2][0] = "/Images/Pengo_Droit_Pieds_Ecartes.png";
-        t[2][1] = "/Images/Pengo_Droit_Pieds_Ensembles.png";
-        t[3][0] = "/Images/Pengo_Gauche_Pieds_Ecartes.png";
-        t[3][1] = "/Images/Pengo_Gauche_Pieds_Ensembles.png";
-        
-        for(int i=0;i<4;i++){
-            for(int k=0;i<2;i++){
-                
-                    animationMouvement[i][k] = t[i][k];
-            }
-        }
-        //this.col = col;
     }
     
     @Override

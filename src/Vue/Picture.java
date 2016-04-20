@@ -16,7 +16,7 @@ public class Picture {
 
     public Picture() {
         
-        tabImages = new Image[2][16] ;
+        tabImages = new Image[2][25] ;
         
         /// ----- PENGO ----- ///
         
@@ -256,6 +256,125 @@ public class Picture {
             }catch(IOException e){
                 System.out.println("Pas l'image du mur du coin H/D");
             }
+            
+        ///------- UN SNOBEE SAUVAGE EST APPARU
+        
+            /// Naissance 01
+                try{
+                    tabImages[0][16] =  ImageIO.read(new File("src/Images/naissance_1.png"));   
+                }catch(IOException e){
+                    System.out.println("Pas l'image de la naissance du snobee 01");
+                }
+            
+            /// Naissance 02
+                try{
+                    tabImages[1][16] =  ImageIO.read(new File("src/Images/naissance_2.png"));   
+                }catch(IOException e){
+                    System.out.println("Pas l'image de la naissance du snobee 02");
+                }
+            
+            /// Naissance 03
+                try{
+                    tabImages[0][17] =  ImageIO.read(new File("src/Images/naissance_3.png"));   
+                }catch(IOException e){
+                    System.out.println("Pas l'image de la naissance du snobee 03");
+                }
+            
+            /// Naissance 04
+                try{
+                    tabImages[1][17] =  ImageIO.read(new File("src/Images/naissance_4.png"));   
+                }catch(IOException e){
+                    System.out.println("Pas l'image de la naissance du snobee 04");
+                }
+            
+            /// Naissance 05
+                try{
+                    tabImages[0][18] =  ImageIO.read(new File("src/Images/naissance_5.png"));   
+                }catch(IOException e){
+                    System.out.println("Pas l'image de la naissance du snobee 05");
+                }
+            
+            /// Naissance 06
+                try{
+                    tabImages[1][18] =  ImageIO.read(new File("src/Images/naissance_6.png"));   
+                }catch(IOException e){
+                    System.out.println("Pas l'image de la naissance du snobee 06");
+                }    
+                
+        /// ----- Pengo pousse un bloc
+            //// Vue de derriere - après et pendant 
+                try{
+                    tabImages[0][19] =  ImageIO.read(new File("src/Images/derriere_pousse_apres.png"));   
+                }catch(IOException e){
+                    System.out.println("Pas l'image de Pengo qui pousse un bloc - derriere - après");
+                } 
+                try{
+                    tabImages[1][19] =  ImageIO.read(new File("src/Images/derriere_pousse_pendant.png"));   
+                }catch(IOException e){
+                    System.out.println("Pas l'image de Pengo qui pousse un bloc - derriere - pendant");
+                } 
+            
+            //// Va à droite - après et pendant 
+                try{
+                    tabImages[0][20] =  ImageIO.read(new File("src/Images/droit_pousse_apres.png"));   
+                }catch(IOException e){
+                    System.out.println("Pas l'image de Pengo qui pousse un bloc - droite - après");
+                } 
+                try{
+                    tabImages[1][20] =  ImageIO.read(new File("src/Images/droit_pousse_pendant.png"));   
+                }catch(IOException e){
+                    System.out.println("Pas l'image de Pengo qui pousse un bloc - droite - pendant");
+                } 
+            
+            //// Va à gauche - après et pendant 
+                try{
+                    tabImages[0][21] =  ImageIO.read(new File("src/Images/gauche_pousse_apres.png"));   
+                }catch(IOException e){
+                    System.out.println("Pas l'image de Pengo qui pousse un bloc - gauche - après");
+                } 
+                try{
+                    tabImages[1][21] =  ImageIO.read(new File("src/Images/gauche_pousse_pendant.png"));   
+                }catch(IOException e){
+                    System.out.println("Pas l'image de Pengo qui pousse un bloc - gauche - pendant");
+                } 
+            
+            //// Vue de face - après et pendant 
+                try{
+                    tabImages[0][22] =  ImageIO.read(new File("src/Images/face_pousse_apres.png"));   
+                }catch(IOException e){
+                    System.out.println("Pas l'image de Pengo qui pousse un bloc - face - après");
+                } 
+                try{
+                    tabImages[1][22] =  ImageIO.read(new File("src/Images/face_pousse_pendant.png"));   
+                }catch(IOException e){
+                    System.out.println("Pas l'image de Pengo qui pousse un bloc - face - pendant");
+                } 
+            
+        /// DESTRUCTION Bloc
+        
+            /// --- Destruction 1
+                try{
+                    tabImages[0][23] =  ImageIO.read(new File("src/Images/destruction_1.png"));   
+                }catch(IOException e){
+                    System.out.println("Pas l'image de destruction de bloc - 1");
+                } 
+            
+            /// --- Destruction 2
+            
+                try{
+                    tabImages[1][23] =  ImageIO.read(new File("src/Images/destruction_4.png"));   
+                }catch(IOException e){
+                    System.out.println("Pas l'image de destruction de bloc - 2");
+                } 
+            
+            /// --- Destruction 3
+                try{
+                    tabImages[0][24] =  ImageIO.read(new File("src/Images/destruction_5.png"));   
+                }catch(IOException e){
+                    System.out.println("Pas l'image de destruction de bloc - 3");
+                } 
+            
+            ////
     }
     
     public Image getPicture(int x, int y){

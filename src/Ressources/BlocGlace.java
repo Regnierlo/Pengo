@@ -22,7 +22,6 @@ public class BlocGlace extends Bloc{
     public BlocGlace(Coordonnees c, boolean snobees){
         super(c);
         contientSnobees = snobees;
-        img = new MyImage("/Images/bloc_normal.png", c);
         detruitParNaissance = false;
     }
     
