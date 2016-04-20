@@ -35,7 +35,10 @@ public class GameEngine {
     private boolean bonusBlocsSpeciaux;
     private long chronometre;
     private String name;
+    private boolean scoreAttribue;
     private Fenetre fenetre_principale ;
+    private Thread tAffiche;
+    private Thread tChecker;
     
     private boolean niveauFini;
     
@@ -52,10 +55,42 @@ public class GameEngine {
         chronometre = 0;
         KeyListener[] kl = getKeyListener();
         fenetre_principale = new Fenetre(this,kl) ;
+        scoreAttribue = false;
         
         //Initialisation de la carte
-        
         init() ;
+        ThreadCheckEndGame();
+        ThradAffichage();
+    }
+    
+    private void ThradAffichage(){
+        tAffiche=new Thread(){
+            @Override
+            public void run(){
+                while(!niveauFini){
+                    majAfficheCarte();
+                }
+            }
+        };
+        tAffiche.start();
+    }
+    
+    private void ThreadCheckEndGame(){
+        tChecker=new Thread(){
+            @Override
+            public void run(){
+                do{
+                    if((nbSnoBeesActif+nbSnoBeesCache) == 0)
+                        niveauFini=true;
+                        
+                    
+                    System.out.println("\t\t\t\t\tNB SNOBEES : "+(nbSnoBeesActif+nbSnoBeesCache));
+                }while(!niveauFini);
+                System.out.println("FIN DU JEU");
+                finNiveau();
+            }
+        };
+        tChecker.start();
     }
     
     private KeyListener[] getKeyListener(){
@@ -154,16 +189,20 @@ public class GameEngine {
         majAfficheCarte();
     }
     
-    private void finNiveau(){
-        for(int i=0;i<p.size();i++){
-            p.get(i).arreter();
-            if(p.get(i).getJoueur())
-                fenetre_principale.removeKeyListener(p.get(i));
+    private synchronized void finNiveau(){
+        if(!scoreAttribue){
+            scoreAttribue=true;
+            for(int i=0;i<p.size();i++){
+                p.get(i).arreter();
+                if(p.get(i).getJoueur())
+                    fenetre_principale.removeKeyListener(p.get(i));
+            }
+            majAfficheCarte();
+            s.pointFinNiveau(tempsSec(), name);
+            System.out.println("\n\n\n\n\n\n\n\n\n\nVous avez vaincus "+name+" !");
+            System.out.println("Fini en : "+temps());
+            System.out.println("Avec un score total de : "+s.getScore());
         }
-        s.pointFinNiveau(tempsSec(), name);
-        System.out.println("\n\n\n\n\n\n\n\n\n\nVous avez vaincus "+name+" !");
-        System.out.println("Fini en : "+temps());
-        System.out.println("Avec un score total de : "+s.getScore());
     }
     
     public void snobeesPousserParBloc(Coordonnees c, Personnage.Directions dir) {
@@ -225,7 +264,7 @@ public class GameEngine {
     
     public void snobeesEcrase(){
         s.pointSnobeesEcrase();
-        checkFinJeu();
+        //checkFinJeu();
     }
     
     private void checkFinJeu(){
@@ -256,7 +295,7 @@ public class GameEngine {
                             nbSnoBeesActif++;
                         }
                     }
-                    checkFinJeu();
+                    //checkFinJeu();
                 }
             }
         }
@@ -341,8 +380,8 @@ public class GameEngine {
                 if(b.get(i) instanceof BlocGlace){
                     BlocGlace bg = (BlocGlace)b.get(i);
                     if(!bg.getContientSnobees()){
-                        for(int j=0;j<bg.getFinDestruction();j++)
-                            majAfficheCarte();
+                        //for(int j=0;j<bg.getFinDestruction();j++)
+                          //  majAfficheCarte();
                     }
                     m.detruireBloc(c, this);
                     i_b = i;
@@ -406,7 +445,7 @@ public class GameEngine {
                     }
                     else if(act.equals(Personnage.Actions.pousser_detruire)){
                         pen.setPousseDetruire(true);
-                        majAfficheCarte();
+                        //majAfficheCarte();
                         if(!m.isMur(c, dir)){
                             if(m.objet(c)){
                                 if(m.objet(new Coordonnees(c.getX(), c.getY()-1))){
@@ -425,7 +464,7 @@ public class GameEngine {
                         } catch (InterruptedException ex) {
                             Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        pen.setPousseDetruire(true);
+                        pen.setPousseDetruire(false);
                     }
                     
                     break;
@@ -440,7 +479,7 @@ public class GameEngine {
                     }
                     else if(act.equals(Personnage.Actions.pousser_detruire)){
                         pen.setPousseDetruire(true);
-                        majAfficheCarte();
+                        //majAfficheCarte();
                         if(!m.isMur(c, dir)){
                             if(m.objet(c)){
                                 if(m.objet(new Coordonnees(c.getX(), c.getY()+1))){
@@ -459,7 +498,7 @@ public class GameEngine {
                         } catch (InterruptedException ex) {
                             Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        pen.setPousseDetruire(true);
+                        pen.setPousseDetruire(false);
                     }
                     
                     break;
@@ -474,7 +513,7 @@ public class GameEngine {
                     }
                     else if(act.equals(Personnage.Actions.pousser_detruire)){
                         pen.setPousseDetruire(true);
-                        majAfficheCarte();
+                        //majAfficheCarte();
                         if(!m.isMur(c, dir)){
                             if(m.objet(c)){
                                 if(m.objet(new Coordonnees(c.getX()+1, c.getY()))){
@@ -493,7 +532,7 @@ public class GameEngine {
                         } catch (InterruptedException ex) {
                             Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        pen.setPousseDetruire(true);
+                        pen.setPousseDetruire(false);
                     }
                     
                     break;
@@ -508,7 +547,7 @@ public class GameEngine {
                     }
                     else if(act.equals(Personnage.Actions.pousser_detruire)){
                         pen.setPousseDetruire(true);
-                        majAfficheCarte();
+                        //majAfficheCarte();
                         if(!m.isMur(c, dir)){
                             if(m.objet(c)){
                                 if(m.objet(new Coordonnees(c.getX()-1, c.getY()))){
@@ -522,14 +561,14 @@ public class GameEngine {
                         else{
                             m.faireTremblerMur(dir, this);
                         }
-                        pen.setPousseDetruire(true);
+                        pen.setPousseDetruire(false);
                     }
                     
                     break;
                 default:
                     moveOk = false;
             }
-            checkFinJeu();
+            //checkFinJeu();
         }
         //Si l'objet est un SnoBees
         else if (o instanceof SnoBees){
@@ -569,7 +608,7 @@ public class GameEngine {
             }
         }
         
-        this.majAfficheCarte();
+        //this.majAfficheCarte();
         
         return moveOk;
     }
@@ -630,7 +669,7 @@ public class GameEngine {
         for(int i = 0 ; i < mur.size() ; i++) {
             if(mur.get(i).getCoordonnees().comp(c)){
                 mur.get(i).setTremble(b);
-                majAfficheCarte();
+                //majAfficheCarte();
             }
         }    
     }

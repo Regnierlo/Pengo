@@ -72,7 +72,7 @@ public class Niveaux {
         String[][] r;
         switch(c){
             case -1:
-                r=lab.generation_labyrinthe(1, 1, 4);
+                r=lab.generation_labyrinthe(1, 1, 0);
                 break;
             case 1:
                 String[][] choix1 = {

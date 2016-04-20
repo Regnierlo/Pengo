@@ -99,7 +99,7 @@ public class SnoBees extends Personnage{
                 Logger.getLogger(SnoBees.class.getName()).log(Level.SEVERE, null, ex);
             }
             naissance++;
-            this.ge.majAfficheCarte();
+            //this.ge.majAfficheCarte();
         }
     }
     

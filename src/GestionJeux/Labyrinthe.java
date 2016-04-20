@@ -147,7 +147,7 @@ public class Labyrinthe {
         int randomLigneTemp ;
         int randomColonneTemp ;
         int randomColonne = (int)(Math.random()*8)+1 ;
-        do{
+        while(nbBE>0){
            if(labyrinthe[randomLigne][randomColonne].equals(Map.elementCarte.blocGlace.toString())){
                labyrinthe[randomLigne][randomColonne]=Map.elementCarte.blocAvecSnoBees.toString();
                do{
@@ -162,7 +162,7 @@ public class Labyrinthe {
                randomLigne = (int)(Math.random()*14)+1 ;
                randomColonne = (int)(Math.random()*8+1) ;
            }
-        } while(nbBE >0) ;
+        }
     }
     
     private void snoBees(int nbSB){

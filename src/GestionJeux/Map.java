@@ -251,7 +251,7 @@ public class Map {
         if(!(elementCarte.snoBees.equalsName(carteActuelle[c.getY()][c.getX()]))){
             carteActuelle[c.getY()][c.getX()] = Map.elementCarte.rien.toString();
         }
-        g.majAfficheCarte();
+        //g.majAfficheCarte();
     }
     
     public void changeSnoBees(Coordonnees c, elementCarte e){
@@ -275,7 +275,7 @@ public class Map {
                                 g.murTremble(new Coordonnees(0,j),true);
                                 g.snobeesParalyse(new Coordonnees(1, j), elementCarte.SnoBeesParalyse);
                             }
-                            g.majAfficheCarte();
+                            //g.majAfficheCarte();
                             try {
                                 Thread.sleep(tpsAttente);
                             } catch (Exception e) {
@@ -284,12 +284,12 @@ public class Map {
                                 carteActuelle[0][j] = "M";
                                 g.murTremble(new Coordonnees(0,j),false);
                             }
-                            g.majAfficheCarte();
+                            //g.majAfficheCarte();
                         }
                         for(int j=0;j<carteActuelle[0].length;j++){
                             g.snobeesParalyse(new Coordonnees(1, j), elementCarte.snoBees);
                         }
-                        g.majAfficheCarte();
+                        //g.majAfficheCarte();
                         break;
                     case dirBas:
                         for(int i=0;i<3;i++){
@@ -298,7 +298,7 @@ public class Map {
                                 g.murTremble(new Coordonnees(15,j),true);
                                 g.snobeesParalyse(new Coordonnees(14, j), elementCarte.SnoBeesParalyse);
                             }
-                            g.majAfficheCarte();
+                            //g.majAfficheCarte();
                             try {
                                 Thread.sleep(tpsAttente);
                             } catch (Exception e) {
@@ -307,12 +307,12 @@ public class Map {
                                 carteActuelle[15][j] = "M";
                                 g.murTremble(new Coordonnees(15,j),false);
                             }
-                            g.majAfficheCarte();
+                            //g.majAfficheCarte();
                         }
                         for(int j=0;j<carteActuelle[0].length;j++){
                             g.snobeesParalyse(new Coordonnees(14, j), elementCarte.snoBees);
                         }
-                        g.majAfficheCarte();
+                        //g.majAfficheCarte();
                         break;
                     case dirDroite:
                         for(int i=0;i<3;i++){
@@ -322,7 +322,7 @@ public class Map {
                                 g.murTremble(new Coordonnees(j,9),true);
                                 g.snobeesParalyse(new Coordonnees(j, 8), elementCarte.SnoBeesParalyse);
                             }
-                            g.majAfficheCarte();
+                            //g.majAfficheCarte();
                             try {
                                 Thread.sleep(tpsAttente);
                             } catch (Exception e) {
@@ -331,12 +331,12 @@ public class Map {
                                 carteActuelle[j][9] = "M";
                                 g.murTremble(new Coordonnees(j,9),false);
                             }
-                            g.majAfficheCarte();
+                            //g.majAfficheCarte();
                         }
                         for(int j=0;j<carteActuelle.length;j++){
                             g.snobeesParalyse(new Coordonnees(j, 8), elementCarte.snoBees);
                         }
-                        g.majAfficheCarte();
+                        //g.majAfficheCarte();
                         break;
                     case dirGauche:
                         for(int i=0;i<3;i++){
@@ -345,7 +345,7 @@ public class Map {
                                 g.murTremble(new Coordonnees(j,0),true);
                                 g.snobeesParalyse(new Coordonnees(j, 1), elementCarte.SnoBeesParalyse);
                             }
-                            g.majAfficheCarte();
+                            //g.majAfficheCarte();
                             try {
                                 Thread.sleep(tpsAttente);
                             } catch (Exception e) {
@@ -354,12 +354,12 @@ public class Map {
                                 carteActuelle[j][0] = "M";
                                 g.murTremble(new Coordonnees(j,0),false);
                             }
-                            g.majAfficheCarte();
+                            //g.majAfficheCarte();
                         }
                         for(int j=0;j<carteActuelle.length;j++){
                             g.snobeesParalyse(new Coordonnees(j, 1), elementCarte.snoBees);
                         }
-                        g.majAfficheCarte();
+                        //g.majAfficheCarte();
                         break;
                 }
             }
@@ -416,7 +416,7 @@ public class Map {
                                 }
                                 b.setEnMouvement(true);
                                 b.getCoordonnees().setCoordonnees(coord);
-                                g.majAfficheCarte();
+                                //g.majAfficheCarte();
                                 try {
                                     Thread.sleep(tpsAttente);
                                 } catch (Exception e) {
@@ -444,7 +444,7 @@ public class Map {
                                 }
                                 b.setEnMouvement(true);
                                 b.getCoordonnees().setCoordonnees(coord);
-                                g.majAfficheCarte();
+                                //g.majAfficheCarte();
                                 try {
                                     Thread.sleep(tpsAttente);
                                 } catch (Exception e) {
@@ -472,7 +472,7 @@ public class Map {
                                 }
                                 b.setEnMouvement(true);
                                 b.getCoordonnees().setCoordonnees(coord);
-                                g.majAfficheCarte();
+                                //g.majAfficheCarte();
                                 try {
                                     Thread.sleep(tpsAttente);
                                 } catch (Exception e) {
@@ -500,7 +500,7 @@ public class Map {
                                 }
                                 b.setEnMouvement(true);
                                 b.getCoordonnees().setCoordonnees(coord);
-                                g.majAfficheCarte();
+                                //g.majAfficheCarte();
                                 try {
                                     Thread.sleep(tpsAttente);
                                 } catch (Exception e) {
