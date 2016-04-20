@@ -21,9 +21,9 @@ public class Calcul_Vue {
     
     public Calcul_Vue(GameEngine gameEngine){
         nbCoordonnees = 0 ;
-        tabCoordonnees = new int[2][160] ;
+        tabCoordonnees = new int[2][300] ;
         
-            for(int j = 0 ; j< 160 ; j++){
+            for(int j = 0 ; j< 300 ; j++){
                 tabCoordonnees[0][j] = 1 ;
                 tabCoordonnees[1][j] = 9 ;
             }

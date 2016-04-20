@@ -28,7 +28,7 @@ public class Carte extends JPanel{
     private int l = 0 ;
     
     public Carte(){
-        tabCoordonnees = new int[2][160] ;
+        tabCoordonnees = new int[2][300] ;
         reinitTabCoordonnees();
         tabPictures = new Picture();
 
@@ -36,7 +36,7 @@ public class Carte extends JPanel{
     
     private void reinitTabCoordonnees(){
         
-        for(int i = 0 ; i < 160 ; i++){
+        for(int i = 0 ; i < 300 ; i++){
             tabCoordonnees[0][i]= 1 ;
             tabCoordonnees[1][i]= 9 ;
         }

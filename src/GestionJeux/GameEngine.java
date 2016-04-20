@@ -47,7 +47,7 @@ public class GameEngine {
         b = new ArrayList<>();
         mur = new ArrayList<>() ;
         n = new Niveaux();
-        m = new Map(4, n);
+        m = new Map(-1, n);
         s = new Score();
         chronometre = 0;
         KeyListener[] kl = getKeyListener();
@@ -151,6 +151,7 @@ public class GameEngine {
            
         
         ///////////////
+        majAfficheCarte();
     }
     
     private void finNiveau(){
@@ -272,6 +273,7 @@ public class GameEngine {
                             SnoBees sb = (SnoBees)p.get(j);
                             if(sb.getCoordonnees().comp(bg.getCoordonnees())){
                                 sb.setCacheDansBloc(false);
+                                sb.setNait(true);
                                 sb.start();
                                 bg.setContientSnoBees(false);
                                 bg.vaEtreDetruitParNaissance(true);

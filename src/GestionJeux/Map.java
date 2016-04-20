@@ -232,7 +232,7 @@ public class Map {
             else if(elementCarte.snoBees.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
                 BlocSpecial bs = (BlocSpecial)o;
                 g.snobeesPousserParBloc(nouvellesCoord, bs.getDirection());
-                carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = "G";
+                carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = "S";
                 carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = " ";
                 valideMove = true;
             }

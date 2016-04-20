@@ -20,6 +20,7 @@ public class P_Pengo extends Personnage{
     public P_Pengo(Coordonnees c, boolean joueur, GameEngine g){
         
         super("/Images/Pengo_Face_Pied_Droit.png", c, joueur, 2, g);
+       // vie=2;
         
     }
     

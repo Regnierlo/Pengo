@@ -22,6 +22,7 @@ public class SnoBees extends Personnage{
     private boolean cacheDansBloc;
     private int naissance;
     private int naissanceFini;
+    private boolean nait;
     
     public SnoBees(Coordonnees c, boolean joueur, GameEngine g, boolean cache){
         super("",c,joueur,3,g);
@@ -30,12 +31,15 @@ public class SnoBees extends Personnage{
         cacheDansBloc = cache;
         naissance = 1;
         naissanceFini = 7;
+        nait = true;
     }
 
     @Override
     public synchronized void run() {
-        if(cacheDansBloc)
+        if(nait){
             naissance();
+            nait = false;
+        }
         while(!stop){
             if(!paralyse){
                 ancienneDirection=Directions.dirBas ;
@@ -54,6 +58,10 @@ public class SnoBees extends Personnage{
                 }
             }
         }
+    }
+    
+    public void setNait(boolean b){
+        nait = b;
     }
     
     public void setVaMourirParBloc(boolean b){
