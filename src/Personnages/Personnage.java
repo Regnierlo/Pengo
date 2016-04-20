@@ -76,6 +76,7 @@ public abstract class Personnage extends Thread
     }
     
     protected Directions directionActuel;
+    protected Directions ancienneDirection;
     /**
      * Vitesse du personnage.
      */
@@ -250,5 +251,9 @@ public abstract class Personnage extends Thread
     
     public boolean getStopper(){
         return stop;
+    }
+    
+    public Directions getAncienneDirection(){
+        return ancienneDirection ;
     }
 }

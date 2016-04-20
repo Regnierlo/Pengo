@@ -21,4 +21,8 @@ public class Picture {
         
 
     }
+    
+    public Image getPicture(int x, int y){
+        return tabImages[x][y] ;
+    }
 }
