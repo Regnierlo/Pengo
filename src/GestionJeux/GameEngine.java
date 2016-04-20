@@ -9,6 +9,7 @@ import Personnages.*;
 import Ressources.*;
 import Vue.Carte;
 import Vue.Fenetre;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -47,14 +48,31 @@ public class GameEngine {
         b = new ArrayList<>();
         mur = new ArrayList<>() ;
         n = new Niveaux();
-        m = new Map(-1, n);
+        m = new Map(4, n);
         s = new Score();
         chronometre = 0;
-        fenetre_principale = new Fenetre(this) ;
+        KeyListener[] kl = getKeyListener();
+        fenetre_principale = new Fenetre(this,kl) ;
         
         //Initialisation de la carte
         
         init() ;
+    }
+    
+    private KeyListener[] getKeyListener(){
+        int nbJoueur = 0 ;
+        for(int i = 0 ; i < p.size() ; i++){
+            if(p.get(i).getJoueur())
+                nbJoueur++ ;
+        }
+        KeyListener[] georges = new KeyListener[nbJoueur];
+        for(int i = 0 ; i < p.size() ; i++){
+            if(p.get(i).getJoueur()){
+                georges[nbJoueur] = p.get(i) ;
+                nbJoueur-- ;
+            }
+        }
+        return georges ;
     }
     
     public void afficheInfo(){
@@ -301,7 +319,7 @@ public class GameEngine {
     public void majAfficheCarte(){
         if(!niveauFini){
             //System.out.print("\033[2J\033[1;1H"); // Clear console
-            //System.out.println(m);
+            System.out.println(m);
             fenetre_principale.setCarte(m.getCarte());
         }
     }

@@ -76,7 +76,8 @@ public abstract class Personnage extends Thread
     }
     
     protected Directions directionActuel;
-    protected Directions ancienneDirection;
+    protected Directions ancienneDirection ;
+    protected boolean direction ;
     /**
      * Vitesse du personnage.
      */
@@ -107,7 +108,9 @@ public abstract class Personnage extends Thread
         this.pause = false;
         this.coord = c;
         this.img = new MyImage(urlImageRessource, this.coord);
-        this.directionActuel = Directions.dirHaut;
+        this.directionActuel = Directions.dirDroite;
+        this.ancienneDirection = Directions.dirHaut ;
+        direction = false ;
         this.vitesse = v;
         this.joueur = j; 
         this.ge = g;
@@ -216,7 +219,9 @@ public abstract class Personnage extends Thread
     public Directions getDirectionActuel(){
         return this.directionActuel;
     }
-    
+    public boolean getBoolDirection(){
+        return this.direction ;
+    }
     /**
      * 
      * @return La vitesse de déplacement du personnage

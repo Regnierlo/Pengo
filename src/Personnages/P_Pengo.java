@@ -56,21 +56,37 @@ public class P_Pengo extends Personnage{
         
         if(joueur && (e.getKeyCode() == KeyEvent.VK_Z)){
             ancienneDirection = directionActuel ;
+            if(directionActuel.equals(Directions.dirHaut)&& direction==false)
+                direction = true ;
+            else
+                direction = false ;
             directionActuel = Directions.dirHaut;
             this.ge.action(this, directionActuel, Actions.bouger);
         }
         if(joueur && (e.getKeyCode() == KeyEvent.VK_S)){
             ancienneDirection = directionActuel ;
+            if(directionActuel.equals(Directions.dirBas)&& direction==false)
+                direction = true ;
+            else
+                direction = false ;
             directionActuel = Directions.dirBas;
             this.ge.action(this, directionActuel, Actions.bouger);
         }
         if(joueur && (e.getKeyCode() == KeyEvent.VK_D )){
             ancienneDirection = directionActuel ;
+            if(directionActuel.equals(Directions.dirDroite) && direction==false)
+                direction = true ;
+            else
+                direction = false ;
             directionActuel = Directions.dirDroite;
             this.ge.action(this, directionActuel, Actions.bouger);
         }
         if(joueur && (e.getKeyCode() == KeyEvent.VK_Q)){
             ancienneDirection = directionActuel ;
+            if(directionActuel.equals(Directions.dirGauche) && direction==false )
+                direction = true ;
+            else
+                direction = false ;
             directionActuel = Directions.dirGauche;
             this.ge.action(this, directionActuel, Actions.bouger);
         }

@@ -12,13 +12,10 @@ package Ressources;
 public class Mur {
     private boolean tremble;
     private Coordonnees coord;
-    private MyImage imgStatique ;
-    private MyImage imgTremble ;
     
     public Mur(Coordonnees c){
         tremble=false;
         coord = c;
-        imgStatique = new MyImage("/Images/mur_de_droite.JPG", c) ;
     }
     
     public Coordonnees getCoordonnees(){
@@ -33,7 +30,4 @@ public class Mur {
         return tremble;
     }
     
-    public MyImage getMyImage(){
-        return imgStatique ;
-    }
 }

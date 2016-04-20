@@ -36,7 +36,9 @@ public class SnoBees extends Personnage{
         while(!stop){
             
             if(!paralyse){
-                ge.action(this, Directions.dirDroite, Actions.bouger);
+                ancienneDirection=Directions.dirBas ;
+                directionActuel=Directions.dirDroite;
+                //ge.action(this, Directions.dirDroite, Actions.bouger);
                 try {
                     Thread.sleep(1000-(1*this.vitesse));
                 } catch (Exception e) {
