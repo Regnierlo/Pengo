@@ -84,7 +84,7 @@ public class GameEngine {
                         niveauFini=true;
                         
                     
-                    System.out.println("\t\t\t\t\tNB SNOBEES : "+(nbSnoBeesActif+nbSnoBeesCache));
+                    //System.out.println("\t\t\t\t\tNB SNOBEES : "+(nbSnoBeesActif+nbSnoBeesCache));
                 }while(!niveauFini);
                 System.out.println("FIN DU JEU");
                 finNiveau();

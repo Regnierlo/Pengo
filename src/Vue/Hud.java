@@ -16,6 +16,7 @@ import javax.swing.JPanel;
  * @author Marie
  */
 public class Hud extends JPanel{
+    @Override
     public void paintComponent(Graphics g){
         super.paintComponents(g);
         System.out.println("Je suis vivant, mwhahaha");

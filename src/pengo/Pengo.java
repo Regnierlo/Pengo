@@ -8,6 +8,7 @@ package pengo;
 import GestionJeux.GameEngine;
 import Vue.Fenetre;
 
+
 /**
  *
  * @author loisr
@@ -19,7 +20,7 @@ public class Pengo {
      */
     public static void main(String[] args) {
         
-        new GameEngine();
+        GameEngine gameEngine = new GameEngine();
         
         //System.out.print("\033[2J\033[1;1H"); // Clear console
     }
