@@ -199,7 +199,7 @@ public class Map {
                 valideMove = true;
             }
             else if(elementCarte.pengo.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
-                System.out.println("Ils l'ont eut !!");
+                g.pengoIsDead();
             }
         }
         else if(o instanceof BlocGlace){
