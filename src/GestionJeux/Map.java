@@ -16,12 +16,10 @@ import Ressources.Mur;
 import java.util.ArrayList;
 import java.util.List;
 
-/**  p.add(new P_Pengo(new Coordonnees(), true));
+/*  p.add(new P_Pengo(new Coordonnees(), true));
         }
     }
- *
- * @author loisr
- */
+*/
 public class Map {
     
     private int niveauActuel;
@@ -92,7 +90,7 @@ public class Map {
      */
     public void update(){
         nbPengo = niveau.majPengo(carteActuelle);
-        nbSnoBees = niveau.majSnowBees(carteActuelle);
+        nbSnoBees = niveau.majSnobees(carteActuelle);
     }
     
     /**
@@ -185,7 +183,7 @@ public class Map {
                 valideMove = true;
             }
             else if(elementCarte.SnoBeesParalyse.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
-                g.snoBeesMort(nouvellesCoord);
+                g.snobeeMort(nouvellesCoord);
                 carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = " ";
                 carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = "P";
                 valideMove = true;
@@ -206,14 +204,14 @@ public class Map {
         }
         else if(o instanceof BlocGlace){
             BlocGlace bg = (BlocGlace) o;
-            if(!bg.getUnSnoBeesVaNaitre()){
+            if(!bg.NaissanceSnobeeDestructionBloc()){
                 if(elementCarte.rien.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
                     carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = " ";
                     carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = "G";
                     valideMove = true;
                 }
                 else if(elementCarte.snoBees.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
-                    g.snobeesPousserParBloc(nouvellesCoord, bg.getDirection());
+                    g.snobeePousseParBloc(nouvellesCoord, bg.getDirection());
                     carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = "G";
                     carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = " ";
                     valideMove = true;
@@ -231,7 +229,7 @@ public class Map {
             }
             else if(elementCarte.snoBees.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
                 BlocSpecial bs = (BlocSpecial)o;
-                g.snobeesPousserParBloc(nouvellesCoord, bs.getDirection());
+                g.snobeePousseParBloc(nouvellesCoord, bs.getDirection());
                 carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = "S";
                 carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = " ";
                 valideMove = true;
@@ -251,7 +249,7 @@ public class Map {
         if(!(elementCarte.snoBees.equalsName(carteActuelle[c.getY()][c.getX()]))){
             carteActuelle[c.getY()][c.getX()] = Map.elementCarte.rien.toString();
         }
-        g.majAfficheCarte();
+        //g.majAfficheCarte();
     }
     
     public void changeSnoBees(Coordonnees c, elementCarte e){
@@ -273,9 +271,9 @@ public class Map {
                             for(int j=0;j<carteActuelle[0].length;j++){
                                 carteActuelle[0][j] = "W";
                                 g.murTremble(new Coordonnees(0,j),true);
-                                g.snobeesParalyse(new Coordonnees(1, j), elementCarte.SnoBeesParalyse);
+                                g.snobeeParalyse(new Coordonnees(1, j), elementCarte.SnoBeesParalyse);
                             }
-                            g.majAfficheCarte();
+                            //g.majAfficheCarte();
                             try {
                                 Thread.sleep(tpsAttente);
                             } catch (Exception e) {
@@ -284,21 +282,21 @@ public class Map {
                                 carteActuelle[0][j] = "M";
                                 g.murTremble(new Coordonnees(0,j),false);
                             }
-                            g.majAfficheCarte();
+                            //g.majAfficheCarte();
                         }
                         for(int j=0;j<carteActuelle[0].length;j++){
-                            g.snobeesParalyse(new Coordonnees(1, j), elementCarte.snoBees);
+                            g.snobeeParalyse(new Coordonnees(1, j), elementCarte.snoBees);
                         }
-                        g.majAfficheCarte();
+                        //g.majAfficheCarte();
                         break;
                     case dirBas:
                         for(int i=0;i<3;i++){
                             for(int j=0;j<carteActuelle[0].length;j++){
                                 carteActuelle[15][j] = "W";
                                 g.murTremble(new Coordonnees(15,j),true);
-                                g.snobeesParalyse(new Coordonnees(14, j), elementCarte.SnoBeesParalyse);
+                                g.snobeeParalyse(new Coordonnees(14, j), elementCarte.SnoBeesParalyse);
                             }
-                            g.majAfficheCarte();
+                            //g.majAfficheCarte();
                             try {
                                 Thread.sleep(tpsAttente);
                             } catch (Exception e) {
@@ -307,12 +305,12 @@ public class Map {
                                 carteActuelle[15][j] = "M";
                                 g.murTremble(new Coordonnees(15,j),false);
                             }
-                            g.majAfficheCarte();
+                            //g.majAfficheCarte();
                         }
                         for(int j=0;j<carteActuelle[0].length;j++){
-                            g.snobeesParalyse(new Coordonnees(14, j), elementCarte.snoBees);
+                            g.snobeeParalyse(new Coordonnees(14, j), elementCarte.snoBees);
                         }
-                        g.majAfficheCarte();
+                        //g.majAfficheCarte();
                         break;
                     case dirDroite:
                         for(int i=0;i<3;i++){
@@ -320,9 +318,9 @@ public class Map {
                                 System.out.println(j);
                                 carteActuelle[j][9] = "W";
                                 g.murTremble(new Coordonnees(j,9),true);
-                                g.snobeesParalyse(new Coordonnees(j, 8), elementCarte.SnoBeesParalyse);
+                                g.snobeeParalyse(new Coordonnees(j, 8), elementCarte.SnoBeesParalyse);
                             }
-                            g.majAfficheCarte();
+                            //g.majAfficheCarte();
                             try {
                                 Thread.sleep(tpsAttente);
                             } catch (Exception e) {
@@ -331,21 +329,21 @@ public class Map {
                                 carteActuelle[j][9] = "M";
                                 g.murTremble(new Coordonnees(j,9),false);
                             }
-                            g.majAfficheCarte();
+                            //g.majAfficheCarte();
                         }
                         for(int j=0;j<carteActuelle.length;j++){
-                            g.snobeesParalyse(new Coordonnees(j, 8), elementCarte.snoBees);
+                            g.snobeeParalyse(new Coordonnees(j, 8), elementCarte.snoBees);
                         }
-                        g.majAfficheCarte();
+                        //g.majAfficheCarte();
                         break;
                     case dirGauche:
                         for(int i=0;i<3;i++){
                             for(int j=0;j<carteActuelle.length;j++){
                                 carteActuelle[j][0] = "W";
                                 g.murTremble(new Coordonnees(j,0),true);
-                                g.snobeesParalyse(new Coordonnees(j, 1), elementCarte.SnoBeesParalyse);
+                                g.snobeeParalyse(new Coordonnees(j, 1), elementCarte.SnoBeesParalyse);
                             }
-                            g.majAfficheCarte();
+                            //g.majAfficheCarte();
                             try {
                                 Thread.sleep(tpsAttente);
                             } catch (Exception e) {
@@ -354,12 +352,12 @@ public class Map {
                                 carteActuelle[j][0] = "M";
                                 g.murTremble(new Coordonnees(j,0),false);
                             }
-                            g.majAfficheCarte();
+                            //g.majAfficheCarte();
                         }
                         for(int j=0;j<carteActuelle.length;j++){
-                            g.snobeesParalyse(new Coordonnees(j, 1), elementCarte.snoBees);
+                            g.snobeeParalyse(new Coordonnees(j, 1), elementCarte.snoBees);
                         }
-                        g.majAfficheCarte();
+                        //g.majAfficheCarte();
                         break;
                 }
             }
@@ -409,14 +407,14 @@ public class Map {
                                 if(b instanceof BlocGlace){
                                     BlocGlace bg = (BlocGlace)b;
                                     if(bg.getContientSnobees()){
-                                        SnoBees sb = g.getSnobees(b.getCoordonnees());
+                                        SnoBees sb = g.getSnobee(b.getCoordonnees());
                                         if(sb != null)
                                             sb.getCoordonnees().setCoordonnees(coord);
                                     }
                                 }
                                 b.setEnMouvement(true);
                                 b.getCoordonnees().setCoordonnees(coord);
-                                g.majAfficheCarte();
+                                //g.majAfficheCarte();
                                 try {
                                     Thread.sleep(tpsAttente);
                                 } catch (Exception e) {
@@ -437,14 +435,14 @@ public class Map {
                                 if(b instanceof BlocGlace){
                                     BlocGlace bg = (BlocGlace)b;
                                     if(bg.getContientSnobees()){
-                                        SnoBees sb = g.getSnobees(b.getCoordonnees());
+                                        SnoBees sb = g.getSnobee(b.getCoordonnees());
                                         if(sb != null)
                                             sb.getCoordonnees().setCoordonnees(coord);
                                     }
                                 }
                                 b.setEnMouvement(true);
                                 b.getCoordonnees().setCoordonnees(coord);
-                                g.majAfficheCarte();
+                                //g.majAfficheCarte();
                                 try {
                                     Thread.sleep(tpsAttente);
                                 } catch (Exception e) {
@@ -465,14 +463,14 @@ public class Map {
                                 if(b instanceof BlocGlace){
                                     BlocGlace bg = (BlocGlace)b;
                                     if(bg.getContientSnobees()){
-                                        SnoBees sb = g.getSnobees(b.getCoordonnees());
+                                        SnoBees sb = g.getSnobee(b.getCoordonnees());
                                         if(sb != null)
                                             sb.getCoordonnees().setCoordonnees(coord);
                                     }
                                 }
                                 b.setEnMouvement(true);
                                 b.getCoordonnees().setCoordonnees(coord);
-                                g.majAfficheCarte();
+                                //g.majAfficheCarte();
                                 try {
                                     Thread.sleep(tpsAttente);
                                 } catch (Exception e) {
@@ -493,14 +491,14 @@ public class Map {
                                 if(b instanceof BlocGlace){
                                     BlocGlace bg = (BlocGlace)b;
                                     if(bg.getContientSnobees()){
-                                        SnoBees sb = g.getSnobees(b.getCoordonnees());
+                                        SnoBees sb = g.getSnobee(b.getCoordonnees());
                                         if(sb != null)
                                             sb.getCoordonnees().setCoordonnees(coord);
                                     }
                                 }
                                 b.setEnMouvement(true);
                                 b.getCoordonnees().setCoordonnees(coord);
-                                g.majAfficheCarte();
+                                //g.majAfficheCarte();
                                 try {
                                     Thread.sleep(tpsAttente);
                                 } catch (Exception e) {
@@ -515,8 +513,8 @@ public class Map {
                         break;
                 }
                 if(b instanceof BlocSpecial){
-                    if(blocSpeAlligne()){
-                        g.blocsSpeciauxAligne();
+                    if(blocsSpeciauxAlignes()){
+                        g.blocsSpeciauxAlignes();
                     }
                 }
             }
@@ -524,7 +522,7 @@ public class Map {
         t.start();
     }
     
-    private boolean blocSpeAlligne(){
+    private boolean blocsSpeciauxAlignes(){
         boolean res = false;
         
         for (int i=0;i<carteActuelle[0].length;i++) {

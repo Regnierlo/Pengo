@@ -8,16 +8,12 @@ package Ressources;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author loisr
- */
 public class BlocGlace extends Bloc{
     
     private boolean contientSnobees;
     private boolean detruitParNaissance;
     private int destruction;
-    private int FinDestruction;
+    private int finDestruction;
     
     public BlocGlace(Coordonnees c, boolean snobees){
         super(c);
@@ -25,7 +21,7 @@ public class BlocGlace extends Bloc{
         detruitParNaissance = false;
     }
     
-    public void seDetruit(){
+    public void incrementeDestruction(){
         try {
             Thread.sleep(500);
         } catch (InterruptedException ex) {
@@ -39,7 +35,7 @@ public class BlocGlace extends Bloc{
     }
     
     public int getFinDestruction(){
-        return FinDestruction;
+        return finDestruction;
     }
     
     public boolean getContientSnobees(){
@@ -54,7 +50,7 @@ public class BlocGlace extends Bloc{
         detruitParNaissance = b;
     }
 
-    public boolean getUnSnoBeesVaNaitre() {
+    public boolean NaissanceSnobeeDestructionBloc() {
         return detruitParNaissance;
     }
 }

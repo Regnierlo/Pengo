@@ -142,13 +142,14 @@ public class Calcul_Vue {
                                 else {*/
                                     /// Si Pengo va en haut
                                     if(jesus.getPengo().getDirectionActuel().equals(Personnage.Directions.dirHaut)){
-                                        if(jesus.getPengo().getPousseDetruire()){
+                                        if(jesus.getPengo().getPousseDetruire() && ((jesus.getPengo().getPousseInt()%2)==1)){
+                                            System.out.println("ghjgjkgg");
                                             tabCoordonnees[0][nbCoordonnees]= 1 ;
                                             tabCoordonnees[1][nbCoordonnees]= 19 ;
                                         } 
                                 
                                         else{
-                                            if(jesus.getPengo().getFinPousseDetruit()){
+                                            if(jesus.getPengo().getPousseDetruire() && (jesus.getPengo().getPousseInt()%2==0)){
                                                 tabCoordonnees[0][nbCoordonnees]= 0 ;
                                                 tabCoordonnees[1][nbCoordonnees]= 19 ;
                                             }
@@ -207,8 +208,8 @@ public class Calcul_Vue {
                             //}
                         } break ;
                         case "E" : {
-                                if(jesus.getSnobees(new Coordonnees(j,i)).getNaissance()<7){
-                                    naissance = jesus.getSnobees(new Coordonnees(j,i)).getNaissance() ;
+                                if(jesus.getSnobee(new Coordonnees(j,i)).getNaissance()<7){
+                                    naissance = jesus.getSnobee(new Coordonnees(j,i)).getNaissance() ;
                                     System.out.println(naissance);
                                     if(naissance == 1){
                                         tabCoordonnees[0][nbCoordonnees]= 0 ;
@@ -246,9 +247,9 @@ public class Calcul_Vue {
                                 }
                                 else{
                                     /// Si le snobee va en haut
-                                    if(jesus.getSnobees(new Coordonnees(j,i)).getDirectionActuel().equals(Personnage.Directions.dirHaut)){
+                                    if(jesus.getSnobee(new Coordonnees(j,i)).getDirectionActuel().equals(Personnage.Directions.dirHaut)){
                                        
-                                        if(jesus.getSnobees(new Coordonnees(j,i)).getAncienneDirection().equals(jesus.getSnobees(new Coordonnees(j,i)).getDirectionActuel())){
+                                        if(jesus.getSnobee(new Coordonnees(j,i)).getAncienneDirection().equals(jesus.getSnobee(new Coordonnees(j,i)).getDirectionActuel())){
                                             tabCoordonnees[0][nbCoordonnees]= 1 ;
                                             tabCoordonnees[1][nbCoordonnees]= 4 ;
                                         }
@@ -259,9 +260,9 @@ public class Calcul_Vue {
                                     } /// FIN si va en haut 
 
                                     /// Si le snobee va à droite
-                                    if(jesus.getSnobees(new Coordonnees(j,i)).getDirectionActuel().equals(Personnage.Directions.dirDroite)){
+                                    if(jesus.getSnobee(new Coordonnees(j,i)).getDirectionActuel().equals(Personnage.Directions.dirDroite)){
 
-                                        if(jesus.getSnobees(new Coordonnees(j,i)).getAncienneDirection().equals(jesus.getSnobees(new Coordonnees(j,i)).getDirectionActuel())){
+                                        if(jesus.getSnobee(new Coordonnees(j,i)).getAncienneDirection().equals(jesus.getSnobee(new Coordonnees(j,i)).getDirectionActuel())){
                                             tabCoordonnees[0][nbCoordonnees]= 1 ;
                                             tabCoordonnees[1][nbCoordonnees]= 5 ;
                                         }
@@ -272,8 +273,8 @@ public class Calcul_Vue {
                                     } /// FIN si va à droite
 
                                     /// Si le snobee va en bas
-                                    if(jesus.getSnobees(new Coordonnees(j,i)).getDirectionActuel().equals(Personnage.Directions.dirBas)){
-                                        if(jesus.getSnobees(new Coordonnees(j,i)).getAncienneDirection().equals(jesus.getSnobees(new Coordonnees(j,i)).getDirectionActuel())){
+                                    if(jesus.getSnobee(new Coordonnees(j,i)).getDirectionActuel().equals(Personnage.Directions.dirBas)){
+                                        if(jesus.getSnobee(new Coordonnees(j,i)).getAncienneDirection().equals(jesus.getSnobee(new Coordonnees(j,i)).getDirectionActuel())){
                                             tabCoordonnees[0][nbCoordonnees]= 1 ;
                                             tabCoordonnees[1][nbCoordonnees]= 6 ;
                                         }
@@ -284,8 +285,8 @@ public class Calcul_Vue {
                                     } /// FIN si va en bas
 
                                     /// Si le snobee va à gauche
-                                    if(jesus.getSnobees(new Coordonnees(j,i)).getDirectionActuel().equals(Personnage.Directions.dirGauche)){
-                                        if(jesus.getSnobees(new Coordonnees(j,i)).getAncienneDirection().equals(jesus.getSnobees(new Coordonnees(j,i)).getDirectionActuel())){
+                                    if(jesus.getSnobee(new Coordonnees(j,i)).getDirectionActuel().equals(Personnage.Directions.dirGauche)){
+                                        if(jesus.getSnobee(new Coordonnees(j,i)).getAncienneDirection().equals(jesus.getSnobee(new Coordonnees(j,i)).getDirectionActuel())){
                                             tabCoordonnees[0][nbCoordonnees]= 1 ;
                                             tabCoordonnees[1][nbCoordonnees]= 7 ;
 

@@ -1,25 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package GestionJeux;
 
-/**
- *
- * @author Marie
- */
 public class Labyrinthe {
-    int nbColonneTemp ; /// SANS les murs autour
-    int nbLigneTemp ; /// Sans les murs autour
-    int nbColonne ; /// labyrinthe avec les murs
-    int nbLigne ; ///
+    private final int nbColonneTemp ; /// SANS les murs autour
+    private final int nbLigneTemp ; /// Sans les murs autour
+    private final int nbColonne ; /// labyrinthe avec les murs
+    private final int nbLigne ; ///
     
-    int casePosition ;
-    int nbCasesNonVisitee ;
+    private int casePosition ;
+    private int nbCasesNonVisitee ;
     
-    int[][] position ;
-    char[][] labyrinthe_temporaire ;
+    private final int[][] position ;
+    private final char[][] labyrinthe_temporaire ;
     
     String[][] labyrinthe;
     
@@ -28,6 +19,7 @@ public class Labyrinthe {
      * @param n Nombre de Colonne
      * @param m Nombre de ligne
      */
+    
     public Labyrinthe(int n, int m){
         
         nbColonne = n ;
@@ -147,7 +139,7 @@ public class Labyrinthe {
         int randomLigneTemp ;
         int randomColonneTemp ;
         int randomColonne = (int)(Math.random()*8)+1 ;
-        do{
+        while(nbBE>0){
            if(labyrinthe[randomLigne][randomColonne].equals(Map.elementCarte.blocGlace.toString())){
                labyrinthe[randomLigne][randomColonne]=Map.elementCarte.blocAvecSnoBees.toString();
                do{
@@ -162,7 +154,7 @@ public class Labyrinthe {
                randomLigne = (int)(Math.random()*14)+1 ;
                randomColonne = (int)(Math.random()*8+1) ;
            }
-        } while(nbBE >0) ;
+        }
     }
     
     private void snoBees(int nbSB){

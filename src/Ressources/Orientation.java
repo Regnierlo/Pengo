@@ -82,4 +82,4 @@ public class Orientation {
         this.orientationActuelle = orientationActuelle;
     }
     
-}
+} 

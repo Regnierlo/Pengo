@@ -47,7 +47,7 @@ public class Niveaux {
      * @param c Carte passé en paramètre où sera effectué le traitement
      * @return Retourne le nombre de snobees sur la carte
      */
-    public int majSnowBees(final String[][] c){
+    public int majSnobees(final String[][] c){
         int r=0;
         
         for (String[] c1 : c) {
@@ -72,7 +72,7 @@ public class Niveaux {
         String[][] r;
         switch(c){
             case -1:
-                r=lab.generation_labyrinthe(1, 1, 4);
+                r=lab.generation_labyrinthe(1, 1, 0);
                 break;
             case 1:
                 String[][] choix1 = {

@@ -17,10 +17,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author loisr
- */
 public class Score {
     private int score;
     private final String chemin="topScore.txt";
