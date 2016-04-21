@@ -32,6 +32,7 @@ null 7000
 d 6600
 d 6600
 null 6000
+null 6000
 null 5800
 null 5800
 null 5800
@@ -40,6 +41,7 @@ null 5800
 null 5800
 null 5800
 L 5400
+null 5400
 null 5400
 null 5400
 null 5400
@@ -71,6 +73,7 @@ null 4400
 L 4000
 null 4000
 Lois 3600
+null 3600
 null 2800
 L 2400
 null 2400

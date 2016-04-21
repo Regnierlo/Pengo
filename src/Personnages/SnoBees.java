@@ -11,17 +11,13 @@ import java.awt.event.KeyEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author loisr
- */
 public class SnoBees extends Personnage{
     
     private boolean paralyse;
     private boolean vaMourirParBloc;
     private boolean cacheDansBloc;
     private int naissance;
-    private final int naissanceFini;
+    private final int itsAlive;
     private boolean nait;
     
     public SnoBees(Coordonnees c, boolean joueur, GameEngine g, boolean cache){
@@ -30,7 +26,7 @@ public class SnoBees extends Personnage{
         vaMourirParBloc = false;
         cacheDansBloc = cache;
         naissance = 1;
-        naissanceFini = 7;
+        itsAlive = 7;
         nait = true;
     }
 
@@ -78,7 +74,7 @@ public class SnoBees extends Personnage{
         paralyse = p;
     }
     
-    public boolean getParlyse(){
+    public boolean getParalyse(){
         return paralyse;
     }
     
@@ -90,11 +86,11 @@ public class SnoBees extends Personnage{
         return cacheDansBloc;
     }
     public int getNaissanceFinie(){
-        return naissanceFini ;
+        return itsAlive ;
     }
     
     private void naissance(){
-        for(int i=0;i<naissanceFini;i++){
+        for(int i=0;i<itsAlive;i++){
             try {
                 Thread.sleep(150);
             } catch (InterruptedException ex) {

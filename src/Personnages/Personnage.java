@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Personnages;
 
 import GestionJeux.GameEngine;
@@ -10,10 +5,6 @@ import Ressources.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-/**
- *
- * @author loisr
- */
 public abstract class Personnage extends Thread
                         implements KeyListener{
 
@@ -100,7 +91,7 @@ public abstract class Personnage extends Thread
     protected boolean pause;
     
     protected final GameEngine ge;
-    
+    protected int pousse ;
     protected Personnage(String urlImageRessource, Coordonnees c, boolean j, int v, GameEngine g){
         this.stop = false;
         this.pause = false;
@@ -114,6 +105,7 @@ public abstract class Personnage extends Thread
         currentImage = 0;
         animationMouvement = new String[4][2];
         pousseDetruit = false;
+        pousse = 0 ;
     }
     
    
@@ -171,7 +163,7 @@ public abstract class Personnage extends Thread
     }
     
     
-    public Boolean getJoueur(){
+    public boolean getJoueur(){
         return joueur;
     }
     
@@ -188,7 +180,12 @@ public abstract class Personnage extends Thread
     }
     
     public void setPousseDetruire(boolean b){
+        
         pousseDetruit = b;
+        pousse++;
+    }
+    public int getPousseInt(){
+        return pousse ;
     }
     
     public boolean getPousseDetruire(){
