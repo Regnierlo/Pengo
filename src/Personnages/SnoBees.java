@@ -21,7 +21,7 @@ public class SnoBees extends Personnage{
     private boolean vaMourirParBloc;
     private boolean cacheDansBloc;
     private int naissance;
-    private int naissanceFini;
+    private final int naissanceFini;
     private boolean nait;
     
     public SnoBees(Coordonnees c, boolean joueur, GameEngine g, boolean cache){
@@ -63,7 +63,9 @@ public class SnoBees extends Personnage{
     public void setNait(boolean b){
         nait = b;
     }
-    
+    public boolean getNait(){
+        return nait ;
+    }
     public void setVaMourirParBloc(boolean b){
         vaMourirParBloc = b;
     }
@@ -101,6 +103,7 @@ public class SnoBees extends Personnage{
             naissance++;
             //this.ge.majAfficheCarte();
         }
+        setNait(false);
     }
     
     public int getNaissance(){
