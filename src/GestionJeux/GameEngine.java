@@ -286,6 +286,12 @@ public class GameEngine {
                     }
                     else if(sn.getParlyse()){
                         p.remove(i);
+                        if(nbSnoBeesCache>0){
+                            naissanceSnobees();
+                            nbSnoBeesCache--;
+                        }
+                        else
+                            nbSnoBeesActif--;
                     }
                     else if(!sn.getCacheDansBloc()){
                         nbSnoBeesActif--;
@@ -303,7 +309,8 @@ public class GameEngine {
     
     private void naissanceSnobees(){
         boolean uneNaissance=false;
-        for(int i=0;i<b.size();i++){
+        int i=0;
+        do{
             if(!uneNaissance){
                 if(b.get(i) instanceof BlocGlace){
                     BlocGlace bg = (BlocGlace)b.get(i);
@@ -326,7 +333,8 @@ public class GameEngine {
                     }
                 }
             }
-        }
+            i++;
+        }while(i<b.size() && !uneNaissance);
     }
     
     public void pengoIsDead(){
