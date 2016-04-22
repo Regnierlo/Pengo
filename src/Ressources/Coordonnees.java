@@ -30,6 +30,11 @@ public class Coordonnees {
         this.x = x;
         this.y = y;
     }
+    
+    public Coordonnees (Coordonnees c){
+        this.x = c.getX();
+        this.y = c.getY();
+    }
 
     /**
      * Retourne la coordonnee en x.

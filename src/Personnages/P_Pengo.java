@@ -16,10 +16,14 @@ import java.awt.event.KeyEvent;
 public class P_Pengo extends Personnage{
 
     private int vie;
+    private boolean mort;
+    private boolean enAction;
     
     public P_Pengo(Coordonnees c, boolean joueur, GameEngine g){
         
         super("/Images/Pengo_Face_Pied_Droit.png", c, joueur, 2, g);
+        mort = false;
+        enAction = false;
        // vie=2;
         
     }
@@ -37,7 +41,7 @@ public class P_Pengo extends Personnage{
     public void keyPressed(KeyEvent e) {
         
         
-        if(joueur && (e.getKeyCode() == KeyEvent.VK_Z)){
+        if(joueur && (e.getKeyCode() == KeyEvent.VK_Z) && !mort && !enAction){
             ancienneDirection = directionActuel ;
             if(directionActuel.equals(Directions.dirHaut)&& direction==false)
                 direction = true ;
@@ -46,7 +50,7 @@ public class P_Pengo extends Personnage{
             directionActuel = Directions.dirHaut;
             this.ge.action(this, directionActuel, Actions.bouger);
         }
-        if(joueur && (e.getKeyCode() == KeyEvent.VK_S)){
+        if(joueur && (e.getKeyCode() == KeyEvent.VK_S) && !mort && !enAction){
             ancienneDirection = directionActuel ;
             if(directionActuel.equals(Directions.dirBas)&& direction==false)
                 direction = true ;
@@ -55,7 +59,7 @@ public class P_Pengo extends Personnage{
             directionActuel = Directions.dirBas;
             this.ge.action(this, directionActuel, Actions.bouger);
         }
-        if(joueur && (e.getKeyCode() == KeyEvent.VK_D )){
+        if(joueur && (e.getKeyCode() == KeyEvent.VK_D ) && !mort && !enAction){
             ancienneDirection = directionActuel ;
             if(directionActuel.equals(Directions.dirDroite) && direction==false)
                 direction = true ;
@@ -64,7 +68,7 @@ public class P_Pengo extends Personnage{
             directionActuel = Directions.dirDroite;
             this.ge.action(this, directionActuel, Actions.bouger);
         }
-        if(joueur && (e.getKeyCode() == KeyEvent.VK_Q)){
+        if(joueur && (e.getKeyCode() == KeyEvent.VK_Q) && !mort && !enAction){
             ancienneDirection = directionActuel ;
             if(directionActuel.equals(Directions.dirGauche) && direction==false )
                 direction = true ;
@@ -73,7 +77,7 @@ public class P_Pengo extends Personnage{
             directionActuel = Directions.dirGauche;
             this.ge.action(this, directionActuel, Actions.bouger);
         }
-        if(joueur && (e.getKeyCode() == KeyEvent.VK_SPACE)){
+        if(joueur && (e.getKeyCode() == KeyEvent.VK_SPACE) && !mort && !enAction){
             this.ge.action(this, directionActuel, Actions.pousser_detruire);
         }
         if(joueur && (e.getKeyCode() == KeyEvent.VK_CONTROL)){
@@ -96,6 +100,22 @@ public class P_Pengo extends Personnage{
     
     public void delVie(){
         this.vie--;
+    }
+    
+    public void renaissance(){
+        mort = false;
+    }
+    
+    public void mort(){
+        mort = true;
+    }
+    
+    public void setEnAction(boolean b){
+        enAction = b;
+    }
+    
+    public boolean getEnAction(){
+        return enAction;
     }
 
     @Override

@@ -19,8 +19,28 @@ public class SnoBees extends Personnage{
     private int naissance;
     private final int itsAlive;
     private boolean nait;
+    public enum typeSnobees{
+        normal("normal"),
+        miRamboMiIdiot("miRambo"),
+        rambo("rambo");
+        
+        private final String name;
+        
+        private typeSnobees(String s){
+            name = s;
+        }
+        
+        public boolean equalsName(String otherName) {
+            return (otherName == null) ? false : name.equals(otherName);
+        }
+
+        public String toString() {
+           return this.name;
+        }
+    }
+    private typeSnobees ts;
     
-    public SnoBees(Coordonnees c, boolean joueur, GameEngine g, boolean cache){
+    public SnoBees(Coordonnees c, boolean joueur, GameEngine g, boolean cache, typeSnobees type){
         super("",c,joueur,3,g);
         paralyse = false;
         vaMourirParBloc = false;
@@ -28,6 +48,7 @@ public class SnoBees extends Personnage{
         naissance = 1;
         itsAlive = 7;
         nait = true;
+        ts = type;
     }
 
     @Override
@@ -97,6 +118,7 @@ public class SnoBees extends Personnage{
                 Logger.getLogger(SnoBees.class.getName()).log(Level.SEVERE, null, ex);
             }
             naissance++;
+            ge.progressNaissante(i+1, coord, ts);
             //this.ge.majAfficheCarte();
         }
         setNait(false);
@@ -167,6 +189,14 @@ public class SnoBees extends Personnage{
     
     private void detruire(){
         this.ge.action(this, directionActuel, Actions.pousser_detruire);
+    }
+    
+    public void setComportement(typeSnobees t){
+        ts = t;
+    }
+    
+    public typeSnobees getComportement(){
+        return ts;
     }
     
     @Override

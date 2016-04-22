@@ -24,12 +24,10 @@ public class GameEngine {
     private List<Personnage> p;
     private List<Bloc> b;
     private List<Mur> mur ;
-    private final Niveaux n;
     private final Map m;
     private final Score s;
     private int nbSnoBeesActif;
     private int nbSnoBeesCache;
-    private int nbEncoreVivants ;
     private boolean bonusBlocsSpeciaux;
     private long chronometre;
     private String name;
@@ -37,6 +35,7 @@ public class GameEngine {
     private final Fenetre fenetre_principale ;
     private Thread tAffiche ;
     private Thread tChecker ;
+    private int niveau;
     
     private boolean niveauFini ;
     
@@ -45,17 +44,16 @@ public class GameEngine {
         //Instanciation des variables
         nbSnoBeesActif=0;
         nbSnoBeesCache=0;
-        nbEncoreVivants = 0 ;
         p = new ArrayList<>();
         b = new ArrayList<>();
         mur = new ArrayList<>() ;
-        n = new Niveaux();
-        m = new Map(-1, n);
+        m = new Map(-1);
         s = new Score();
         chronometre = 0;
         KeyListener[] kl = getKeyListener();
         fenetre_principale = new Fenetre(this,kl) ;
         scoreAttribue = false;
+        niveau = 1;
         
         //Initialisation de la carte
         init() ;
@@ -236,14 +234,15 @@ public class GameEngine {
         
         p.get(i_sno).stopper();
         SnoBees sb = (SnoBees) p.get(i_sno);
+        sb.setVaMourirParBloc(true);
         if(m.move(p.get(i_sno), c, new Coordonnees(cn.getX(), cn.getY()), this)){
             p.get(i_sno).getCoordonnees().setCoordonnees(cn);
-            sb.setVaMourirParBloc(true);
         }
         else{
             snobeeMort(p.get(i_sno).getCoordonnees());
             p.remove(i_sno);
             snobeeEcrase();
+            checkNombreSnobees();
         }
     }
     
@@ -303,6 +302,7 @@ public class GameEngine {
                             nbSnoBeesActif++;
                         }
                     }
+                    checkNombreSnobees();
                     //checkFinJeu();
                 }
             }
@@ -339,6 +339,75 @@ public class GameEngine {
         }while(i<b.size() && !uneNaissance);
     }
     
+    public void progressNaissante(int i, Coordonnees c, Personnages.SnoBees.typeSnobees typeSnobees){
+        switch(i){
+            case 1:
+                m.changeCarte(Map.elementCarte.naissanceSnoobees1, c);
+                break;
+            case 2:
+                m.changeCarte(Map.elementCarte.naissanceSnoobees2, c);
+                break;
+            case 3:
+                m.changeCarte(Map.elementCarte.naissanceSnoobees3, c);
+                break;
+            case 4:
+                m.changeCarte(Map.elementCarte.naissanceSnoobees4, c);
+                break;
+            case 5:
+                m.changeCarte(Map.elementCarte.naissanceSnoobees5, c);
+                break;
+            case 6:
+                m.changeCarte(Map.elementCarte.naissanceSnoobees6, c);
+                break;
+            default:
+                switch(typeSnobees){
+                    case normal:
+                        m.changeCarte(Map.elementCarte.snoBees, c);
+                        break;
+                    case miRamboMiIdiot:
+                        m.changeCarte(Map.elementCarte.snobeesMiRambo, c);
+                        break;
+                    case rambo:
+                        m.changeCarte(Map.elementCarte.snoBeesRambo, c);
+                        break;
+                }
+                break;
+        }
+    }
+    
+    /**
+     * Change le comportement des snobees selon leur nombre et le niveau de difficulté
+     */
+    private void checkNombreSnobees(){
+        if(nbSnoBeesActif == 1 && niveau!=3){
+            for(int i=0;i<p.size();i++){
+                if(p.get(i) instanceof SnoBees){
+                    SnoBees sb = (SnoBees)p.get(i);
+                    if(sb.getComportement() != SnoBees.typeSnobees.rambo)
+                    sb.setComportement(SnoBees.typeSnobees.rambo);
+                }
+            }
+        }
+        if(nbSnoBeesActif > 1 && niveau==2){
+            for(int i=0;i<p.size();i++){
+                if(p.get(i) instanceof SnoBees){
+                    SnoBees sb = (SnoBees)p.get(i);
+                    if(sb.getComportement() == SnoBees.typeSnobees.normal)
+                        sb.setComportement(SnoBees.typeSnobees.miRamboMiIdiot);
+                }
+            }
+        }
+        if(niveau==3){
+            for(int i=0;i<p.size();i++){
+                if(p.get(i) instanceof SnoBees){
+                    SnoBees sb = (SnoBees)p.get(i);
+                    if(sb.getComportement() == SnoBees.typeSnobees.normal || sb.getComportement()==SnoBees.typeSnobees.miRamboMiIdiot)
+                        sb.setComportement(SnoBees.typeSnobees.rambo);
+                }
+            }
+        }
+    }
+    
     public void pengoIsDead(){
         int i_pen=0;
         
@@ -348,6 +417,8 @@ public class GameEngine {
                 P_Pengo pen = (P_Pengo) p.get(i);
                 pen.delVie();
                 i_pen = i;
+                pen.mort();
+                m.changeCarte(Map.elementCarte.pengoMort, pen.getCoordonnees());
                 if(pen.getVie() < 0)
                     gameOver();
             }
@@ -363,6 +434,9 @@ public class GameEngine {
         } catch (InterruptedException ex) {
             Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
         }
+        P_Pengo pen = (P_Pengo)p.get(i_pen);
+        pen.renaissance();
+        m.changeCarte(Map.elementCarte.pengo, pen.getCoordonnees());
     }
     
     /**
@@ -440,8 +514,8 @@ public class GameEngine {
             boolean vieEnMoins = false;
             //Cast de l'objet passé en paramètre pour l'utiliser
             P_Pengo pen = (P_Pengo) o;
-            
-            
+            Coordonnees temp=new Coordonnees(pen.getCoordonnees());
+            boolean aPousseDetruit = false;
             
             switch(dir){
                 case dirHaut :
@@ -455,6 +529,8 @@ public class GameEngine {
                     }
                     else if(act.equals(Personnage.Actions.pousser_detruire)){
                         pen.setPousseDetruire(true);
+                        pen.setEnAction(true);
+                        m.changeCarte(Map.elementCarte.pengoPoussePendant, temp);
                         //majAfficheCarte();
                         if(!m.isMur(c, dir)){
                             if(m.objet(c)){
@@ -475,7 +551,9 @@ public class GameEngine {
                             Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                         }
                         pen.setPousseDetruire(false);
-                        
+                        m.changeCarte(Map.elementCarte.pengoPousseApres, temp);
+                        pen.setEnAction(false);
+                        aPousseDetruit = true;
                     }
                     
                     break;
@@ -490,6 +568,8 @@ public class GameEngine {
                     }
                     else if(act.equals(Personnage.Actions.pousser_detruire)){
                         pen.setPousseDetruire(true);
+                        pen.setEnAction(true);
+                        m.changeCarte(Map.elementCarte.pengoPoussePendant, temp);
                         //majAfficheCarte();
                         if(!m.isMur(c, dir)){
                             if(m.objet(c)){
@@ -510,8 +590,10 @@ public class GameEngine {
                             Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                         }
                         pen.setPousseDetruire(false);
+                        m.changeCarte(Map.elementCarte.pengoPousseApres, temp);
+                        pen.setEnAction(false);
+                        aPousseDetruit = true;
                     }
-                    
                     break;
                 case dirDroite :
                     c = new Coordonnees(pen.getCoordonnees().getX()+1, pen.getCoordonnees().getY());
@@ -524,6 +606,8 @@ public class GameEngine {
                     }
                     else if(act.equals(Personnage.Actions.pousser_detruire)){
                         pen.setPousseDetruire(true);
+                        pen.setEnAction(true);
+                        m.changeCarte(Map.elementCarte.pengoPoussePendant, temp);
                         //majAfficheCarte();
                         if(!m.isMur(c, dir)){
                             if(m.objet(c)){
@@ -544,8 +628,10 @@ public class GameEngine {
                             Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                         }
                         pen.setPousseDetruire(false);
+                        m.changeCarte(Map.elementCarte.pengoPousseApres, temp);
+                        pen.setEnAction(false);
+                        aPousseDetruit = true;
                     }
-                    
                     break;
                 case dirGauche :
                     c = new Coordonnees(pen.getCoordonnees().getX()-1, pen.getCoordonnees().getY());
@@ -558,6 +644,8 @@ public class GameEngine {
                     }
                     else if(act.equals(Personnage.Actions.pousser_detruire)){
                         pen.setPousseDetruire(true);
+                        pen.setEnAction(true);
+                        m.changeCarte(Map.elementCarte.pengoPoussePendant, temp);
                         //majAfficheCarte();
                         if(!m.isMur(c, dir)){
                             if(m.objet(c)){
@@ -573,13 +661,18 @@ public class GameEngine {
                             m.faireTremblerMur(dir, this);
                         }
                         pen.setPousseDetruire(false);
+                        m.changeCarte(Map.elementCarte.pengoPousseApres, temp);
+                        pen.setEnAction(false);
+                        aPousseDetruit = true;
                     }
-                    
                     break;
                 default:
                     moveOk = false;
+                    break;
             }
             //checkFinJeu();
+            if(aPousseDetruit)
+                m.changeCarte(Map.elementCarte.pengo, temp);
         }
         //Si l'objet est un SnoBees
         else if (o instanceof SnoBees){
@@ -618,9 +711,7 @@ public class GameEngine {
                     moveOk = false;
             }
         }
-        
         //this.majAfficheCarte();
-        
         return moveOk;
     }
 
@@ -632,15 +723,42 @@ public class GameEngine {
                 if(p.get(i) instanceof SnoBees){
                     SnoBees sn = (SnoBees)p.get(i);
                     if(!sn.getCacheDansBloc()){
-                        if(e.equals(Map.elementCarte.SnoBeesParalyse)){
+                        if(e.equals(Map.elementCarte.SnoBeesParalyse)
+                            || e.equals(Map.elementCarte.snoBeesMiRamboParalyse)
+                            || e.equals(Map.elementCarte.SnoBeesRamboParalyse)){
+                            
                             sn.setParalyse(true);
-                            m.changeSnoBees(c, Map.elementCarte.SnoBeesParalyse);
+                            
+                            switch(sn.getComportement()){
+                                case normal:
+                                    m.changeSnoBees(c, Map.elementCarte.SnoBeesParalyse, sn.getComportement());
+                                    break;
+                                case miRamboMiIdiot:
+                                    m.changeSnoBees(c, Map.elementCarte.snoBeesMiRamboParalyse, sn.getComportement());
+                                    break;
+                                case rambo:
+                                    m.changeSnoBees(c, Map.elementCarte.SnoBeesRamboParalyse, sn.getComportement());
+                                    break;
+                            }
                         }
-                        else if(e.equals(Map.elementCarte.snoBees)){
+                        else if(e.equals(Map.elementCarte.snoBees)
+                                || e.equals(Map.elementCarte.snobeesMiRambo)
+                                || e.equals(Map.elementCarte.snoBeesRambo)){
+                            
                             sn.setParalyse(false);
-                            m.changeSnoBees(c, Map.elementCarte.snoBees);
+                            switch(sn.getComportement()){
+                                case normal:
+                                    m.changeSnoBees(c, Map.elementCarte.snoBees, sn.getComportement());
+                                    break;
+                                case miRamboMiIdiot:
+                                    m.changeSnoBees(c, Map.elementCarte.snobeesMiRambo, sn.getComportement());
+                                    break;
+                                case rambo:
+                                    m.changeSnoBees(c, Map.elementCarte.snoBeesRambo, sn.getComportement());
+                                    break;
+                            }
                         }
-                        }
+                    }
                 }
             }
         }

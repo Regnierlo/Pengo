@@ -15,6 +15,8 @@ import Ressources.Coordonnees;
 import Ressources.Mur;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /*  p.add(new P_Pengo(new Coordonnees(), true));
         }
@@ -31,16 +33,34 @@ public class Map {
     private boolean pause;
 
     public enum elementCarte{
+        pengoPousseApres("A"),
         pengo("P"),
-        pengoPousse("D"),
+        pengoMort("Q"),
+        pengoPoussePendant("D"),
         snoBees("E"),
-        SnoBeesParalyse("3"),
+        snobeesMiRambo("I"),
+        snoBeesMiRamboPousse("V"),
+        snoBeesRambo("R"),
+        snoBeesMiRamboParalyse("J"),
+        SnoBeesParalyse("K"),
+        SnoBeesRamboParalyse("L"),
+        snoBeesRamboPousse("T"),
+        snoBeesPousse("Y"),
         blocGlace("G"),
         blocAvecSnoBees("C"),
         blocSpecial("S"),
         mur("M"),
         murTremble("W"),
-        rien(" ");
+        rien(" "),
+        naissanceSnoobees1("1"),
+        naissanceSnoobees2("2"),
+        naissanceSnoobees3("3"),
+        naissanceSnoobees4("4"),
+        naissanceSnoobees5("5"),
+        naissanceSnoobees6("6"),
+        destructionBloc1("7"),
+        destructionBloc2("8"),
+        destructionBloc3("9");
         
         private final String name;
         
@@ -58,10 +78,10 @@ public class Map {
     }
     
     
-    public Map(int niv, Niveaux n){
+    public Map(int niv){
         pause = false;
         this.niveauActuel = niv;
-        this.niveau = n;
+        this.niveau = new Niveaux();
         carteActuelle = niveau.getMap(niv);
         update();
     }
@@ -139,6 +159,10 @@ public class Map {
         return m ;
     }
     
+    public void changeCarte(elementCarte e, Coordonnees c){
+        carteActuelle[c.getY()][c.getX()] = e.toString();
+    }
+    
     /**
      * Initialise la liste de thread (pengo et snobees) dans une liste
      * 
@@ -153,9 +177,13 @@ public class Map {
                 if(elementCarte.pengo.equalsName(carteActuelle[i][j]))
                     l.add(new P_Pengo(new Coordonnees(j, i), true, ge));
                 if(elementCarte.snoBees.equalsName(carteActuelle[i][j]))
-                    l.add(new SnoBees(new Coordonnees(j, i), false, ge, false));
+                    l.add(new SnoBees(new Coordonnees(j, i), false, ge, false, SnoBees.typeSnobees.normal));
+                if(elementCarte.snobeesMiRambo.equalsName(carteActuelle[i][j]))
+                    l.add((new SnoBees(new Coordonnees(j, i), false, ge, false, SnoBees.typeSnobees.miRamboMiIdiot)));
+                if(elementCarte.snoBeesRambo.equalsName(carteActuelle[i][j]))
+                    l.add(new SnoBees(new Coordonnees(j, i), false, ge, false, SnoBees.typeSnobees.rambo));
                 if(elementCarte.blocAvecSnoBees.equalsName(carteActuelle[i][j]))
-                    l.add(new SnoBees(new Coordonnees(j, i), false, ge, true));
+                    l.add(new SnoBees(new Coordonnees(j, i), false, ge, true, SnoBees.typeSnobees.normal));
             }
         }
         
@@ -178,60 +206,150 @@ public class Map {
         
         if(o instanceof P_Pengo){
             if(elementCarte.rien.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
-                carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = " ";
-                carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = "P";
+                carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = elementCarte.rien.toString();
+                carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = elementCarte.pengo.toString();
                 valideMove = true;
             }
-            else if(elementCarte.SnoBeesParalyse.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
+            else if(elementCarte.SnoBeesParalyse.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
+                    || elementCarte.snoBeesMiRamboParalyse.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
+                    || elementCarte.SnoBeesRamboParalyse.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
                 g.snobeeMort(nouvellesCoord);
-                carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = " ";
-                carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = "P";
+                carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = elementCarte.rien.toString();
+                carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = elementCarte.pengo.toString();
                 valideMove = true;
             }
-            else if(elementCarte.snoBees.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
+            else if(elementCarte.snoBees.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
+                    || elementCarte.snobeesMiRambo.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
+                    || elementCarte.snoBeesRambo.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
                 g.pengoIsDead();
             }
         }
         else if(o instanceof SnoBees){
-            if(elementCarte.rien.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
-                carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = " ";
-                carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = "E";
-                valideMove = true;
+            SnoBees sb = (SnoBees)o;
+            if(sb.getVaMourirParBloc()){
+                if(null != sb.getComportement())switch (sb.getComportement()) {
+                    case normal:
+                        if(elementCarte.rien.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
+                            carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = elementCarte.rien.toString();
+                            carteActuelle[anciennesCoord.getX()][anciennesCoord.getX()] = elementCarte.snoBeesPousse.toString();
+                            valideMove=true;
+                        }   break;
+                    case miRamboMiIdiot:
+                        if(elementCarte.rien.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
+                            carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = elementCarte.rien.toString();
+                            carteActuelle[anciennesCoord.getX()][anciennesCoord.getX()] = elementCarte.snoBeesMiRamboPousse.toString();
+                            valideMove = true;
+                        }   break;
+                    case rambo:
+                        if(elementCarte.rien.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
+                            carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = elementCarte.rien.toString();
+                            carteActuelle[anciennesCoord.getX()][anciennesCoord.getX()] = elementCarte.snoBeesRamboPousse.toString();
+                            valideMove=true;
+                        }   break;
+                    default:
+                        break;
+                }
             }
-            else if(elementCarte.pengo.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
-                g.pengoIsDead();
+            else if(null != sb.getComportement())switch (sb.getComportement()) {
+                case normal:
+                    if(elementCarte.rien.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
+                        carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = elementCarte.rien.toString();
+                        carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = elementCarte.snoBees.toString();
+                        valideMove = true;
+                    }
+                    else if(elementCarte.pengo.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
+                            || elementCarte.pengoPousseApres.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
+                            || elementCarte.pengoPoussePendant.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
+                        g.pengoIsDead();
+                    }   break;
+                case miRamboMiIdiot:
+                    if(elementCarte.rien.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
+                        carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = elementCarte.rien.toString();
+                        carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = elementCarte.snobeesMiRambo.toString();
+                        valideMove = true;
+                    }
+                    else if(elementCarte.pengo.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
+                            || elementCarte.pengoPousseApres.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
+                            || elementCarte.pengoPoussePendant.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
+                        g.pengoIsDead();
+                    }   break;
+                case rambo:
+                    if(elementCarte.rien.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
+                        carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = elementCarte.rien.toString();
+                        carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = elementCarte.snoBeesRambo.toString();
+                        valideMove = true;
+                    }
+                    else if(elementCarte.pengo.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
+                            || elementCarte.pengoPousseApres.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
+                            || elementCarte.pengoPoussePendant.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
+                        g.pengoIsDead();
+                    }   break;
+                default:
+                    break;
             }
         }
         else if(o instanceof BlocGlace){
             BlocGlace bg = (BlocGlace) o;
             if(!bg.NaissanceSnobeeDestructionBloc()){
                 if(elementCarte.rien.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
-                    carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = " ";
-                    carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = "G";
+                    carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = elementCarte.rien.toString();
+                    carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = elementCarte.blocGlace.toString();
                     valideMove = true;
                 }
-                else if(elementCarte.snoBees.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
+                else if(elementCarte.snoBees.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
+                        || elementCarte.SnoBeesParalyse.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
                     g.snobeePousseParBloc(nouvellesCoord, bg.getDirection());
-                    carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = "G";
-                    carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = " ";
+                    carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = elementCarte.blocGlace.toString();
+                    carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = elementCarte.rien.toString();
+                    valideMove = true;
+                }
+                else if(elementCarte.snobeesMiRambo.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
+                    || elementCarte.snoBeesMiRamboParalyse.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
+                    g.snobeePousseParBloc(nouvellesCoord, bg.getDirection());
+                    carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = elementCarte.blocGlace.toString();
+                    carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = elementCarte.rien.toString();
+                    valideMove = true;
+                }
+                else if(elementCarte.snoBeesRambo.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
+                        || elementCarte.SnoBeesRamboParalyse.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
+                    g.snobeePousseParBloc(nouvellesCoord, bg.getDirection());
+                    carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = elementCarte.blocGlace.toString();
+                    carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = elementCarte.rien.toString();
                     valideMove = true;
                 }
             }
             else{
-                carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = " ";
+                carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = elementCarte.rien.toString();
             }
         }
         else if(o instanceof BlocSpecial){
             if(elementCarte.rien.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
-                carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = " ";
-                carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = "S";
+                carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = elementCarte.rien.toString();
+                carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = elementCarte.blocSpecial.toString();
                 valideMove = true;
             }
-            else if(elementCarte.snoBees.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
+            else if(elementCarte.snoBees.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
+                    || elementCarte.SnoBeesParalyse.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
                 BlocSpecial bs = (BlocSpecial)o;
                 g.snobeePousseParBloc(nouvellesCoord, bs.getDirection());
-                carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = "S";
-                carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = " ";
+                carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = elementCarte.blocSpecial.toString();
+                carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = elementCarte.rien.toString();
+                valideMove = true;
+            }
+            else if(elementCarte.snobeesMiRambo.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
+                    || elementCarte.snoBeesMiRamboParalyse.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
+                BlocSpecial bs = (BlocSpecial)o;
+                g.snobeePousseParBloc(nouvellesCoord, bs.getDirection());
+                carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = elementCarte.blocSpecial.toString();
+                carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = elementCarte.rien.toString();
+                valideMove = true;
+            }
+            else if(elementCarte.snoBeesRambo.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
+                    || elementCarte.SnoBeesRamboParalyse.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
+                BlocSpecial bs = (BlocSpecial)o;
+                g.snobeePousseParBloc(nouvellesCoord, bs.getDirection());
+                carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = elementCarte.blocSpecial.toString();
+                carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = elementCarte.rien.toString();
                 valideMove = true;
             }
         }
@@ -247,16 +365,50 @@ public class Map {
      */
     public void detruireBloc(Coordonnees c, GameEngine g){
         if(!(elementCarte.snoBees.equalsName(carteActuelle[c.getY()][c.getX()]))){
-            carteActuelle[c.getY()][c.getX()] = Map.elementCarte.rien.toString();
+            try {
+                //carteActuelle[c.getY()][c.getX()] = Map.elementCarte.rien.toString();
+                carteActuelle[c.getY()][c.getX()] = elementCarte.destructionBloc1.toString();
+                Thread.sleep(300);
+                carteActuelle[c.getY()][c.getX()] = elementCarte.destructionBloc2.toString();
+                Thread.sleep(300);
+                carteActuelle[c.getY()][c.getX()] = elementCarte.destructionBloc3.toString();
+                Thread.sleep(300);
+                carteActuelle[c.getY()][c.getX()] = elementCarte.rien.toString();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         //g.majAfficheCarte();
     }
     
-    public void changeSnoBees(Coordonnees c, elementCarte e){
-        if(e.equals(elementCarte.SnoBeesParalyse))
-            carteActuelle[c.getY()][c.getX()] = elementCarte.SnoBeesParalyse.toString();
-        else if(e.equals(elementCarte.snoBees))
-            carteActuelle[c.getY()][c.getX()] = elementCarte.snoBees.toString();
+    /**
+     * Fait devenir un snobees paralysé ou le deparalyse
+     * 
+     * @param c
+     * @param e
+     * @param t 
+     */
+    public void changeSnoBees(Coordonnees c, elementCarte e, SnoBees.typeSnobees t){
+        switch(t){
+            case normal:
+                if(e.equals(elementCarte.SnoBeesParalyse))
+                    carteActuelle[c.getY()][c.getX()] = elementCarte.SnoBeesParalyse.toString();
+                else if(e.equals(elementCarte.snoBees))
+                    carteActuelle[c.getY()][c.getX()] = elementCarte.snoBees.toString();
+                break;
+            case miRamboMiIdiot:
+                if(e.equals(elementCarte.snoBeesMiRamboParalyse))
+                    carteActuelle[c.getY()][c.getX()] = elementCarte.snoBeesMiRamboParalyse.toString();
+                else if(e.equals(elementCarte.snobeesMiRambo))
+                    carteActuelle[c.getY()][c.getX()] = elementCarte.snobeesMiRambo.toString();
+                break;
+            case rambo:
+                if(e.equals(elementCarte.SnoBeesRamboParalyse))
+                    carteActuelle[c.getY()][c.getX()] = elementCarte.SnoBeesRamboParalyse.toString();
+                else if(e.equals(elementCarte.snoBeesRambo))
+                    carteActuelle[c.getY()][c.getX()] = elementCarte.snoBeesRambo.toString();
+                break;
+        }
     }
     
     public void faireTremblerMur(Personnage.Directions dir, GameEngine g){
@@ -269,7 +421,7 @@ public class Map {
                     case dirHaut:
                         for(int i=0;i<3;i++){
                             for(int j=0;j<carteActuelle[0].length;j++){
-                                carteActuelle[0][j] = "W";
+                                carteActuelle[0][j] = elementCarte.murTremble.toString();
                                 g.murTremble(new Coordonnees(0,j),true);
                                 g.snobeeParalyse(new Coordonnees(1, j), elementCarte.SnoBeesParalyse);
                             }
@@ -279,7 +431,7 @@ public class Map {
                             } catch (Exception e) {
                             }
                             for(int j=0;j<carteActuelle[0].length;j++){
-                                carteActuelle[0][j] = "M";
+                                carteActuelle[0][j] = elementCarte.mur.toString();
                                 g.murTremble(new Coordonnees(0,j),false);
                             }
                             //g.majAfficheCarte();
@@ -292,7 +444,7 @@ public class Map {
                     case dirBas:
                         for(int i=0;i<3;i++){
                             for(int j=0;j<carteActuelle[0].length;j++){
-                                carteActuelle[15][j] = "W";
+                                carteActuelle[15][j] = elementCarte.murTremble.toString();
                                 g.murTremble(new Coordonnees(15,j),true);
                                 g.snobeeParalyse(new Coordonnees(14, j), elementCarte.SnoBeesParalyse);
                             }
@@ -302,7 +454,7 @@ public class Map {
                             } catch (Exception e) {
                             }
                             for(int j=0;j<carteActuelle[0].length;j++){
-                                carteActuelle[15][j] = "M";
+                                carteActuelle[15][j] = elementCarte.mur.toString();
                                 g.murTremble(new Coordonnees(15,j),false);
                             }
                             //g.majAfficheCarte();
@@ -316,7 +468,7 @@ public class Map {
                         for(int i=0;i<3;i++){
                             for(int j=0;j<carteActuelle.length;j++){
                                 System.out.println(j);
-                                carteActuelle[j][9] = "W";
+                                carteActuelle[j][9] = elementCarte.murTremble.toString();
                                 g.murTremble(new Coordonnees(j,9),true);
                                 g.snobeeParalyse(new Coordonnees(j, 8), elementCarte.SnoBeesParalyse);
                             }
@@ -326,7 +478,7 @@ public class Map {
                             } catch (Exception e) {
                             }
                             for(int j=0;j<carteActuelle.length;j++){
-                                carteActuelle[j][9] = "M";
+                                carteActuelle[j][9] = elementCarte.mur.toString();
                                 g.murTremble(new Coordonnees(j,9),false);
                             }
                             //g.majAfficheCarte();
@@ -339,7 +491,7 @@ public class Map {
                     case dirGauche:
                         for(int i=0;i<3;i++){
                             for(int j=0;j<carteActuelle.length;j++){
-                                carteActuelle[j][0] = "W";
+                                carteActuelle[j][0] = elementCarte.murTremble.toString();
                                 g.murTremble(new Coordonnees(j,0),true);
                                 g.snobeeParalyse(new Coordonnees(j, 1), elementCarte.SnoBeesParalyse);
                             }
@@ -349,7 +501,7 @@ public class Map {
                             } catch (Exception e) {
                             }
                             for(int j=0;j<carteActuelle.length;j++){
-                                carteActuelle[j][0] = "M";
+                                carteActuelle[j][0] = elementCarte.mur.toString();
                                 g.murTremble(new Coordonnees(j,0),false);
                             }
                             //g.majAfficheCarte();
