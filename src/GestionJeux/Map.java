@@ -33,31 +33,37 @@ public class Map {
     private boolean pause;
 
     public enum elementCarte{
-        pengoPousseApres("A"),
-        pengo("P"),
-        pengoMort("Q"),
-        pengoPoussePendant("D"),
-        snoBees("E"),
-        snobeesMiRambo("I"),
-        snoBeesMiRamboPousse("V"),
-        snoBeesRambo("R"),
-        snoBeesMiRamboParalyse("J"),
-        SnoBeesParalyse("K"),
-        SnoBeesRamboParalyse("L"),
-        snoBeesRamboPousse("T"),
-        snoBeesPousse("Y"),
-        blocGlace("G"),
+        pengoPousseApres("A"),      // fait
+        pengo("P"),                  // fait
+        pengoMort2("O"),               // fait
+        pengoMort("Q"),             // fait
+        pengoPoussePendant("D"),    // fait
+        snoBees("E"),               // fait
+        snobeesMiRambo("I"),        // fait
+        snoBeesMiRamboPousse("V"),  // fait
+        snoBeesRambo("R"),          //fait
+        snoBeesMiRamboParalyse("J"), // fait
+        SnoBeesParalyse("K"),       // fait
+        
+        
+        SnoBeesRamboParalyse("L"),  // fait
+        snoBeesRamboPousse("T"),    // fait
+        snoBeesPousse("Y"),         // fait
+        blocGlace("G"),             // fait
         blocAvecSnoBees("C"),
         blocSpecial("S"),
-        mur("M"),
-        murTremble("W"),
+        
+        
+        mur("M"),                    // fait
+        murTremble("W"),             // fait
         rien(" "),
-        naissanceSnoobees1("1"),
-        naissanceSnoobees2("2"),
-        naissanceSnoobees3("3"),
-        naissanceSnoobees4("4"),
-        naissanceSnoobees5("5"),
-        naissanceSnoobees6("6"),
+        
+        naissanceSnoobees1("1"),             // fait
+        naissanceSnoobees2("2"),             // fait
+        naissanceSnoobees3("3"),             // fait
+        naissanceSnoobees4("4"),             // fait
+        naissanceSnoobees5("5"),             // fait
+        naissanceSnoobees6("6"),             // fait
         destructionBloc1("7"),
         destructionBloc2("8"),
         destructionBloc3("9");
@@ -194,9 +200,9 @@ public class Map {
      * Met à jour la carte selon les mouvements effectuées
      * 
      * @version 1.0
-     * @param o Instance de l'objet qui effectue le mouvement
-     * @param anciennesCoord Les anciennes coordonnées de l'objet
-     * @param nouvellesCoord Les nouvelles coordonnées demandées par l'objet
+     * @param o Instance de l'isBlockOrIsMur qui effectue le mouvement
+     * @param anciennesCoord Les anciennes coordonnées de l'isBlockOrIsMur
+     * @param nouvellesCoord Les nouvelles coordonnées demandées par l'isBlockOrIsMur
      * @param g GameEngine utilisé pour les évènements
      * @return Un boolean indiquant si le déplacement c'est effectué correctement ou non
      */
@@ -227,65 +233,67 @@ public class Map {
         else if(o instanceof SnoBees){
             SnoBees sb = (SnoBees)o;
             if(sb.getVaMourirParBloc()){
-                if(null != sb.getComportement())switch (sb.getComportement()) {
+                if(null != sb.getComportement())
+                    switch (sb.getComportement()) {
+                        case normal:
+                            if(elementCarte.rien.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
+                                carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = elementCarte.rien.toString();
+                                carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = elementCarte.snoBeesPousse.toString();
+                                valideMove=true;
+                            }   break;
+                        case miRamboMiIdiot:
+                            if(elementCarte.rien.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
+                                carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = elementCarte.rien.toString();
+                                carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = elementCarte.snoBeesMiRamboPousse.toString();
+                                valideMove = true;
+                            }   break;
+                        case rambo:
+                            if(elementCarte.rien.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
+                                carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = elementCarte.rien.toString();
+                                carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = elementCarte.snoBeesRamboPousse.toString();
+                                valideMove=true;
+                            }   break;
+                        default:
+                            break;
+                    }
+            }
+            else if(null != sb.getComportement())
+                switch (sb.getComportement()) {
                     case normal:
                         if(elementCarte.rien.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
                             carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = elementCarte.rien.toString();
-                            carteActuelle[anciennesCoord.getX()][anciennesCoord.getX()] = elementCarte.snoBeesPousse.toString();
-                            valideMove=true;
+                            carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = elementCarte.snoBees.toString();
+                            valideMove = true;
+                        }
+                        else if(elementCarte.pengo.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
+                                || elementCarte.pengoPousseApres.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
+                                || elementCarte.pengoPoussePendant.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
+                            g.pengoIsDead();
                         }   break;
                     case miRamboMiIdiot:
                         if(elementCarte.rien.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
                             carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = elementCarte.rien.toString();
-                            carteActuelle[anciennesCoord.getX()][anciennesCoord.getX()] = elementCarte.snoBeesMiRamboPousse.toString();
+                            carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = elementCarte.snobeesMiRambo.toString();
                             valideMove = true;
+                        }
+                        else if(elementCarte.pengo.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
+                                || elementCarte.pengoPousseApres.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
+                                || elementCarte.pengoPoussePendant.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
+                            g.pengoIsDead();
                         }   break;
                     case rambo:
                         if(elementCarte.rien.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
                             carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = elementCarte.rien.toString();
-                            carteActuelle[anciennesCoord.getX()][anciennesCoord.getX()] = elementCarte.snoBeesRamboPousse.toString();
-                            valideMove=true;
+                            carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = elementCarte.snoBeesRambo.toString();
+                            valideMove = true;
+                        }
+                        else if(elementCarte.pengo.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
+                                || elementCarte.pengoPousseApres.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
+                                || elementCarte.pengoPoussePendant.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
+                            g.pengoIsDead();
                         }   break;
                     default:
                         break;
-                }
-            }
-            else if(null != sb.getComportement())switch (sb.getComportement()) {
-                case normal:
-                    if(elementCarte.rien.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
-                        carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = elementCarte.rien.toString();
-                        carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = elementCarte.snoBees.toString();
-                        valideMove = true;
-                    }
-                    else if(elementCarte.pengo.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
-                            || elementCarte.pengoPousseApres.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
-                            || elementCarte.pengoPoussePendant.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
-                        g.pengoIsDead();
-                    }   break;
-                case miRamboMiIdiot:
-                    if(elementCarte.rien.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
-                        carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = elementCarte.rien.toString();
-                        carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = elementCarte.snobeesMiRambo.toString();
-                        valideMove = true;
-                    }
-                    else if(elementCarte.pengo.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
-                            || elementCarte.pengoPousseApres.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
-                            || elementCarte.pengoPoussePendant.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
-                        g.pengoIsDead();
-                    }   break;
-                case rambo:
-                    if(elementCarte.rien.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
-                        carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = elementCarte.rien.toString();
-                        carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = elementCarte.snoBeesRambo.toString();
-                        valideMove = true;
-                    }
-                    else if(elementCarte.pengo.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
-                            || elementCarte.pengoPousseApres.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
-                            || elementCarte.pengoPoussePendant.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
-                        g.pengoIsDead();
-                    }   break;
-                default:
-                    break;
             }
         }
         else if(o instanceof BlocGlace){
@@ -297,21 +305,24 @@ public class Map {
                     valideMove = true;
                 }
                 else if(elementCarte.snoBees.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
-                        || elementCarte.SnoBeesParalyse.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
+                        || elementCarte.SnoBeesParalyse.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
+                        || elementCarte.snoBeesPousse.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
                     g.snobeePousseParBloc(nouvellesCoord, bg.getDirection());
                     carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = elementCarte.blocGlace.toString();
                     carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = elementCarte.rien.toString();
                     valideMove = true;
                 }
                 else if(elementCarte.snobeesMiRambo.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
-                    || elementCarte.snoBeesMiRamboParalyse.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
+                    || elementCarte.snoBeesMiRamboParalyse.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
+                    || elementCarte.snoBeesMiRamboPousse.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
                     g.snobeePousseParBloc(nouvellesCoord, bg.getDirection());
                     carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = elementCarte.blocGlace.toString();
                     carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = elementCarte.rien.toString();
                     valideMove = true;
                 }
                 else if(elementCarte.snoBeesRambo.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
-                        || elementCarte.SnoBeesRamboParalyse.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
+                        || elementCarte.SnoBeesRamboParalyse.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
+                        || elementCarte.snoBeesRamboPousse.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
                     g.snobeePousseParBloc(nouvellesCoord, bg.getDirection());
                     carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = elementCarte.blocGlace.toString();
                     carteActuelle[anciennesCoord.getY()][anciennesCoord.getX()] = elementCarte.rien.toString();
@@ -329,7 +340,8 @@ public class Map {
                 valideMove = true;
             }
             else if(elementCarte.snoBees.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
-                    || elementCarte.SnoBeesParalyse.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
+                    || elementCarte.SnoBeesParalyse.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
+                    || elementCarte.snoBeesPousse.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
                 BlocSpecial bs = (BlocSpecial)o;
                 g.snobeePousseParBloc(nouvellesCoord, bs.getDirection());
                 carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = elementCarte.blocSpecial.toString();
@@ -337,7 +349,8 @@ public class Map {
                 valideMove = true;
             }
             else if(elementCarte.snobeesMiRambo.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
-                    || elementCarte.snoBeesMiRamboParalyse.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
+                    || elementCarte.snoBeesMiRamboParalyse.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
+                    || elementCarte.snoBeesMiRamboPousse.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
                 BlocSpecial bs = (BlocSpecial)o;
                 g.snobeePousseParBloc(nouvellesCoord, bs.getDirection());
                 carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = elementCarte.blocSpecial.toString();
@@ -345,7 +358,8 @@ public class Map {
                 valideMove = true;
             }
             else if(elementCarte.snoBeesRambo.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
-                    || elementCarte.SnoBeesRamboParalyse.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
+                    || elementCarte.SnoBeesRamboParalyse.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])
+                    || elementCarte.snoBeesRamboPousse.equalsName(carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()])){
                 BlocSpecial bs = (BlocSpecial)o;
                 g.snobeePousseParBloc(nouvellesCoord, bs.getDirection());
                 carteActuelle[nouvellesCoord.getY()][nouvellesCoord.getX()] = elementCarte.blocSpecial.toString();
@@ -366,19 +380,21 @@ public class Map {
     public void detruireBloc(Coordonnees c, GameEngine g){
         if(!(elementCarte.snoBees.equalsName(carteActuelle[c.getY()][c.getX()]))){
             try {
-                //carteActuelle[c.getY()][c.getX()] = Map.elementCarte.rien.toString();
                 carteActuelle[c.getY()][c.getX()] = elementCarte.destructionBloc1.toString();
+                g.majAfficheCarte();
                 Thread.sleep(300);
                 carteActuelle[c.getY()][c.getX()] = elementCarte.destructionBloc2.toString();
+                g.majAfficheCarte();
                 Thread.sleep(300);
                 carteActuelle[c.getY()][c.getX()] = elementCarte.destructionBloc3.toString();
+                g.majAfficheCarte();
                 Thread.sleep(300);
                 carteActuelle[c.getY()][c.getX()] = elementCarte.rien.toString();
             } catch (InterruptedException ex) {
                 Logger.getLogger(Map.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        //g.majAfficheCarte();
+        g.majAfficheCarte();
     }
     
     /**
@@ -425,7 +441,7 @@ public class Map {
                                 g.murTremble(new Coordonnees(0,j),true);
                                 g.snobeeParalyse(new Coordonnees(1, j), elementCarte.SnoBeesParalyse);
                             }
-                            //g.majAfficheCarte();
+                            g.majAfficheCarte();
                             try {
                                 Thread.sleep(tpsAttente);
                             } catch (Exception e) {
@@ -434,12 +450,12 @@ public class Map {
                                 carteActuelle[0][j] = elementCarte.mur.toString();
                                 g.murTremble(new Coordonnees(0,j),false);
                             }
-                            //g.majAfficheCarte();
+                            g.majAfficheCarte();
                         }
                         for(int j=0;j<carteActuelle[0].length;j++){
                             g.snobeeParalyse(new Coordonnees(1, j), elementCarte.snoBees);
                         }
-                        //g.majAfficheCarte();
+                        g.majAfficheCarte();
                         break;
                     case dirBas:
                         for(int i=0;i<3;i++){
@@ -448,7 +464,7 @@ public class Map {
                                 g.murTremble(new Coordonnees(15,j),true);
                                 g.snobeeParalyse(new Coordonnees(14, j), elementCarte.SnoBeesParalyse);
                             }
-                            //g.majAfficheCarte();
+                            g.majAfficheCarte();
                             try {
                                 Thread.sleep(tpsAttente);
                             } catch (Exception e) {
@@ -457,12 +473,12 @@ public class Map {
                                 carteActuelle[15][j] = elementCarte.mur.toString();
                                 g.murTremble(new Coordonnees(15,j),false);
                             }
-                            //g.majAfficheCarte();
+                            g.majAfficheCarte();
                         }
                         for(int j=0;j<carteActuelle[0].length;j++){
                             g.snobeeParalyse(new Coordonnees(14, j), elementCarte.snoBees);
                         }
-                        //g.majAfficheCarte();
+                        g.majAfficheCarte();
                         break;
                     case dirDroite:
                         for(int i=0;i<3;i++){
@@ -472,7 +488,7 @@ public class Map {
                                 g.murTremble(new Coordonnees(j,9),true);
                                 g.snobeeParalyse(new Coordonnees(j, 8), elementCarte.SnoBeesParalyse);
                             }
-                            //g.majAfficheCarte();
+                            g.majAfficheCarte();
                             try {
                                 Thread.sleep(tpsAttente);
                             } catch (Exception e) {
@@ -481,12 +497,12 @@ public class Map {
                                 carteActuelle[j][9] = elementCarte.mur.toString();
                                 g.murTremble(new Coordonnees(j,9),false);
                             }
-                            //g.majAfficheCarte();
+                            g.majAfficheCarte();
                         }
                         for(int j=0;j<carteActuelle.length;j++){
                             g.snobeeParalyse(new Coordonnees(j, 8), elementCarte.snoBees);
                         }
-                        //g.majAfficheCarte();
+                        g.majAfficheCarte();
                         break;
                     case dirGauche:
                         for(int i=0;i<3;i++){
@@ -495,7 +511,7 @@ public class Map {
                                 g.murTremble(new Coordonnees(j,0),true);
                                 g.snobeeParalyse(new Coordonnees(j, 1), elementCarte.SnoBeesParalyse);
                             }
-                            //g.majAfficheCarte();
+                            g.majAfficheCarte();
                             try {
                                 Thread.sleep(tpsAttente);
                             } catch (Exception e) {
@@ -504,12 +520,12 @@ public class Map {
                                 carteActuelle[j][0] = elementCarte.mur.toString();
                                 g.murTremble(new Coordonnees(j,0),false);
                             }
-                            //g.majAfficheCarte();
+                            g.majAfficheCarte();
                         }
                         for(int j=0;j<carteActuelle.length;j++){
                             g.snobeeParalyse(new Coordonnees(j, 1), elementCarte.snoBees);
                         }
-                        //g.majAfficheCarte();
+                        g.majAfficheCarte();
                         break;
                 }
             }
@@ -566,7 +582,7 @@ public class Map {
                                 }
                                 b.setEnMouvement(true);
                                 b.getCoordonnees().setCoordonnees(coord);
-                                //g.majAfficheCarte();
+                                g.majAfficheCarte();
                                 try {
                                     Thread.sleep(tpsAttente);
                                 } catch (Exception e) {
@@ -594,7 +610,7 @@ public class Map {
                                 }
                                 b.setEnMouvement(true);
                                 b.getCoordonnees().setCoordonnees(coord);
-                                //g.majAfficheCarte();
+                                g.majAfficheCarte();
                                 try {
                                     Thread.sleep(tpsAttente);
                                 } catch (Exception e) {
@@ -622,7 +638,7 @@ public class Map {
                                 }
                                 b.setEnMouvement(true);
                                 b.getCoordonnees().setCoordonnees(coord);
-                                //g.majAfficheCarte();
+                                g.majAfficheCarte();
                                 try {
                                     Thread.sleep(tpsAttente);
                                 } catch (Exception e) {
@@ -650,7 +666,7 @@ public class Map {
                                 }
                                 b.setEnMouvement(true);
                                 b.getCoordonnees().setCoordonnees(coord);
-                                //g.majAfficheCarte();
+                                g.majAfficheCarte();
                                 try {
                                     Thread.sleep(tpsAttente);
                                 } catch (Exception e) {
@@ -753,7 +769,7 @@ public class Map {
      * @param c Coordonnées testées
      * @return 
      */
-    public boolean objet(final Coordonnees c) {
+    public boolean isBlockOrIsMur(final Coordonnees c) {
         boolean res = false;
         
         if(elementCarte.blocGlace.equalsName(carteActuelle[c.getY()][c.getX()])

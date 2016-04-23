@@ -67,17 +67,17 @@ public class Labyrinthe {
         int nbCompanionCube = 3 ;
         do{
             if(labyrinthe[randomLigne][randomColonne].equals(Map.elementCarte.rien.toString())){
+                
                 labyrinthe[randomLigne][randomColonne]=Map.elementCarte.blocSpecial.toString() ;
                 nbCompanionCube-- ;
                 
                 do{
                     randomLigneTemp=(int)(Math.random()*14)+1 ;
-                    //System.out.println(randomLigneTemp) ;
                 }while( randomLigne==(randomLigneTemp+1) || randomLigne==(randomLigneTemp-1) ) ;
                 
                 do{
                     randomColonneTemp=(int)(Math.random()*8)+1 ;
-                }while(randomColonne==(randomColonneTemp+1)||randomColonne==(randomColonneTemp-1)) ;
+                } while( (randomColonne==(randomColonneTemp+1)) || (randomColonne==(randomColonneTemp-1))) ;
                 randomLigne = randomLigneTemp ;
                 randomColonne = randomColonneTemp ;
                 

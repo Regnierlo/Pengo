@@ -33,7 +33,6 @@ public class GameEngine {
     private String name;
     private boolean scoreAttribue;
     private final Fenetre fenetre_principale ;
-    private Thread tAffiche ;
     private Thread tChecker ;
     private int niveau;
     
@@ -58,20 +57,8 @@ public class GameEngine {
         //Initialisation de la carte
         init() ;
         ThreadCheckEndGame();
-        ThreadAffichage();
     }
     
-    private void ThreadAffichage(){
-        tAffiche=new Thread(){
-            @Override
-            public void run(){
-                while(!niveauFini){
-                    majAfficheCarte();
-                }
-            }
-        };
-        tAffiche.start();
-    }
     private int getNbSnoBees(){
         return (nbSnoBeesActif+nbSnoBeesCache) ;
     }
@@ -184,9 +171,7 @@ public class GameEngine {
             if(p.get(i).getJoueur())
                 fenetre_principale.addKeyListener(p.get(i));
            
-        //majAfficheCarte();
-        ///////////////
-        //majAfficheCarte();
+        majAfficheCarte();
     }
     
     private synchronized void finNiveau(){
@@ -209,6 +194,7 @@ public class GameEngine {
         Coordonnees cn;// = new Coordonnees(c.getX()-1, c.getY());
         
         switch(dir){
+            
             case dirHaut:
                 cn = new Coordonnees(c.getX(), c.getY()-1);
                 break;
@@ -222,7 +208,8 @@ public class GameEngine {
                 cn = new Coordonnees(c.getX()-1, c.getY());
                 break;
             default:
-                cn = new Coordonnees(c.getX(), c.getY());
+                cn = new Coordonnees(c.getX(), c.getY()); 
+                break ;
         }
         
         int i_sno =0;
@@ -231,15 +218,17 @@ public class GameEngine {
                 i_sno = i;
             }
         }
-        
-        p.get(i_sno).stopper();
         SnoBees sb = (SnoBees) p.get(i_sno);
+        sb.setDirection(dir);
+        sb.stopper();
+        sb.setParalyse(false);
+        
         sb.setVaMourirParBloc(true);
-        if(m.move(p.get(i_sno), c, new Coordonnees(cn.getX(), cn.getY()), this)){
-            p.get(i_sno).getCoordonnees().setCoordonnees(cn);
+        if(m.move(sb, c, cn, this)){
+            sb.getCoordonnees().setCoordonnees(cn);
         }
         else{
-            snobeeMort(p.get(i_sno).getCoordonnees());
+            snobeeMort(sb.getCoordonnees());
             p.remove(i_sno);
             snobeeEcrase();
             checkNombreSnobees();
@@ -373,6 +362,7 @@ public class GameEngine {
                 }
                 break;
         }
+        majAfficheCarte();
     }
     
     /**
@@ -427,12 +417,19 @@ public class GameEngine {
             }
         }
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
+            m.changeCarte(Map.elementCarte.pengoMort2, p.get(i_pen).getCoordonnees());
+            Thread.sleep(1000);
+            
             for(int i=0;i<p.size();i++){
                 p.get(i).reprise();
             }
         } catch (InterruptedException ex) {
             Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+        
+            
+            
+            
         }
         P_Pengo pen = (P_Pengo)p.get(i_pen);
         pen.renaissance();
@@ -464,8 +461,9 @@ public class GameEngine {
                 if(b.get(i) instanceof BlocGlace){
                     BlocGlace bg = (BlocGlace)b.get(i);
                     if(!bg.getContientSnobees()){
-                        //for(int j=0;j<bg.getFinDestruction();j++)
-                          //  majAfficheCarte();
+                        /*for(int j=0;j<bg.getFinDestruction();j++){
+                            majAfficheCarte();
+                        }*/
                     }
                     m.detruireBloc(c, this);
                     i_b = i;
@@ -495,9 +493,9 @@ public class GameEngine {
     /**
      * Permet aux Pengo, aux Snobees d'effectuer des actions
      * 
-     * @param o Instance de l'objet qui va effectuer l'action
+     * @param o Instance de l'isBlockOrIsMur qui va effectuer l'action
      * @param dir Direction actuel du personnage pour savoir où effectuer l'action
-     * @param act L'action qui sera effectuer en fonction de l'objet et de la direction
+     * @param act L'action qui sera effectuer en fonction de l'isBlockOrIsMur et de la direction
      * @return 
      */
     public boolean action(Object o, Personnages.Personnage.Directions dir, Personnages.Personnage.Actions act){
@@ -506,15 +504,16 @@ public class GameEngine {
         //Coordonnées qui va etre teste
         Coordonnees c;
         //Selon le bloc, la destruction sera possible ou non
-        boolean destructionOK = false;
-        
-        //Si l'objet est un P_Pengo
+        boolean destructionOK = true;
+        int action = -1 ;
+        //Si l'isBlockOrIsMur est un P_Pengo
         if(o instanceof P_Pengo){
             //On part du principe qu'aucune vie n'est perdu
             boolean vieEnMoins = false;
-            //Cast de l'objet passé en paramètre pour l'utiliser
+            //Cast de l'isBlockOrIsMur passé en paramètre pour l'utiliser
             P_Pengo pen = (P_Pengo) o;
             Coordonnees temp=new Coordonnees(pen.getCoordonnees());
+            
             boolean aPousseDetruit = false;
             
             switch(dir){
@@ -522,22 +521,25 @@ public class GameEngine {
                     c = new Coordonnees(pen.getCoordonnees().getX(), pen.getCoordonnees().getY()-1);
                     
                     if(act.equals(Personnage.Actions.bouger)){
+                        action = 0 ;
                         if(m.move(pen, pen.getCoordonnees(), c, this))
                             pen.getCoordonnees().setCoordonnees(c);
                         else
                             moveOk = false;
                     }
                     else if(act.equals(Personnage.Actions.pousser_detruire)){
+                        action = 1 ;
                         pen.setPousseDetruire(true);
                         pen.setEnAction(true);
                         m.changeCarte(Map.elementCarte.pengoPoussePendant, temp);
-                        //majAfficheCarte();
+                        majAfficheCarte();
                         if(!m.isMur(c, dir)){
-                            if(m.objet(c)){
-                                if(m.objet(new Coordonnees(c.getX(), c.getY()-1))){
+                            if(m.isBlockOrIsMur(c)){
+                                if(m.isBlockOrIsMur(new Coordonnees(c.getX(), c.getY()-1))){
                                     destructionBloc(c);
                                 }
                                 else{
+                                    destructionOK = false ;
                                     bougerBloc(c, dir);
                                 }
                             }
@@ -561,22 +563,25 @@ public class GameEngine {
                     c = new Coordonnees(pen.getCoordonnees().getX(), pen.getCoordonnees().getY()+1);
                     
                     if(act.equals(Personnage.Actions.bouger)){
+                        action =  0 ;
                         if(m.move(pen, pen.getCoordonnees(), c, this))
                             pen.getCoordonnees().setCoordonnees(c);
                         else
                             moveOk = false;
                     }
                     else if(act.equals(Personnage.Actions.pousser_detruire)){
+                        action = 1 ;
                         pen.setPousseDetruire(true);
                         pen.setEnAction(true);
                         m.changeCarte(Map.elementCarte.pengoPoussePendant, temp);
-                        //majAfficheCarte();
+                        majAfficheCarte();
                         if(!m.isMur(c, dir)){
-                            if(m.objet(c)){
-                                if(m.objet(new Coordonnees(c.getX(), c.getY()+1))){
+                            if(m.isBlockOrIsMur(c)){
+                                if(m.isBlockOrIsMur(new Coordonnees(c.getX(), c.getY()+1))){
                                     destructionBloc(c);
                                 }
                                 else{
+                                    destructionOK = false ;
                                     bougerBloc(c, dir);
                                 }
                             }
@@ -597,24 +602,27 @@ public class GameEngine {
                     break;
                 case dirDroite :
                     c = new Coordonnees(pen.getCoordonnees().getX()+1, pen.getCoordonnees().getY());
-
+                    
                     if(act.equals(Personnage.Actions.bouger)){
+                        action = 0 ;
                         if(m.move(pen, pen.getCoordonnees(), c, this))
                             pen.getCoordonnees().setCoordonnees(c);
                         else
                             moveOk = false;
                     }
                     else if(act.equals(Personnage.Actions.pousser_detruire)){
+                        action = 1 ;
                         pen.setPousseDetruire(true);
                         pen.setEnAction(true);
                         m.changeCarte(Map.elementCarte.pengoPoussePendant, temp);
-                        //majAfficheCarte();
+                        majAfficheCarte();
                         if(!m.isMur(c, dir)){
-                            if(m.objet(c)){
-                                if(m.objet(new Coordonnees(c.getX()+1, c.getY()))){
+                            if(m.isBlockOrIsMur(c)){
+                                if(m.isBlockOrIsMur(new Coordonnees(c.getX()+1, c.getY()))){
                                     destructionBloc(c);
                                 }
                                 else{
+                                    destructionOK = false ;
                                     bougerBloc(c, dir);
                                 }
                             }
@@ -637,22 +645,25 @@ public class GameEngine {
                     c = new Coordonnees(pen.getCoordonnees().getX()-1, pen.getCoordonnees().getY());
                     
                     if(act.equals(Personnage.Actions.bouger)){
+                        action = 0 ;
                         if(m.move(pen, pen.getCoordonnees(), c, this))
                             pen.getCoordonnees().setCoordonnees(c);
                         else
                             moveOk = false;
                     }
                     else if(act.equals(Personnage.Actions.pousser_detruire)){
+                        action = 1 ;
                         pen.setPousseDetruire(true);
                         pen.setEnAction(true);
                         m.changeCarte(Map.elementCarte.pengoPoussePendant, temp);
-                        //majAfficheCarte();
+                        majAfficheCarte();
                         if(!m.isMur(c, dir)){
-                            if(m.objet(c)){
-                                if(m.objet(new Coordonnees(c.getX()-1, c.getY()))){
+                            if(m.isBlockOrIsMur(c)){
+                                if(m.isBlockOrIsMur(new Coordonnees(c.getX()-1, c.getY()))){
                                     destructionBloc(c);
                                 }
                                 else{
+                                    destructionOK = false ;
                                     bougerBloc(c, dir);
                                 }
                             }
@@ -668,52 +679,147 @@ public class GameEngine {
                     break;
                 default:
                     moveOk = false;
+                    destructionOK = false ;
                     break;
             }
             //checkFinJeu();
             if(aPousseDetruit)
                 m.changeCarte(Map.elementCarte.pengo, temp);
         }
-        //Si l'objet est un SnoBees
+        //Si l'isBlockOrIsMur est un SnoBees
         else if (o instanceof SnoBees){
             SnoBees sb = (SnoBees) o;
             
             switch(dir){
                 case dirHaut :
                     c = new Coordonnees(sb.getCoordonnees().getX(), sb.getCoordonnees().getY()-1);
-                    if(m.move(sb, sb.getCoordonnees(), c, this))
-                        sb.getCoordonnees().setCoordonnees(c);
-                    else
-                        moveOk = false;
+                    if(act.equals(Personnage.Actions.bouger)){
+                        action = 0 ;
+                        if(m.move(sb, sb.getCoordonnees(), c, this))
+                            sb.getCoordonnees().setCoordonnees(c);
+                        else
+                            moveOk = false;
+                    }
+                    else if (act.equals(Personnage.Actions.pousser_detruire)) {
+                        action = 1 ;
+                        if(!m.isMur(c, dir)){
+                            if(m.isBlockOrIsMur(c)){
+                                if(m.isBlockOrIsMur(new Coordonnees(c.getX(), c.getY()-1))){
+                                    destructionBloc(c);
+                                }
+                                else{
+                                    destructionOK = false ;
+                                }
+                            }
+                        }
+                    }
                     break;
                 case dirBas :
                     c = new Coordonnees(sb.getCoordonnees().getX(), sb.getCoordonnees().getY()+1);
-                    if(m.move(sb, sb.getCoordonnees(), c, this))
-                        sb.getCoordonnees().setCoordonnees(c);
-                    else
-                        moveOk = false;
+                    if(act.equals(Personnage.Actions.bouger)){
+                        action = 0 ;
+                        if(m.move(sb, sb.getCoordonnees(), c, this))
+                            sb.getCoordonnees().setCoordonnees(c);
+                        else
+                            moveOk = false;
+                    }
+                    else if(act.equals(Personnage.Actions.pousser_detruire)){
+                        action = 1 ;
+                        if(!m.isMur(c, dir)){
+                            if(m.isBlockOrIsMur(c)){
+                                if(m.isBlockOrIsMur(new Coordonnees(c.getX(), c.getY()+1))){
+                                    destructionBloc(c);
+                                }
+                                else{
+                                    destructionOK = false ;
+                                }
+                            }
+                        }
+                        
+                    }
+                    
                     break;
                 case dirDroite :
                     c = new Coordonnees(sb.getCoordonnees().getX()+1, sb.getCoordonnees().getY());
-                    if(m.move(sb, sb.getCoordonnees(), c, this))
-                        sb.getCoordonnees().setCoordonnees(c);
-                    else
-                        moveOk = false;
+                    if(act.equals(Personnage.Actions.bouger)){
+                        action = 0 ;
+                        if(m.move(sb, sb.getCoordonnees(), c, this))
+                            sb.getCoordonnees().setCoordonnees(c);
+                        else
+                            moveOk = false;
+                    }
+                    else if(act.equals(Personnage.Actions.pousser_detruire)){
+                        action = 1 ;
+                        if(!m.isMur(c, dir)){
+                            if(m.isBlockOrIsMur(c)){
+                                if(m.isBlockOrIsMur(new Coordonnees(c.getX()+1, c.getY()))){
+                                    destructionBloc(c);
+                                }
+                                else{
+                                    destructionOK = false ;
+                                }
+                            }
+                        }
+                    }
                     break;
                 case dirGauche :
                     c = new Coordonnees(sb.getCoordonnees().getX()-1, sb.getCoordonnees().getY());
-                    if(m.move(sb, sb.getCoordonnees(), c, this))
-                        sb.getCoordonnees().setCoordonnees(c);
-                    else
-                        moveOk = false;
+                    if(act.equals(Personnage.Actions.bouger)){
+                        action = 0 ;
+                        if(m.move(sb, sb.getCoordonnees(), c, this))
+                            sb.getCoordonnees().setCoordonnees(c);
+                        else
+                            moveOk = false;
+                    }
+                    else if(act.equals(Personnage.Actions.pousser_detruire)){
+                        action = 1 ;
+                        if(!m.isMur(c, dir)){
+                            if(m.isBlockOrIsMur(c)){
+                                if(m.isBlockOrIsMur(new Coordonnees(c.getX()-1, c.getY()))){
+                                    destructionBloc(c);
+                                }
+                                else{
+                                    destructionOK = false ;
+                                }
+                            }
+                        }
+                    }
                     break;
                 default:
                     moveOk = false;
+                    destructionOK = false ;
             }
         }
-        //this.majAfficheCarte();
-        return moveOk;
+        majAfficheCarte();
+        if(action == 1)
+            return destructionOK ;
+        else if (action==0)
+            return moveOk ;
+        return false ;
     }
+    
+    
+    public Coordonnees PengoDetected(int perimetreDeSecurite, Coordonnees snobee){
+        boolean iSeePengo = false ;
+        Coordonnees pengoCoord = null ;
+        double random = 1 ;
+        
+        for(int i = 0 ; i < p.size() ; i++){
+            if(iSeePengo) {
+               random = Math.random() ;
+            }
+            if(random > 0.5)
+                if((p.get(i).getCoordonnees().getX())  < (snobee.getX() + perimetreDeSecurite) 
+                    && (p.get(i).getCoordonnees().getX() ) > (snobee.getX() - perimetreDeSecurite) 
+                    && (p.get(i).getCoordonnees().getY() < (snobee.getY() + perimetreDeSecurite))
+                    && (p.get(i).getCoordonnees().getY() > (snobee.getY() - perimetreDeSecurite))){
+                        iSeePengo = true ;
+                        pengoCoord = p.get(i).getCoordonnees() ;
+                }
+        }
+        return pengoCoord ;
+    }
+    
 
     public void snobeeParalyse(Coordonnees coord, Map.elementCarte e) {
         Coordonnees c = new Coordonnees(coord.getY(), coord.getX());
@@ -740,6 +846,7 @@ public class GameEngine {
                                     m.changeSnoBees(c, Map.elementCarte.SnoBeesRamboParalyse, sn.getComportement());
                                     break;
                             }
+                            majAfficheCarte();
                         }
                         else if(e.equals(Map.elementCarte.snoBees)
                                 || e.equals(Map.elementCarte.snobeesMiRambo)
@@ -757,6 +864,7 @@ public class GameEngine {
                                     m.changeSnoBees(c, Map.elementCarte.snoBeesRambo, sn.getComportement());
                                     break;
                             }
+                            majAfficheCarte();
                         }
                     }
                 }
@@ -764,7 +872,7 @@ public class GameEngine {
         }
     }
     
-    public P_Pengo getPengo(){
+   public P_Pengo getPengo(){
         P_Pengo r = null ;
         for(int i = 0 ; i < p.size() ; i++){
             if(p.get(i) instanceof P_Pengo){
@@ -774,29 +882,51 @@ public class GameEngine {
         return r ;
     }
     
+    public P_Pengo getPengo(Coordonnees c){
+        P_Pengo r = null ;
+        for(int i=0;i<p.size();i++){
+            if(p.get(i).getCoordonnees().comp(c))
+                r=(P_Pengo)p.get(i);
+        }
+        return r ;
+    }
+    
+    
+    
     public SnoBees getSnobee(Coordonnees c){
         SnoBees r=null;
         for(int i=0;i<p.size();i++){
             if(p.get(i).getCoordonnees().comp(c))
                 r=(SnoBees)p.get(i);
         }
+        if(r==null)
+            System.out.println(m);
         return r;
     }
     
+    public boolean isSnobees(Coordonnees c){
+        boolean res=false;
+        for(int i=0;i<p.size();i++)
+            if(p.get(i).getCoordonnees().comp(c))
+                res = true;
+        
+        return res;
+    }
+    
     public Mur getMur(Coordonnees c){
-        Mur m = null ;
+        Mur mu = null ;
         for(int i = 0 ; i < mur.size() ; i++){
             if(mur.get(i).getCoordonnees().comp(c))
-                m=mur.get(i);
+                mu=mur.get(i);
         }
-        return m ; 
+        return mu ; 
     }
     
     public void murTremble(Coordonnees c, boolean b){
         for(int i = 0 ; i < mur.size() ; i++) {
             if(mur.get(i).getCoordonnees().comp(c)){
                 mur.get(i).setTremble(b);
-                //majAfficheCarte();
+                majAfficheCarte();
             }
         }    
     }

@@ -52,18 +52,35 @@ public class SnoBees extends Personnage{
     }
 
     @Override
-    public synchronized void run() {
+    public void run() {
+        ancienneDirection=Directions.dirHaut ;
+        int sommeil = 700 ;
         if(nait){
             naissance();
             nait = false;
         }
+        
         while(!stop){
-            if(!paralyse){
+            if(!paralyse){/*
                 ancienneDirection=Directions.dirBas ;
                 directionActuel=Directions.dirDroite;
                 //ge.action(this, Directions.dirDroite, Actions.bouger);
+                */
+                switch (ts) {
+                    case normal :
+                        
+                        algoIdiot() ; 
+                        break ;
+                    case miRamboMiIdiot : 
+                        algoMiIdiotMiSnobo(); 
+                        break ;
+                    case rambo : 
+                        sommeil = 500 ;
+                        algoSnobo(); 
+                        break ;
+                }
                 try {
-                    Thread.sleep(1000-(1*this.vitesse));
+                    Thread.sleep(sommeil-(1*this.vitesse));
                 } catch (Exception e) {
                 }
             }
@@ -75,6 +92,105 @@ public class SnoBees extends Personnage{
                 }
             }
         }
+    }
+    
+    private void algoIdiot(){
+        /// se promène sans rien détruire, dans la direction qu'il aime bien.
+        boolean fait = false ;
+        int random ; 
+        do{
+            random = (int)(Math.random()*16+1);
+            switch (random) {
+                case 1 : case 2 : case 3 : case 4 : fait = bougeBas() ; break ;
+                case 5 : case 6 : case 7 : case 8 : fait = bougeHaut() ; break ;
+                case 9 : case 10 : case 11 : case 12 : fait = bougeGauche() ; break ;
+                case 13 : case 14 : case 15 : case 16 : fait = bougeDroite() ; break ;
+            } 
+        } while(fait!=true);
+    }
+    
+    private void algoMiIdiotMiSnobo(){
+        /// Il est insouciant mais quand Pengo rentre dans son périmètre de sécurité il se sent menacé et commence à détruire des blocs
+        boolean fait = false ;
+        
+        
+        
+        
+    }
+    
+    private void algoSnobo(){
+        boolean fait = false  ;
+        Coordonnees coordPengo = null ;
+        int ligne = 0 ;
+        int colonne = 0 ;
+        int deplacementSnobo ;
+        do{
+            coordPengo = ge.PengoDetected(7, this.coord);
+            
+            if(coordPengo!=null){
+                ligne = this.coord.getY() - coordPengo.getY() ;
+                colonne = this.coord.getX() - coordPengo.getX() ;
+                if(ligne==0) deplacementSnobo = 2 ;
+                else 
+                    if(colonne==0) deplacementSnobo = 0 ;
+                    else 
+                        if(ligne>=colonne) deplacementSnobo = 1 ;
+                        else
+                            deplacementSnobo = 3 ;
+                
+                if(!fait && deplacementSnobo<2){
+                        if(ligne>0){
+                            
+                            fait = detruire(Directions.dirHaut) ;
+                            if(!fait)
+                                fait = bougeHaut() ;
+                            
+                            if(!fait)
+                                deplacementSnobo=3 ;
+                        }
+                        else {
+                            fait = detruire(Directions.dirBas) ;
+                            if(!fait)
+                                fait = bougeBas() ;
+                            if(!fait)
+                                deplacementSnobo =3 ;
+                        }
+                    /// Va soit à gauche soit à droite
+                }
+                if(!fait && deplacementSnobo>1){    
+                    if(colonne>0){
+                        fait = detruire(Directions.dirGauche) ;
+                        if(!fait)
+                            fait = bougeGauche() ;
+                    }
+                    else {
+                        fait = detruire(Directions.dirDroite) ;
+                        if (!fait)
+                            fait = bougeDroite();
+                    }
+                }
+               
+            }
+            
+            while(!fait){
+                deplacementSnobo = (int)(Math.random()*4+1);
+                switch (deplacementSnobo) {
+                    case 1 : if(!fait) fait = detruire(Directions.dirBas) ; 
+                    case 2:  if(!fait) fait = detruire(Directions.dirHaut) ; 
+                    case 3 : if(!fait) fait = detruire(Directions.dirGauche) ; 
+                    case 4 : if(!fait) fait = detruire(Directions.dirDroite) ; break ;
+                }
+                if(!fait)
+                    switch (deplacementSnobo) {
+                        case 1 : if(!fait) fait = bougeBas() ; 
+                        case 2: if(!fait) fait = bougeHaut() ; 
+                        case 3 : if(!fait) fait = bougeGauche() ; 
+                        case 4 : if(!fait) fait = bougeDroite() ;  break ;
+                    }
+            }
+            
+        } while(!fait) ;
+        
     }
     
     public void setNait(boolean b){
@@ -143,52 +259,62 @@ public class SnoBees extends Personnage{
             bougeGauche();
         }
         if(joueur && (e.getKeyCode() == KeyEvent.VK_SPACE)){
-            detruire();
+            detruire(directionActuel);
         }
     }
     
-    private void bougeHaut(){
-        ancienneDirection = directionActuel;
-        if(directionActuel.equals(Directions.dirHaut) && !direction)
-            direction = true;
-        else
-            direction = false;
-        directionActuel = Directions.dirHaut;
-        this.ge.action(this, directionActuel, Actions.bouger);
+    private boolean bougeHaut(){
+        boolean moveOk = this.ge.action(this, Directions.dirHaut, Actions.bouger) ;
+        if (moveOk) {
+            ancienneDirection = directionActuel;
+            direction = directionActuel.equals(Directions.dirHaut) && !direction ;
+            directionActuel = Directions.dirHaut;
+        }
+        return moveOk ;
     }
     
-    private void bougeBas(){
-        ancienneDirection = directionActuel;
-        if(directionActuel.equals(Directions.dirBas) && !direction)
-            direction=true;
-        else
-            direction=false;
-        directionActuel=Directions.dirBas;
-        this.ge.action(this, directionActuel, Actions.bouger);
+    private boolean bougeBas(){
+        boolean moveOk = this.ge.action(this, Directions.dirBas, Actions.bouger) ;
+        if (moveOk) {
+            ancienneDirection = directionActuel;
+            direction = directionActuel.equals(Directions.dirBas) && !direction ;
+            directionActuel = Directions.dirBas;
+        }
+        return moveOk ;
     }
     
-    private void bougeDroite(){
-        ancienneDirection = directionActuel;
-        if(directionActuel.equals(Directions.dirDroite)&& !direction)
-            direction = true ;
-        else
-            direction = false ;
-        directionActuel=Directions.dirDroite;
-        this.ge.action(this, directionActuel, Actions.bouger);
+    private boolean bougeDroite(){
+        boolean moveOk = this.ge.action(this, Directions.dirDroite, Actions.bouger) ;
+        if (moveOk) {
+            ancienneDirection = directionActuel;
+            direction = directionActuel.equals(Directions.dirDroite) && !direction ;
+            directionActuel = Directions.dirDroite;
+        }
+        return moveOk ;
     }
 
-    private void bougeGauche(){
-        ancienneDirection = directionActuel;
-        if(directionActuel.equals(Directions.dirGauche) && !direction)
-            direction = true;
-        else
-            direction=false;
-        directionActuel=Directions.dirGauche;
-        this.ge.action(this, directionActuel, Actions.bouger);
+    private boolean bougeGauche(){
+        boolean moveOk = this.ge.action(this, Directions.dirGauche, Actions.bouger) ;
+        if (moveOk) {
+            ancienneDirection = directionActuel;
+            direction = directionActuel.equals(Directions.dirGauche) && !direction ;
+            directionActuel = Directions.dirGauche;
+        }
+        return moveOk ;
     }
     
-    private void detruire(){
-        this.ge.action(this, directionActuel, Actions.pousser_detruire);
+    private boolean detruire(Directions dir){
+        boolean destructionOk = this.ge.action(this, dir, Actions.pousser_detruire) ;
+        if(destructionOk){
+            directionActuel = dir ;
+            switch (dir){
+                case dirHaut : bougeHaut() ; break ;
+                case dirBas : bougeBas() ; break ;
+                case dirGauche : bougeGauche() ; break ;
+                case dirDroite : bougeDroite() ; break ;
+            }
+        }
+        return destructionOk ;
     }
     
     public void setComportement(typeSnobees t){
@@ -207,5 +333,9 @@ public class SnoBees extends Personnage{
     @Override
     public void keyReleased(KeyEvent e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    public void setDirection(Directions d){
+        this.directionActuel = d ;
     }
 }

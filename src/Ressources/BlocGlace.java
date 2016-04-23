@@ -19,6 +19,7 @@ public class BlocGlace extends Bloc{
         super(c);
         contientSnobees = snobees;
         detruitParNaissance = false;
+        finDestruction = 3;
     }
     
     public void incrementeDestruction(){

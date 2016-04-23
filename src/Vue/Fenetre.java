@@ -25,15 +25,19 @@ public class Fenetre extends JFrame{
     public Fenetre(GameEngine gameEngine, KeyListener[] keyListener){
         super("Pengo") ;
         build() ;
+        
+        
         for(int i = 0 ; i < keyListener.length ; i++){
             this.addKeyListener(keyListener[i]);
         }
-        map = new Carte() ;
-        cv = new Calcul_Vue(gameEngine) ;
-       
+        /*
+        PressEntry pe = new PressEntry();
+        pe.setSize(400,750);
+        this.getContentPane().add(pe);*/
+        
+        lancerJeu(gameEngine);
        // map.setBackground(Color.black);
-        this.getContentPane().add(map);
-        this.setVisible(true) ;
+        
         
     }
     public void setCarte(String[][] carteString){
@@ -41,11 +45,18 @@ public class Fenetre extends JFrame{
     }
     
     private void build(){
-        this.setSize(500,900) ;
+        this.setSize(400,750) ;
         this.setLocationRelativeTo(null) ;
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE) ;
         this.setResizable(false) ;
         this.setAlwaysOnTop(true) ;
        // this.setBackground(Color.BLACK);
+    }
+    
+    private void lancerJeu(GameEngine gameEngine){
+        map = new Carte() ;
+        cv = new Calcul_Vue(gameEngine) ;
+        this.getContentPane().add(map);
+        this.setVisible(true) ;
     }
 }

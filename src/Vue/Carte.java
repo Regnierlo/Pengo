@@ -38,7 +38,7 @@ public class Carte extends JPanel{
         
         for(int i = 0 ; i < 300 ; i++){
             tabCoordonnees[0][i]= 1 ;
-            tabCoordonnees[1][i]= 9 ;
+            tabCoordonnees[1][i]= 32 ;
         }
     }
     
@@ -53,66 +53,8 @@ public class Carte extends JPanel{
         Graphics2D g2 = (Graphics2D) g ;
         l = 0 ;
         
-       /* g2.drawImage(tabPictures.getPicture(0,0),32, 32,this);
-        g2.drawImage(tabPictures.getPicture(1,0),32*2, 32,this);
-        g2.drawImage(tabPictures.getPicture(0,1),32*3, 32,this);
-        g2.drawImage(tabPictures.getPicture(1,1),32*4, 32,this);
-        g2.drawImage(tabPictures.getPicture(0,2),32*5, 32,this);
-        g2.drawImage(tabPictures.getPicture(1,2),32*6, 32,this);
-        g2.drawImage(tabPictures.getPicture(0,3),32*7, 32,this);
-        g2.drawImage(tabPictures.getPicture(1,3),32*8, 32,this);
-        
-        g2.drawImage(tabPictures.getPicture(0,4),32, 32*2,this);
-        g2.drawImage(tabPictures.getPicture(1,4),32*2, 32*2,this);
-        g2.drawImage(tabPictures.getPicture(0,5),32*3, 32*2,this);
-        g2.drawImage(tabPictures.getPicture(1,5),32*4, 32*2,this);
-        g2.drawImage(tabPictures.getPicture(0,6),32*5, 32*2,this);
-        g2.drawImage(tabPictures.getPicture(1,6),32*6, 32*2,this);
-        g2.drawImage(tabPictures.getPicture(0,7),32*7, 32*2,this);
-        g2.drawImage(tabPictures.getPicture(1,7),32*8, 32*2,this);
-        
-        g2.drawImage(tabPictures.getPicture(0,8),32, 32*3,this);
-        g2.drawImage(tabPictures.getPicture(1,8),32*2, 32*3,this);
-        g2.drawImage(tabPictures.getPicture(0,9),32*3, 32*3,this);
-        g2.drawImage(tabPictures.getPicture(1,9),32*4, 32*3,this);
-        g2.drawImage(tabPictures.getPicture(0,10),32*5, 32*3,this);
-       // g2.drawImage(tabPictures.getPicture(1,10),32*6, 32*3,this);
-        g2.drawImage(tabPictures.getPicture(0,11),32*7, 32*3,this);
-        
-        g2.drawImage(tabPictures.getPicture(0,12),32*9, 32*3,this);
-        g2.drawImage(tabPictures.getPicture(1,12),32*10, 32*3,this);
-        
-     
-        g2.drawImage(tabPictures.getPicture(0,14),32*3, 32*4,this);
-        g2.drawImage(tabPictures.getPicture(1,14),32*4, 32*4,this);
-        g2.drawImage(tabPictures.getPicture(0,15),32*5, 32*4,this);
-        g2.drawImage(tabPictures.getPicture(1,15),32*6, 32*4,this);
-        
-        
-        
-        g2.drawImage(tabPictures.getPicture(0,16),32*3, 32*6,this);
-        g2.drawImage(tabPictures.getPicture(1,16),32*4, 32*6,this);
-        g2.drawImage(tabPictures.getPicture(0,17),32*5, 32*6,this);
-        g2.drawImage(tabPictures.getPicture(1,17),32*6, 32*6,this);
-        
-        g2.drawImage(tabPictures.getPicture(0,18),32*7, 32*6,this);
-        g2.drawImage(tabPictures.getPicture(1,18),32*8, 32*6,this);
-        
-        g2.drawImage(tabPictures.getPicture(0,19),32, 32*7,this);
-        g2.drawImage(tabPictures.getPicture(1,19),32*2, 32*7,this);
-        g2.drawImage(tabPictures.getPicture(0,20),32*3, 32*7,this);
-        g2.drawImage(tabPictures.getPicture(1,20),32*4, 32*7,this);
-        g2.drawImage(tabPictures.getPicture(0,21),32*5, 32*7,this);
-        g2.drawImage(tabPictures.getPicture(1,21),32*6, 32*7,this);
-        g2.drawImage(tabPictures.getPicture(0,22),32*7, 32*7,this);
-        g2.drawImage(tabPictures.getPicture(1,22),32*8, 32*7,this);
-        
-        
        
-        g2.drawImage(tabPictures.getPicture(0,23),32*3, 32*8,this);
-        g2.drawImage(tabPictures.getPicture(1,23),32*4, 32*8,this);
-        g2.drawImage(tabPictures.getPicture(0,24),32*5, 32*8,this);
-        */
+        
        /// g2.drawImage(tabPictures.getPicture(0,13),32, 32*4,this);
        ///g2.drawImage(tabPictures.getPicture(1,13),32*2, 32*4,this);
       
