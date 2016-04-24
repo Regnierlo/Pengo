@@ -270,14 +270,15 @@ public class Calcul_Vue {
                         
                         case "E" : {
                         /// Si le snobee va en haut
-                            System.out.println("coordonnee " + i + " et "+ j);
-                            switch (jesus.getSnobee(new Coordonnees(j,i)).getDirectionActuel()) {
+                            SnoBees sb = jesus.getSnobee(new Coordonnees(j,i));
+                            System.out.println("------> Direction du snobee : " + sb.getDirectionActuel());
+                            switch (sb.getDirectionActuel()) {
                                 
                             /// FIN si va en haut
                                 case dirHaut:
-                                    if(jesus.getSnobee(new Coordonnees(j,i)).getAncienneDirection().equals(Personnage.Directions.dirHaut) 
-                                            && jesus.getSnobee(new Coordonnees(j,i)).getBoolDirection() 
-                                            && jesus.getSnobee(new Coordonnees(j,i)).getVaMourirParBloc()!=true){
+                                    if(sb.getAncienneDirection().equals(sb.getDirectionActuel()) 
+                                            && sb.getBoolDirection() 
+                                            && !sb.getVaMourirParBloc()){
                                         tabCoordonnees[0][nbCoordonnees]= 1 ;
                                         tabCoordonnees[1][nbCoordonnees]= 12 ;
                                     }
@@ -333,8 +334,8 @@ public class Calcul_Vue {
                         
                         /// SI snobee paralysé
                         case "K" : {
-                            double random = Math.random();
-                            if(random < 0.5){
+                            double random = Math.random()*521;
+                            if(random < 255){
                                     tabCoordonnees[0][nbCoordonnees]= 1 ;
                                     tabCoordonnees[1][nbCoordonnees]= 18 ;
                             }
@@ -360,12 +361,12 @@ public class Calcul_Vue {
                                     break;
                             /// FIN si va en bas
                                 case dirBas:
-                                    tabCoordonnees[0][nbCoordonnees]= 0 ;
+                                    tabCoordonnees[0][nbCoordonnees]= 1 ;
                                     tabCoordonnees[1][nbCoordonnees]= 17 ;
                                     break;
                             /// FIN si va à gauche
                                 case dirGauche:
-                                    tabCoordonnees[0][nbCoordonnees]= 1 ;
+                                    tabCoordonnees[0][nbCoordonnees]= 0 ;
                                     tabCoordonnees[1][nbCoordonnees]= 17 ;
                                     break;
                                 default:

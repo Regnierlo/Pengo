@@ -43,37 +43,37 @@ public class P_Pengo extends Personnage{
         
         if(joueur && (e.getKeyCode() == KeyEvent.VK_Z) && !mort && !enAction){
             ancienneDirection = directionActuel ;
-            if(directionActuel.equals(Directions.dirHaut)&& direction==false)
-                direction = true ;
+            if(directionActuel.equals(Directions.dirHaut)&& boolDirection==false)
+                boolDirection = true ;
             else
-                direction = false ;
+                boolDirection = false ;
             directionActuel = Directions.dirHaut;
             this.ge.action(this, directionActuel, Actions.bouger);
         }
         if(joueur && (e.getKeyCode() == KeyEvent.VK_S) && !mort && !enAction){
             ancienneDirection = directionActuel ;
-            if(directionActuel.equals(Directions.dirBas)&& direction==false)
-                direction = true ;
+            if(directionActuel.equals(Directions.dirBas)&& boolDirection==false)
+                boolDirection = true ;
             else
-                direction = false ;
+                boolDirection = false ;
             directionActuel = Directions.dirBas;
             this.ge.action(this, directionActuel, Actions.bouger);
         }
         if(joueur && (e.getKeyCode() == KeyEvent.VK_D ) && !mort && !enAction){
             ancienneDirection = directionActuel ;
-            if(directionActuel.equals(Directions.dirDroite) && direction==false)
-                direction = true ;
+            if(directionActuel.equals(Directions.dirDroite) && boolDirection==false)
+                boolDirection = true ;
             else
-                direction = false ;
+                boolDirection = false ;
             directionActuel = Directions.dirDroite;
             this.ge.action(this, directionActuel, Actions.bouger);
         }
         if(joueur && (e.getKeyCode() == KeyEvent.VK_Q) && !mort && !enAction){
             ancienneDirection = directionActuel ;
-            if(directionActuel.equals(Directions.dirGauche) && direction==false )
-                direction = true ;
+            if(directionActuel.equals(Directions.dirGauche) && boolDirection==false )
+                boolDirection = true ;
             else
-                direction = false ;
+                boolDirection = false ;
             directionActuel = Directions.dirGauche;
             this.ge.action(this, directionActuel, Actions.bouger);
         }

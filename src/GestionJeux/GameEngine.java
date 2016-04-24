@@ -226,6 +226,7 @@ public class GameEngine {
         sb.setVaMourirParBloc(true);
         if(m.move(sb, c, cn, this)){
             sb.getCoordonnees().setCoordonnees(cn);
+            
         }
         else{
             snobeeMort(sb.getCoordonnees());
@@ -691,6 +692,7 @@ public class GameEngine {
             SnoBees sb = (SnoBees) o;
             
             switch(dir){
+                
                 case dirHaut :
                     c = new Coordonnees(sb.getCoordonnees().getX(), sb.getCoordonnees().getY()-1);
                     if(act.equals(Personnage.Actions.bouger)){

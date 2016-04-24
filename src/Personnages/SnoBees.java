@@ -49,11 +49,12 @@ public class SnoBees extends Personnage{
         itsAlive = 7;
         nait = true;
         ts = type;
+       // ancienneDirection=Directions.dirHaut ;
     }
 
     @Override
     public void run() {
-        ancienneDirection=Directions.dirHaut ;
+        
         int sommeil = 700 ;
         if(nait){
             naissance();
@@ -68,7 +69,6 @@ public class SnoBees extends Personnage{
                 */
                 switch (ts) {
                     case normal :
-                        
                         algoIdiot() ; 
                         break ;
                     case miRamboMiIdiot : 
@@ -95,7 +95,7 @@ public class SnoBees extends Personnage{
     }
     
     private void algoIdiot(){
-        /// se promène sans rien détruire, dans la direction qu'il aime bien.
+        /// se promène sans rien détruire, dans la boolDirection qu'il aime bien.
         boolean fait = false ;
         int random ; 
         do{
@@ -125,7 +125,7 @@ public class SnoBees extends Personnage{
         int colonne = 0 ;
         int deplacementSnobo ;
         do{
-            coordPengo = ge.PengoDetected(7, this.coord);
+            coordPengo = ge.PengoDetected(1, this.coord);
             
             if(coordPengo!=null){
                 ligne = this.coord.getY() - coordPengo.getY() ;
@@ -140,13 +140,11 @@ public class SnoBees extends Personnage{
                 
                 if(!fait && deplacementSnobo<2){
                         if(ligne>0){
-                            
                             fait = detruire(Directions.dirHaut) ;
                             if(!fait)
                                 fait = bougeHaut() ;
-                            
                             if(!fait)
-                                deplacementSnobo=3 ;
+                                deplacementSnobo =3 ;
                         }
                         else {
                             fait = detruire(Directions.dirBas) ;
@@ -168,10 +166,8 @@ public class SnoBees extends Personnage{
                         if (!fait)
                             fait = bougeDroite();
                     }
-                }
-               
+                } 
             }
-            
             while(!fait){
                 deplacementSnobo = (int)(Math.random()*4+1);
                 switch (deplacementSnobo) {
@@ -182,9 +178,9 @@ public class SnoBees extends Personnage{
                 }
                 if(!fait)
                     switch (deplacementSnobo) {
-                        case 1 : if(!fait) fait = bougeBas() ; 
-                        case 2: if(!fait) fait = bougeHaut() ; 
-                        case 3 : if(!fait) fait = bougeGauche() ; 
+                        case 1 : if(!fait) fait = bougeBas() ;  break ;
+                        case 2: if(!fait) fait = bougeHaut() ;  break ; 
+                        case 3 : if(!fait) fait = bougeGauche() ; break ;
                         case 4 : if(!fait) fait = bougeDroite() ;  break ;
                     }
             }
@@ -266,9 +262,10 @@ public class SnoBees extends Personnage{
     private boolean bougeHaut(){
         boolean moveOk = this.ge.action(this, Directions.dirHaut, Actions.bouger) ;
         if (moveOk) {
-            ancienneDirection = directionActuel;
-            direction = directionActuel.equals(Directions.dirHaut) && !direction ;
-            directionActuel = Directions.dirHaut;
+            this.ancienneDirection = this.directionActuel;
+            this.boolDirection = this.ancienneDirection.equals(Directions.dirHaut) && !boolDirection ;
+            this.setDirection(Directions.dirHaut) ;
+          //  this.directionActuel = Directions.dirHaut;
         }
         return moveOk ;
     }
@@ -276,9 +273,10 @@ public class SnoBees extends Personnage{
     private boolean bougeBas(){
         boolean moveOk = this.ge.action(this, Directions.dirBas, Actions.bouger) ;
         if (moveOk) {
-            ancienneDirection = directionActuel;
-            direction = directionActuel.equals(Directions.dirBas) && !direction ;
-            directionActuel = Directions.dirBas;
+            this.ancienneDirection = this.directionActuel;
+            this.boolDirection = ancienneDirection.equals(Directions.dirBas) && !boolDirection ;
+            this.setDirection(Directions.dirBas);
+            
         }
         return moveOk ;
     }
@@ -287,7 +285,7 @@ public class SnoBees extends Personnage{
         boolean moveOk = this.ge.action(this, Directions.dirDroite, Actions.bouger) ;
         if (moveOk) {
             ancienneDirection = directionActuel;
-            direction = directionActuel.equals(Directions.dirDroite) && !direction ;
+            boolDirection = directionActuel.equals(Directions.dirDroite) && !boolDirection ;
             directionActuel = Directions.dirDroite;
         }
         return moveOk ;
@@ -297,7 +295,7 @@ public class SnoBees extends Personnage{
         boolean moveOk = this.ge.action(this, Directions.dirGauche, Actions.bouger) ;
         if (moveOk) {
             ancienneDirection = directionActuel;
-            direction = directionActuel.equals(Directions.dirGauche) && !direction ;
+            boolDirection = directionActuel.equals(Directions.dirGauche) && !boolDirection ;
             directionActuel = Directions.dirGauche;
         }
         return moveOk ;
