@@ -19,11 +19,13 @@ import java.util.logging.Logger;
 
 public class Score {
     private int score;
+    private int hs; //High Score
     private static final String chemin="topScore.txt";
     private final int nbTopScoreEnregistre=5;
     
     public Score(){
         score = 0;
+        hs = getHS();
     }
     
     public void pointBlocSpeciaux(boolean contreMur){
@@ -41,7 +43,7 @@ public class Score {
         score += 100;
     }
     
-    public void pointFinNiveau(int s, String name){
+    public void pointFinNiveau(int s){
         if(s < 20)
             score += 5000;
         else if(s >= 20 && s <30)
@@ -52,8 +54,6 @@ public class Score {
             score += 500;
         else if(s >=50 && s<60)
             score+=10;
-        
-        writeScore(name);
     }
     
     /**
@@ -61,7 +61,7 @@ public class Score {
      *
      * @param n Le nom du joueur
      */
-    private void writeScore(String n){
+    public void writeScore(String n){
         
         //Ajout du nom à la fin dans le fichier score
         try {
@@ -74,6 +74,8 @@ public class Score {
             FileWriter fw = new FileWriter(f, true);
             //Création de la string à ajouter
             String txt = n+" "+Integer.toString(score)+"\n";
+            System.out.println(txt);
+            System.out.print("fefzef");
             //Ajout de la string créée
             fw.write(txt);
             //Fermeture 
@@ -83,6 +85,39 @@ public class Score {
         } catch (IOException ex) {
             Logger.getLogger(Score.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    private int getHS(){
+        int r=-1;
+        
+        BufferedReader br = null;
+        
+        try{
+            String ligne;
+            String[] tmp;
+            File f = new File(chemin);
+            
+            br=new BufferedReader(new FileReader(f));
+            
+            if((ligne=br.readLine()) != null){
+                tmp=ligne.split(" ");
+                r = Integer.parseInt(tmp[1]);
+            }
+            br.close();
+            
+        }catch(FileNotFoundException ex){
+            Logger.getLogger(Score.class.getName()).log(Level.SEVERE, null, ex);
+        }catch(IOException ex){
+            Logger.getLogger(Score.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                br.close();
+            } catch (Exception ex) {
+                Logger.getLogger(Score.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        return r;
     }
     
     /**
@@ -124,8 +159,8 @@ public class Score {
                     tmp=ls.get(j).split(" "); //Décomposition du string
                     if(li.get(i)==(Integer.parseInt(tmp[1]))){ //Après la récupération du score on vérifie si c'est le score qu'on cherche
                         //Si c'est ce qu'on cherche
-                        topScore[j][0] = tmp[0];//On ajoute le nom dans la premiere case
-                        topScore[j][1] = tmp[1];//On ajoute le score dans la seconde
+                        topScore[i][0] = tmp[0];//On ajoute le nom dans la premiere case
+                        topScore[i][1] = tmp[1];//On ajoute le score dans la seconde
                         trouver = true; //On indique qu'on l'a trouvé
                         ls.remove(j); //On l'enleve de l'ancienne liste pour éviter de le récupérer si deux joueurs ont eut égalité
                     }
@@ -142,7 +177,7 @@ public class Score {
             
             //ECRITURE DES SCORES TRIES
             for(int i=0;i<nbTopScoreEnregistre;i++){
-                fw.write(topScore[i][0]+" "+topScore[i][1]);
+                fw.write(topScore[i][0]+" "+topScore[i][1]+"\n");
                 //fw.write(nl.get(i)+"\n"); //On écrit dans le fichier les scores triés qui sont dans la liste définitive
             }
             fw.close();//On ferme l'outile d'écriture
@@ -184,10 +219,6 @@ public class Score {
     
     public static String[][] getTopScore(){
         String[][] topScore = new String[5][2];
-        for(int i = 0 ; i < 5 ; i++){
-            topScore[i][0]="Nom "+i;
-            topScore[i][1]="152" + i;
-        }
         
         BufferedReader br=null;
         File f = new File(chemin);
@@ -195,8 +226,16 @@ public class Score {
         try{
             String ligne;
             String tmp[];
-            
+            int i=0;
             br=new BufferedReader(new FileReader(f));
+            
+            while((ligne=br.readLine()) != null && i<5){
+                tmp=ligne.split(" "); //Décomposition de la ligne avec " " comme séparateur
+                topScore[i][0] = tmp[0];
+                topScore[i][1] = tmp[1];
+                i++;
+            }
+            br.close(); //On ferme le bufferedReader
             
             
         }catch(FileNotFoundException ex){
@@ -209,17 +248,6 @@ public class Score {
             } catch (IOException ex) {
             }
         }
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
         
         return topScore ;

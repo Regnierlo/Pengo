@@ -25,6 +25,7 @@ public class EntrerPseudo extends JDialog{
     private JTextField pseudo = new JTextField("AAA");
     private JButton valider = new JButton("V A L I D E R");
     private ImageIcon imagePseudo ;
+    private boolean disparu;
     
    /* JPanel imagePanel = new JPanel(new BorderLayout()){
         @Override
@@ -35,6 +36,7 @@ public class EntrerPseudo extends JDialog{
     };*/
     
     public EntrerPseudo(){
+        disparu=false;
         try{
             imagePseudo = new ImageIcon(chemin+"src/Images/pseudo.png");
         }catch(NullPointerException e){     
@@ -46,7 +48,6 @@ public class EntrerPseudo extends JDialog{
     
     
     private void constructionDialog(){
-        
         this.setSize(400,200);
         this.setBackground(Color.black);
         Font police = new Font("Courier",Font.BOLD, 24);
@@ -72,12 +73,20 @@ public class EntrerPseudo extends JDialog{
         this.getContentPane().add(valider, BorderLayout.SOUTH);
         this.setVisible(true);
         this.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
-        
+    }
+    
+    public String getPseudo(){
+        return pseudo.getText();
+    }
+    
+    public boolean getEtat(){
+        return disparu;
     }
     
     class validerPseudo implements ActionListener{
         public void actionPerformed(ActionEvent e){
-            System.out.println(pseudo.getText());
+            setVisible(false);
+            disparu=true;
         }
     }
             

@@ -30,8 +30,10 @@ public class Menu extends JFrame {
     ImageIcon imagePengo ;
     Border blackline ;
     JLabel labelImagePengo ;
-    public Menu(){
+    JFrame moi;
     
+    public Menu(){
+        moi=this;
         constructionMenu() ;
     
     }
@@ -81,7 +83,7 @@ public class Menu extends JFrame {
         public void actionPerformed(ActionEvent e){
             System.out.println("vous avez appuyé sur play");
             setVisible(false);
-            new GameEngine();
+            GameEngine ge = new GameEngine(moi);
         }
     }
     
