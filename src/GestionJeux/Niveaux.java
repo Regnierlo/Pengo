@@ -5,10 +5,6 @@
  */
 package GestionJeux;
 
-/**
- *
- * @author loisr
- */
 public class Niveaux {
     
     
