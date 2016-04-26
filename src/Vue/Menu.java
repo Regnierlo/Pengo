@@ -8,28 +8,24 @@ package Vue;
 import GestionJeux.GameEngine;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javafx.scene.layout.Border;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class Menu extends JFrame {
 
-    JPanel centre = new JPanel(new GridLayout(3,2));
-    BoutonMenu play = new BoutonMenu("P L A Y");
-    BoutonMenu score = new BoutonMenu("S C O R E");
-    BoutonMenu quitter = new BoutonMenu("E X I T");
-    String chemin ="";
-    ImageIcon imagePengo ;
-    Border blackline ;
-    JLabel labelImagePengo ;
+    private JPanel centre ;
+    private BoutonMenu play ;
+    private BoutonMenu score ;
+    private BoutonMenu quitter ;
+    private ImageIcon imagePengo ;
+    private JLabel labelImagePengo ;
+    
     public Menu(){
     
         constructionMenu() ;
@@ -37,47 +33,59 @@ public class Menu extends JFrame {
     }
 
     private void constructionMenu(){
-        //blackline = BorderFactory.createLineBorder(Color.black);
+        
         this.setSize(400,700) ;
         this.setLocationRelativeTo(null) ;
-        this.setLayout(new BorderLayout());
-        this.setBackground(Color.BLACK);
         this.setResizable(false);
-        play.addActionListener(new appuyerPlay());
-        score.addActionListener(new appuyerScore());
-        quitter.addActionListener(new appuyerQuitter());
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setLayout(new BorderLayout());
+        
+        this.setBackground(Color.BLACK);
+        
+        this.centre = new JPanel(new GridLayout(3,2));
+        this.centre.setBackground(Color.BLACK);
+        this.centre.setBorder(BorderFactory.createLineBorder(Color.BLACK,4));
+         
+        this.play = new BoutonMenu("P L A Y");
+        this.play.addActionListener(new appuyerPlay());
+        
+        this.score = new BoutonMenu("S C O R E");
+        this.score.addActionListener(new appuyerScore());
+        
+        this.quitter = new BoutonMenu("E X I T");
+        this.quitter.addActionListener(new appuyerQuitter());
         
         
-        centre.setBackground(Color.BLACK);
-        centre.add(new LabelMenu(1));
-        centre.add(play);
+        this.centre.add(new LabelMenu(1));
+        this.centre.add(play);
         
-        centre.add(new LabelMenu(2));
-        centre.add(score);
+        this.centre.add(new LabelMenu(2));
+        this.centre.add(score);
         
-        centre.add(new LabelMenu(3));
-        centre.add(quitter);
-        centre.setBorder(BorderFactory.createLineBorder(Color.BLACK,4));
+        this.centre.add(new LabelMenu(3));
+        this.centre.add(quitter);
         
+       
         try{
-            imagePengo = new ImageIcon(chemin+"src/Images/pengo.png");
+            this.imagePengo = new ImageIcon(Picture.chemin+"src/Images/pengo.png");
         }catch(NullPointerException e){     
             System.out.println("Pas d'image");
         }
         
-        labelImagePengo = new JLabel(imagePengo);
-        labelImagePengo.setBorder(BorderFactory.createLineBorder(Color.BLACK,1));
+        this.labelImagePengo = new JLabel(imagePengo);
+        this.labelImagePengo.setBorder(BorderFactory.createLineBorder(Color.BLACK,1));
+        
+        
         //// NORTH
         this.getContentPane().add(labelImagePengo, BorderLayout.NORTH);       
         /// CENTER
         this.getContentPane().add(centre, BorderLayout.CENTER);
-        /// SOUTH
-        this.getContentPane().add(new JLabel("Image rigolote à mettre"), BorderLayout.SOUTH);
         
         this.setVisible(true);
     }
     
     class appuyerPlay implements ActionListener{
+        @Override
         public void actionPerformed(ActionEvent e){
             System.out.println("vous avez appuyé sur play");
             setVisible(false);
@@ -86,14 +94,15 @@ public class Menu extends JFrame {
     }
     
     class appuyerScore implements ActionListener{
+        @Override
         public void actionPerformed(ActionEvent e){
             System.out.println("vous avez appuyé sur score");
-            
             new TableauScore();
         }
     }
     
      class appuyerQuitter implements ActionListener{
+        @Override
         public void actionPerformed(ActionEvent e){
             System.exit(0);
         }

@@ -10,15 +10,10 @@ import javax.swing.JLabel;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-/**
- *
- * @author loisr
- */
 public class LabelMenu extends JLabel implements MouseListener{
     
     private ImageIcon img1 ;
     private ImageIcon img2;
-    String chemin ="";
     
     public LabelMenu(int type){
         this.addMouseListener(this);
@@ -40,51 +35,47 @@ public class LabelMenu extends JLabel implements MouseListener{
     
     private void constructionLabelJouer(){
         try{
-            img1 = new ImageIcon(chemin+"src/Images/jouer1.png");
+            img1 = new ImageIcon(Picture.chemin+"src/Images/jouer1.png");
         }catch(NullPointerException e){     
             System.out.println("Pas d'iamge");
         }
         try{
-            img2 = new ImageIcon(chemin+"src/Images/jouer2.png");
+            img2 = new ImageIcon(Picture.chemin+"src/Images/jouer2.png");
         }catch(NullPointerException e){     
             System.out.println("Pas d'iamge");
         }
-        
         this.setIcon(img1);
     }
     private void constructionLabelScore(){
         try{
-            img1 = new ImageIcon(chemin+"src/Images/score1.png");
+            img1 = new ImageIcon(Picture.chemin+"src/Images/score1.png");
         }catch(NullPointerException e){     
             System.out.println("Pas d'iamge");
         }
         try{
-            img2 = new ImageIcon(chemin+"src/Images/score2.png");
+            img2 = new ImageIcon(Picture.chemin+"src/Images/score2.png");
         }catch(NullPointerException e){     
             System.out.println("Pas d'iamge");
         }
-        
         this.setIcon(img1);
     }
     
     private void constructionLabelExit(){
         try{
-            img1 = new ImageIcon(chemin+"src/Images/exit1.png");
+            img1 = new ImageIcon(Picture.chemin+"src/Images/exit1.png");
         }catch(NullPointerException e){     
             System.out.println("Pas d'iamge");
         }
         try{
-            img2 = new ImageIcon(chemin+"src/Images/exit2.png");
+            img2 = new ImageIcon(Picture.chemin+"src/Images/exit2.png");
         }catch(NullPointerException e){     
             System.out.println("Pas d'iamge");
         }
-        
         this.setIcon(img1);
     }
+    
     @Override
-    public void mouseClicked(MouseEvent event){
-        
-    }
+    public void mouseClicked(MouseEvent event){}
     
     @Override
     public void mouseExited(MouseEvent event){
@@ -97,13 +88,9 @@ public class LabelMenu extends JLabel implements MouseListener{
     }
     
     @Override
-    public void mouseReleased(MouseEvent event){
-    }
+    public void mouseReleased(MouseEvent event){}
 
     @Override
-    public void mousePressed(MouseEvent e) {
-    }
-    
-    
+    public void mousePressed(MouseEvent e) {}
     
 }

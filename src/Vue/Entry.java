@@ -15,21 +15,18 @@ import javax.swing.JPanel;
 
 public class Entry extends JPanel{
     
-    private final String chemin = "";
-    Image img;
+    private Image img;
     
     public Entry(String txt){
         
         try{
-            img = ImageIO.read(new File(chemin+txt));
+            img = ImageIO.read(new File(Picture.chemin+txt));
           
         }catch (IOException e){
                 System.out.println("Pas de première fenêtre");
         } 
 
     }
-    
-    
     
     @Override
     public void paintComponent(Graphics g){

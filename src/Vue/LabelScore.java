@@ -13,11 +13,9 @@ import javax.swing.JLabel;
 public class LabelScore extends JLabel{
     
     private ImageIcon img ;
-    String chemin ="";
     
     public LabelScore(String txt, int type){
         super(txt);
-       
         switch(type){
             case 0 : constructionName();
                 break ;
@@ -37,64 +35,64 @@ public class LabelScore extends JLabel{
     }
     
     private void constructionName(){
-      
         this.setVerticalTextPosition(CENTER);
         this.setHorizontalAlignment(CENTER);
         this.setHorizontalTextPosition(CENTER);
         this.setFont(new Font("Tahoma", Font.BOLD, 20));
         this.setBackground(Color.BLACK);
         this.setForeground(Color.WHITE);
-        
         this.setOpaque(true);
     }
     
     private void constructionScore(){
-        
         this.setVerticalTextPosition(CENTER);
         this.setHorizontalAlignment(CENTER);
         this.setHorizontalTextPosition(CENTER);
         this.setFont(new Font("Tahoma", Font.PLAIN, 20));
         this.setBackground(Color.BLACK);
         this.setForeground(Color.YELLOW);
-        
         this.setOpaque(true);
-        
     }
+    
     private void constructionIcon1ST(){
         try{
-            img = new ImageIcon(chemin+"src/Images/premier.png");
+            img = new ImageIcon(Picture.chemin+"src/Images/premier.png");
         }catch(NullPointerException e){     
             System.out.println("Pas d'iamge");
         }
         this.setIcon(img);
     }
+    
     private void constructionIcon2ND(){
         try{
-            img = new ImageIcon(chemin+"src/Images/deuxieme.png");
+            img = new ImageIcon(Picture.chemin+"src/Images/deuxieme.png");
         }catch(NullPointerException e){     
             System.out.println("Pas d'iamge");
         }
         this.setIcon(img);
     }
+    
      private void constructionIcon3RD(){
         try{
-            img = new ImageIcon(chemin+"src/Images/troisieme.png");
+            img = new ImageIcon(Picture.chemin+"src/Images/troisieme.png");
         }catch(NullPointerException e){     
             System.out.println("Pas d'iamge");
         }
         this.setIcon(img);
     }
+     
       private void constructionIcon4TH(){
         try{
-            img = new ImageIcon(chemin+"src/Images/quatrieme.png");
+            img = new ImageIcon(Picture.chemin+"src/Images/quatrieme.png");
         }catch(NullPointerException e){     
             System.out.println("Pas d'iamge");
         }
         this.setIcon(img);
     }
+      
        private void constructionIcon5TH(){
         try{
-            img = new ImageIcon(chemin+"src/Images/cinquieme.png");
+            img = new ImageIcon(Picture.chemin+"src/Images/cinquieme.png");
         }catch(NullPointerException e){     
             System.out.println("Pas d'iamge");
         }

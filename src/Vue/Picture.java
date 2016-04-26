@@ -13,7 +13,7 @@ import javax.imageio.ImageIO ;
 
 public class Picture {
     Image[][] tabImages ;
-    private final String chemin = "";
+    public static final String chemin = "";
     
     public Picture() {
         

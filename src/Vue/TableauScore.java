@@ -18,24 +18,22 @@ import javax.swing.JPanel;
 public class TableauScore extends JFrame {
     
     String[][] tableau = new String[5][2] ;
-    String chemin="";
     
     JPanel tab = new JPanel(new GridLayout(6,3));
     
     public TableauScore(){
         tableau = Score.getTopScore() ;
         constructionFenetre();
-       
-        
     }
     
     private void constructionFenetre(){
         
         this.setSize(400,700);
+        this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setLayout(new BorderLayout());
-        this.add(new JLabel(new ImageIcon(chemin+"src/Images/etoile.png")),BorderLayout.NORTH);
+        this.add(new JLabel(new ImageIcon(Picture.chemin+"src/Images/etoile.png")),BorderLayout.NORTH);
         
         this.setBackground(Color.BLACK);
         
@@ -43,8 +41,8 @@ public class TableauScore extends JFrame {
         tab.setBackground(Color.BLACK);
         
         tab.add(new JLabel(""));
-        tab.add(new JLabel(new ImageIcon(chemin+"src/Images/name_label.png")));
-        tab.add(new JLabel(new ImageIcon(chemin+"src/Images/score_label.png")));
+        tab.add(new JLabel(new ImageIcon(Picture.chemin+"src/Images/name_label.png")));
+        tab.add(new JLabel(new ImageIcon(Picture.chemin+"src/Images/score_label.png")));
         
         tab.add(new LabelScore("",2)) ;
         tab.add(new LabelScore(tableau[0][0],0));
@@ -66,7 +64,6 @@ public class TableauScore extends JFrame {
         tab.add(new LabelScore("",6)) ;
         tab.add(new LabelScore(tableau[4][0],0));
         tab.add(new LabelScore(tableau[4][1],1));
-        
         
         
         this.add(tab,BorderLayout.CENTER);

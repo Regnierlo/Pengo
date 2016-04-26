@@ -12,10 +12,6 @@ import java.awt.event.MouseListener;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
-/**
- *
- * @author loisr
- */
 public class BoutonMenu extends JButton implements MouseListener {
     
     public BoutonMenu(String txt){
@@ -31,12 +27,11 @@ public class BoutonMenu extends JButton implements MouseListener {
         setFocusPainted(false);
         setHorizontalAlignment(SwingConstants.LEFT);
         setHorizontalTextPosition(SwingConstants.LEFT);
-        
-        
     }
     
     @Override
     public void mouseClicked(MouseEvent event){
+
     }
     
     @Override
@@ -60,6 +55,7 @@ public class BoutonMenu extends JButton implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
+        this.setBackground(Color.BLACK);
     }
     
 }
