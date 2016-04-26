@@ -11,10 +11,8 @@ package GestionJeux;
  */
 public class Niveaux {
     
-    private final Labyrinthe lab;
     
     public Niveaux(){
-        lab = new Labyrinthe(10, 16);
     }
     
     public String[][] getMap(int i){
@@ -70,9 +68,18 @@ public class Niveaux {
     private String[][] choixNiveau(int c){
         
         String[][] r;
+        Labyrinthe lab=new Labyrinthe(10, 16);
+        
         switch(c){
+            case -3:
+                r=lab.generation_labyrinthe(1, 5, 5);
+                break;
+            case -2:
+                String[][] choix_1=lab.generation_labyrinthe(1, 3, 1);
+                r=choix_1;
+                break;
             case -1:
-                r=lab.generation_labyrinthe(1, 1, 0);
+                r=lab.generation_labyrinthe(1, 2, 0);
                 break;
             case 1:
                 String[][] choix1 = {

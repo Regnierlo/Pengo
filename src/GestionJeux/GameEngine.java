@@ -39,7 +39,7 @@ public class GameEngine {
     private int niveau;
     private EntrerPseudo pseudo;
     private final JFrame Menu;
-    
+    private boolean jeuFini;
     private boolean niveauFini ;
     
     public GameEngine(JFrame me){
@@ -56,8 +56,8 @@ public class GameEngine {
         KeyListener[] kl = getKeyListener();
         fenetre_principale = new Fenetre(this,kl) ;
         scoreAttribue = false;
-        niveau = 1;
-        
+        niveau = -1;
+        jeuFini = false;
         fenetre_principale.setVisible(true);
         //Initialisation de la carte
         init() ;
@@ -75,8 +75,9 @@ public class GameEngine {
                 do{
                     System.out.println("\t\t\t\t\tNB SNOBEES : "+(getNbSnoBees()));
                     if(getNbSnoBees()== 0 )
-                        jeuFini=true;
-                        
+                        finNiveau();
+                    else if(getNbVie() < 0 )
+                        jeuFini = true;
                     
                     //System.out.println("\t\t\t\t\tNB SNOBEES : "+(nbSnoBeesActif+nbSnoBeesCache));
                 }while(!jeuFini);
@@ -204,7 +205,6 @@ public class GameEngine {
                     fenetre_principale.removeKeyListener(p.get(i));
             }
             majAfficheCarte();
-            s.pointFinNiveau(tempsSec());
             fenetre_principale.setVisible(false);
             pseudo = new EntrerPseudo();
             while(!pseudo.getEtat()){
@@ -224,18 +224,30 @@ public class GameEngine {
     }
     
     private synchronized void finNiveau(){
-        if(!scoreAttribue){
-            scoreAttribue=true;
-            for(int i=0;i<p.size();i++){
-                p.get(i).arreter();
-            }
-            
-            majAfficheCarte();
-            s.pointFinNiveau(tempsSec());
-            
-            m.setNiveau(-1);
-            init();
+        for(int i=0;i<p.size();i++){
+            p.get(i).arreter();
+            if(p.get(i).getJoueur())
+                fenetre_principale.removeKeyListener(p.get(i));
         }
+        
+        for(int i=0;i<p.size();i++){
+            p.get(i).arreter();
+        }
+
+        majAfficheCarte();
+        s.pointFinNiveau(tempsSec());
+
+        if(niveau==-1){
+            jeuFini = true;
+        }
+        else{
+            niveau--;
+            System.out.println("NIVEAU "+niveau);
+            m.setNiveau(niveau);
+            System.out.println(m);
+        }
+
+        init();
     }
     
     public void snobeePousseParBloc(Coordonnees c, Personnage.Directions dir) {
