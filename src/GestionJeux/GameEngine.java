@@ -16,6 +16,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 
+/**
+ *
+ * @author loisr
+ */
 public class GameEngine {
     
     // Déclaration des variables
@@ -71,13 +75,13 @@ public class GameEngine {
                 do{
                     System.out.println("\t\t\t\t\tNB SNOBEES : "+(getNbSnoBees()));
                     if(getNbSnoBees()== 0 )
-                        niveauFini=true;
+                        jeuFini=true;
                         
                     
                     //System.out.println("\t\t\t\t\tNB SNOBEES : "+(nbSnoBeesActif+nbSnoBeesCache));
-                }while(!niveauFini);
+                }while(!jeuFini);
                 System.out.println("FIN DU JEU");
-                finNiveau();
+                finJeu();
             }
         };
         tChecker.start();
@@ -191,7 +195,7 @@ public class GameEngine {
         return r;
     }
     
-    private synchronized void finNiveau(){
+    private synchronized void finJeu(){
         if(!scoreAttribue){
             scoreAttribue=true;
             for(int i=0;i<p.size();i++){
@@ -216,6 +220,21 @@ public class GameEngine {
             System.out.println("Fini en : "+temps());
             System.out.println("Avec un score total de : "+s.getScore());
             Menu.setVisible(true);
+        }
+    }
+    
+    private synchronized void finNiveau(){
+        if(!scoreAttribue){
+            scoreAttribue=true;
+            for(int i=0;i<p.size();i++){
+                p.get(i).arreter();
+            }
+            
+            majAfficheCarte();
+            s.pointFinNiveau(tempsSec());
+            
+            m.setNiveau(-1);
+            init();
         }
     }
     
@@ -295,7 +314,7 @@ public class GameEngine {
     private void checkFinJeu(){
         if((nbSnoBeesActif+nbSnoBeesCache) <= 0){
             niveauFini=true;
-            finNiveau();
+            finJeu();
         }
     }
     

@@ -89,5 +89,4 @@ public class EntrerPseudo extends JDialog{
             disparu=true;
         }
     }
-            
 }
