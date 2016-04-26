@@ -13,6 +13,8 @@ import java.awt.event.KeyListener;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame ;
 import javax.swing.JLabel;
+import javax.swing.JPanel ;
+import java.awt.GridLayout;
 
 public class Fenetre extends JFrame{
     
@@ -20,6 +22,7 @@ public class Fenetre extends JFrame{
     private Calcul_Vue cv ;
     private Hud hud ;
     private JLabel border ;
+    private JPanel borderWest;
     
    
    public Fenetre(GameEngine gameEngine, KeyListener[] keyListener){
@@ -38,11 +41,11 @@ public class Fenetre extends JFrame{
     }
     
     public void setScore(String score){
-        hud.setScore("kk");
+        hud.setScore(score);
     }
     
     public void setHighScore(String score){
-        hud.setHighScore("kk");
+        hud.setHighScore(score);
     }
     
     public void setNiveau(int n){
@@ -57,24 +60,32 @@ public class Fenetre extends JFrame{
         this.setSize(400,750) ;
         this.setLocationRelativeTo(null) ;
         this.setLayout(new BorderLayout());
-        border = new JLabel();
+        
+        
+        
         this.setResizable(false) ;
         this.setAlwaysOnTop(true) ;
         this.setBackground(Color.BLACK);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE) ;
         
+        
+        borderWest = new JPanel();
+        borderWest.setLayout(new GridLayout(1,1));
+        border = new JLabel();
         hud = new Hud() ;
         map = new Carte() ;
         map.setSize(512,320);
         map.setBackground(Color.BLACK);
+        
         try{
-           border = new JLabel(new ImageIcon(Picture.chemin+"src/Images/border.png"));
+           border.setIcon(new ImageIcon(Picture.chemin+"src/Images/border.png"));
         }catch(NullPointerException e){
         }
+        borderWest.add(border);
+        borderWest.setBackground(Color.BLACK);
         
+        this.getContentPane().add(borderWest,BorderLayout.WEST);
         
-        this.getContentPane().add(border,BorderLayout.WEST);
-        border.setBackground(Color.BLACK);
         this.getContentPane().add(hud,BorderLayout.NORTH) ;
         this.getContentPane().add(map,BorderLayout.CENTER);
        

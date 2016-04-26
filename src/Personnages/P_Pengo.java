@@ -24,7 +24,7 @@ public class P_Pengo extends Personnage{
         super("/Images/Pengo_Face_Pied_Droit.png", c, joueur, 2, g);
         mort = false;
         enAction = false;
-       // vie=2;
+        vie=3;
         
     }
     

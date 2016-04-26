@@ -7,7 +7,6 @@ package Vue;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import static javax.swing.SwingConstants.CENTER;
@@ -65,12 +64,8 @@ public class LabelHud extends JLabel{
     }
     void setScore(String score){
         this.score = score ;
-        repaint();
-    }
-    public void paintComponent(Graphics g, String score){
-        g.setFont(new Font("Tahoma", Font.PLAIN, 20)) ;
-        g.setColor(Color.WHITE);
-        g.drawString(score, TOP, TOP);
+        this.setText(score);
+        
     }
     
     
