@@ -197,6 +197,8 @@ public class GameEngine {
             
             case dirHaut:
                 cn = new Coordonnees(c.getX(), c.getY()-1);
+                c = cn;
+                cn.setCoordonnees(new Coordonnees(c.getX(), c.getY()-1));
                 break;
             case dirBas:
                 cn = new Coordonnees(c.getX(), c.getY()+1);
@@ -224,13 +226,14 @@ public class GameEngine {
         sb.setParalyse(false);
         
         sb.setVaMourirParBloc(true);
+        
+        
         if(m.move(sb, c, cn, this)){
             sb.getCoordonnees().setCoordonnees(cn);
             
         }
         else{
-            snobeeMort(sb.getCoordonnees());
-            p.remove(i_sno);
+            snobeeMort(sb);
             snobeeEcrase();
             checkNombreSnobees();
         }
@@ -265,38 +268,32 @@ public class GameEngine {
         }
     }
     
-    public void snobeeMort(Coordonnees c){
-        for(int i=0;i<p.size();i++){
-            if(p.get(i) instanceof SnoBees){
-                SnoBees sn = (SnoBees)p.get(i);
-                if(p.get(i).getCoordonnees().comp(c)){
-                    p.get(i).arreter();
-                    if(sn.getCacheDansBloc()){
-                        nbSnoBeesCache--;
-                        p.remove(i);
-                    }
-                    else if(sn.getParalyse()){
-                        p.remove(i);
-                        if(nbSnoBeesCache>0){
-                            naissanceSnobees();
-                            nbSnoBeesCache--;
-                        }
-                        else
-                            nbSnoBeesActif--;
-                    }
-                    else if(!sn.getCacheDansBloc()){
-                        nbSnoBeesActif--;
-                        if(nbSnoBeesCache>0){
-                            naissanceSnobees();
-                            nbSnoBeesCache--;
-                            nbSnoBeesActif++;
-                        }
-                    }
-                    checkNombreSnobees();
-                    //checkFinJeu();
-                }
+    public void snobeeMort(SnoBees sb){
+        if(sb.getCacheDansBloc()){
+            nbSnoBeesCache--;
+            p.remove(sb);
+        }
+        else if(sb.getParalyse()){
+            p.remove(sb);
+            if(nbSnoBeesCache >0){
+                nbSnoBeesCache--;
+                naissanceSnobees();
+            }
+            else{
+                nbSnoBeesActif--;
             }
         }
+        else{
+            p.remove(sb);
+            if(nbSnoBeesCache>0){
+                naissanceSnobees();
+                nbSnoBeesCache--;
+            }
+            else{
+                nbSnoBeesActif--;
+            }
+        }
+        checkNombreSnobees();
     }
     
     private void naissanceSnobees(){
@@ -370,12 +367,12 @@ public class GameEngine {
      * Change le comportement des snobees selon leur nombre et le niveau de difficulté
      */
     private void checkNombreSnobees(){
-        if(nbSnoBeesActif == 1 && niveau!=3){
+        if((nbSnoBeesActif == 1) && (nbSnoBeesCache==0) && niveau!=3){
             for(int i=0;i<p.size();i++){
                 if(p.get(i) instanceof SnoBees){
                     SnoBees sb = (SnoBees)p.get(i);
-                    if(sb.getComportement() != SnoBees.typeSnobees.rambo)
-                    sb.setComportement(SnoBees.typeSnobees.rambo);
+                    if(sb.getComportement() != SnoBees.typeSnobees.rambo && !sb.getVaMourirParBloc())
+                         sb.setComportement(SnoBees.typeSnobees.rambo);
                 }
             }
         }
@@ -445,7 +442,7 @@ public class GameEngine {
     public void majAfficheCarte(){
         if(!niveauFini){
             //System.out.print("\033[2J\033[1;1H"); // Clear console
-            System.out.println(m);
+            //System.out.println(m);
             fenetre_principale.setCarte(m.getCarte());
         }
     }
@@ -462,14 +459,22 @@ public class GameEngine {
                 if(b.get(i) instanceof BlocGlace){
                     BlocGlace bg = (BlocGlace)b.get(i);
                     if(!bg.getContientSnobees()){
-                        /*for(int j=0;j<bg.getFinDestruction();j++){
+                        for(int j=0;j<bg.getFinDestruction();j++){
                             majAfficheCarte();
-                        }*/
+                        }
                     }
                     m.detruireBloc(c, this);
                     i_b = i;
                     if(bg.getContientSnobees()){
-                        snobeeMort(c);
+                        SnoBees sb=null;
+                        for (Personnage p1 : p) {
+                            if(p.get(i).getCoordonnees().comp(c))
+                                if(p.get(i) instanceof SnoBees){
+                                    sb = (SnoBees)p.get(i);
+                                }
+                        }
+                        if(sb!=null)
+                            snobeeMort(sb);
                     }
                 }
             }

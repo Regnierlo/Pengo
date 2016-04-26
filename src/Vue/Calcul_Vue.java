@@ -271,9 +271,10 @@ public class Calcul_Vue {
                         case "E" : {
                         /// Si le snobee va en haut
                             SnoBees sb = jesus.getSnobee(new Coordonnees(j,i));
-                            System.out.println("------> Direction du snobee : " + sb.getDirectionActuel());
-                            switch (sb.getDirectionActuel()) {
-                                
+                            //System.out.println("------> Direction du snobee : " + sb.getDirectionActuel());
+                            try{
+                                switch (jesus.getSnobee(new Coordonnees(j,i)).getDirectionActuel()) {
+
                             /// FIN si va en haut
                                 case dirHaut:
                                     if(sb.getAncienneDirection().equals(sb.getDirectionActuel()) 
@@ -329,7 +330,8 @@ public class Calcul_Vue {
                                     break;
                                 default:
                                     break;
-                            }
+                                }
+                            }catch(NullPointerException e){e.printStackTrace();}
                         } break ;
                         
                         /// SI snobee paralysé
@@ -505,7 +507,7 @@ public class Calcul_Vue {
                         
                         // Si poussé
                         case "T" : {
-                            //if(jesus.isSnobees(new Coordonnees(j, i))){
+                            //try{
                                 switch (jesus.getSnobee(new Coordonnees(j,i)).getDirectionActuel()) {
                                 /// FIN si va en haut
                                     case dirHaut:
@@ -529,9 +531,11 @@ public class Calcul_Vue {
                                         break;
                                     default:
                                         break;
-                                }   
-                            } break ;    
-                        //}
+                                }  
+                            /*}catch(NullPointerException e){
+                                System.out.println("kldsjqm");
+                            }*/
+                            } break ;
                         
                         case "G" : {
                             tabCoordonnees[0][nbCoordonnees]= 0 ;

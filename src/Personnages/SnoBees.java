@@ -41,7 +41,7 @@ public class SnoBees extends Personnage{
     private typeSnobees ts;
     
     public SnoBees(Coordonnees c, boolean joueur, GameEngine g, boolean cache, typeSnobees type){
-        super("",c,joueur,3,g);
+        super("",c,joueur,100,g);
         paralyse = false;
         vaMourirParBloc = false;
         cacheDansBloc = cache;
@@ -79,8 +79,9 @@ public class SnoBees extends Personnage{
                         algoSnobo(); 
                         break ;
                 }
+                ge.majAfficheCarte();
                 try {
-                    Thread.sleep(sommeil-(1*this.vitesse));
+                    Thread.sleep(sommeil-(2*this.vitesse));
                 } catch (Exception e) {
                 }
             }
@@ -98,7 +99,7 @@ public class SnoBees extends Personnage{
         /// se promène sans rien détruire, dans la boolDirection qu'il aime bien.
         boolean fait = false ;
         int random ; 
-        do{
+        //do{
             random = (int)(Math.random()*16+1);
             switch (random) {
                 case 1 : case 2 : case 3 : case 4 : fait = bougeBas() ; break ;
@@ -106,7 +107,7 @@ public class SnoBees extends Personnage{
                 case 9 : case 10 : case 11 : case 12 : fait = bougeGauche() ; break ;
                 case 13 : case 14 : case 15 : case 16 : fait = bougeDroite() ; break ;
             } 
-        } while(fait!=true);
+        //} while(fait!=true && this.stop!=true && this.vaMourirParBloc);
     }
     
     private void algoMiIdiotMiSnobo(){
@@ -259,6 +260,38 @@ public class SnoBees extends Personnage{
         }
     }
     
+    /*private boolean bougeHaut(){
+        ancienneDirection = directionActuel;
+        directionActuel = Directions.dirHaut;
+        this.boolDirection = this.ancienneDirection.equals(Directions.dirHaut) && !boolDirection ;
+        return this.ge.action(this, directionActuel, Actions.bouger);
+    }
+    
+    private boolean bougeBas(){
+        ancienneDirection = directionActuel;
+        directionActuel=Directions.dirBas;
+        this.boolDirection = this.ancienneDirection.equals(Directions.dirBas) && !boolDirection ;
+        return this.ge.action(this, directionActuel, Actions.bouger);
+    }
+    
+    private boolean bougeDroite(){
+        ancienneDirection = directionActuel;
+        directionActuel=Directions.dirDroite;
+        this.boolDirection = this.ancienneDirection.equals(Directions.dirDroite) && !boolDirection ;
+        return this.ge.action(this, directionActuel, Actions.bouger);
+    }
+
+    private boolean bougeGauche(){
+        ancienneDirection = directionActuel;
+        directionActuel=Directions.dirGauche;
+        this.boolDirection = this.ancienneDirection.equals(Directions.dirGauche) && !boolDirection ;
+        return this.ge.action(this, directionActuel, Actions.bouger);
+    }
+    
+    private boolean detruire(Directions directionAnctuel){
+        return this.ge.action(this, directionActuel, Actions.pousser_detruire);
+    }
+    */
     private boolean bougeHaut(){
         boolean moveOk = this.ge.action(this, Directions.dirHaut, Actions.bouger) ;
         if (moveOk) {
