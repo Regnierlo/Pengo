@@ -176,7 +176,23 @@ public class GameEngine {
             if(p.get(i).getJoueur())
                 fenetre_principale.addKeyListener(p.get(i));
            
+        fenetre_principale.setNiveau(niveau);
+        fenetre_principale.setHighScore(String.valueOf(s.getHS()));
+        fenetre_principale.setNbVie(getNbVie());
         majAfficheCarte();
+    }
+    
+    private int getNbVie(){
+        int r = -1;
+        
+        for(int i=0;i<p.size();i++){
+            if(p.get(i) instanceof P_Pengo){
+                P_Pengo pen = (P_Pengo)p.get(i);
+                r = pen.getVie();
+            }
+        }
+        
+        return r;
     }
     
     private synchronized void finNiveau(){
@@ -423,6 +439,7 @@ public class GameEngine {
             if(p.get(i) instanceof P_Pengo){
                 P_Pengo pen = (P_Pengo) p.get(i);
                 pen.delVie();
+                fenetre_principale.setNbVie(getNbVie());
                 i_pen = i;
                 pen.mort();
                 m.changeCarte(Map.elementCarte.pengoMort, pen.getCoordonnees());

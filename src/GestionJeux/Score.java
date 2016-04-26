@@ -25,7 +25,7 @@ public class Score {
     
     public Score(){
         score = 0;
-        hs = getHS();
+        hs = rechercheHS();
     }
     
     public void pointBlocSpeciaux(boolean contreMur){
@@ -87,7 +87,11 @@ public class Score {
         }
     }
     
-    private int getHS(){
+    public int getHS(){
+        return hs;
+    }
+    
+    private int rechercheHS(){
         int r=-1;
         
         BufferedReader br = null;
