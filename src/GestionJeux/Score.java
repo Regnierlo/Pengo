@@ -19,7 +19,8 @@ import java.util.logging.Logger;
 
 public class Score {
     private int score;
-    private final String chemin="topScore.txt";
+    private static final String chemin="topScore.txt";
+    private final int nbTopScoreEnregistre=5;
     
     public Score(){
         score = 0;
@@ -115,15 +116,16 @@ public class Score {
             Collections.reverse(li); //Inversion des scores (trie par ordre decroissant)
             
             //NOUVELLE LISTE ORDONNEE
-            List<String> nl = new ArrayList<>(); //Liste définitive
-            int j=0; 
-            boolean trouver=false; 
-            for(int i=0;i<li.size();i++){
+            String[][] topScore = new String[5][2];
+            boolean trouver = false;
+            int j = 0;
+            for(int i=0;i<nbTopScoreEnregistre;i++){
                 while(!trouver && j<ls.size()){
                     tmp=ls.get(j).split(" "); //Décomposition du string
                     if(li.get(i)==(Integer.parseInt(tmp[1]))){ //Après la récupération du score on vérifie si c'est le score qu'on cherche
                         //Si c'est ce qu'on cherche
-                        nl.add(ls.get(j)); //On ajoute le nom et le score à la nouvelle liste
+                        topScore[j][0] = tmp[0];//On ajoute le nom dans la premiere case
+                        topScore[j][1] = tmp[1];//On ajoute le score dans la seconde
                         trouver = true; //On indique qu'on l'a trouvé
                         ls.remove(j); //On l'enleve de l'ancienne liste pour éviter de le récupérer si deux joueurs ont eut égalité
                     }
@@ -139,8 +141,9 @@ public class Score {
             FileWriter fw = new FileWriter(f, true); // On écrit dans le fichier déclaré et à la fin
             
             //ECRITURE DES SCORES TRIES
-            for(int i=0;i<nl.size();i++){
-                fw.write(nl.get(i)+"\n"); //On écrit dans le fichier les scores triés qui sont dans la liste définitive
+            for(int i=0;i<nbTopScoreEnregistre;i++){
+                fw.write(topScore[i][0]+" "+topScore[i][1]);
+                //fw.write(nl.get(i)+"\n"); //On écrit dans le fichier les scores triés qui sont dans la liste définitive
             }
             fw.close();//On ferme l'outile d'écriture
             
@@ -177,6 +180,42 @@ public class Score {
                 Logger.getLogger(Score.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+    
+    public static String[][] getTopScore(){
+        String[][] topScore = new String[5][2];
+        for(int i = 0 ; i < 5 ; i++){
+            topScore[i][0]="Nom "+i;
+            topScore[i][1]="152" + i;
+        }
+        
+        BufferedReader br=null;
+        File f = new File(chemin);
+        
+        try{
+            br.close();
+        }catch(IOException ex){
+            Logger.getLogger(Score.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                br.close();
+            } catch (IOException ex) {
+            }
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        return topScore ;
     }
     
     public int getScore(){

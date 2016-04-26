@@ -6,13 +6,13 @@
 package pengo;
 
 import GestionJeux.GameEngine;
-import Vue.Fenetre;
+import Vue.EntrerPseudo;
+import Vue.Menu;
+
+import Vue.PressEntry;
+import Vue.TableauScore;
 
 
-/**
- *
- * @author loisr
- */
 public class Pengo {
 
     /**
@@ -20,9 +20,12 @@ public class Pengo {
      */
     public static void main(String[] args) {
         
-        GameEngine gameEngine = new GameEngine();
-        
+       // GameEngine gameEngine = new GameEngine();
+        PressEntry fen = new PressEntry();
         //System.out.print("\033[2J\033[1;1H"); // Clear console
+      //  EntrerPseudo dialog = new EntrerPseudo();
+      // Menu menu = new Menu();
+      //TableauScore tab = new TableauScore();
     }
     
 }

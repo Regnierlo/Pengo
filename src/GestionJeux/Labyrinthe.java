@@ -12,7 +12,7 @@ public class Labyrinthe {
     private final int[][] position ;
     private final char[][] labyrinthe_temporaire ;
     
-    String[][] labyrinthe;
+    private final String[][] labyrinthe;
     
     /**
      * 
@@ -286,6 +286,9 @@ public class Labyrinthe {
             }
         }
     }
+    
+    
+    
     
     private void creationLabyrinthe(){
         int ligne ;
