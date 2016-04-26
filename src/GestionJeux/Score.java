@@ -193,7 +193,14 @@ public class Score {
         File f = new File(chemin);
         
         try{
-            br.close();
+            String ligne;
+            String tmp[];
+            
+            br=new BufferedReader(new FileReader(f));
+            
+            
+        }catch(FileNotFoundException ex){
+            Logger.getLogger(Score.class.getName()).log(Level.SEVERE, null, ex);
         }catch(IOException ex){
             Logger.getLogger(Score.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
