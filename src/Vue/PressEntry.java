@@ -5,31 +5,55 @@
  */
 package Vue;
 
-import java.awt.Graphics;
-import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO ;
-import javax.swing.JPanel;
+import GestionJeux.GameEngine;
 
-/**
- *
- * @author loisr
- */
-public class PressEntry extends JPanel {
+import java.awt.GridLayout;
+
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import javax.swing.JFrame;
+
+public class PressEntry extends JFrame implements KeyListener{
     
-    private final String chemin = "";
+   
+    int sortie = 0 ;
+    private Entry panel ;
     
-    public void paintComponent(Graphics g){
+    public PressEntry(){
+        this.construction();
+    }
+  
+    private void construction(){
         
-        try{
-            Image img1 = ImageIO.read(new File(chemin+"src/Images/press_entry_1.png"));
-            g.drawImage(img1,0,0,this);
-                
-        }catch (IOException e){
-                System.out.println("Pas de première fenêtre");
+        this.setSize(400,685);
+        this.setLocationRelativeTo(null);
+        this.setLayout(new GridLayout(1,1));
+        panel = new Entry();
+        this.getContentPane().add(panel);
+        this.setVisible(true);
+       
+        addKeyListener(this);
+        this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        
+    }
+    
+
+    @Override
+    public void keyTyped(KeyEvent e) {}
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_ENTER){
+            sortie = 1 ;
+            this.setVisible(false);
+            new GameEngine();
+           
         }
-        
+       
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
     }
     
 }

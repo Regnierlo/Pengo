@@ -13,16 +13,13 @@ import javax.swing.JFrame ;
 import javax.swing.JPanel ;
 
 
-/**
- *
- * @author Marie
- */
 public class Fenetre extends JFrame{
     
     private Carte map  ;
     private Calcul_Vue cv ;
     
-    public Fenetre(GameEngine gameEngine, KeyListener[] keyListener){
+   
+   public Fenetre(GameEngine gameEngine, KeyListener[] keyListener){
         super("Pengo") ;
         build() ;
         

@@ -6,7 +6,8 @@
 package pengo;
 
 import GestionJeux.GameEngine;
-import Vue.Fenetre;
+
+import Vue.PressEntry;
 
 
 /**
@@ -20,8 +21,8 @@ public class Pengo {
      */
     public static void main(String[] args) {
         
-        GameEngine gameEngine = new GameEngine();
-        
+       // GameEngine gameEngine = new GameEngine();
+        PressEntry fen = new PressEntry();
         //System.out.print("\033[2J\033[1;1H"); // Clear console
     }
     

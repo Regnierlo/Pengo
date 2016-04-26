@@ -260,6 +260,34 @@ public class SnoBees extends Personnage{
     }
     
     private boolean bougeHaut(){
+        ancienneDirection = directionActuel;
+        directionActuel = Directions.dirHaut;
+        return this.ge.action(this, directionActuel, Actions.bouger);
+    }
+    
+    private boolean bougeBas(){
+        ancienneDirection = directionActuel;
+        directionActuel=Directions.dirBas;
+        return this.ge.action(this, directionActuel, Actions.bouger);
+    }
+    
+    private boolean bougeDroite(){
+        ancienneDirection = directionActuel;
+        directionActuel=Directions.dirDroite;
+        return this.ge.action(this, directionActuel, Actions.bouger);
+    }
+
+    private boolean bougeGauche(){
+        ancienneDirection = directionActuel;
+        directionActuel=Directions.dirGauche;
+        return this.ge.action(this, directionActuel, Actions.bouger);
+    }
+    
+    private boolean detruire(Directions directionAnctuel){
+        return this.ge.action(this, directionActuel, Actions.pousser_detruire);
+    }
+    
+    /*private boolean bougeHaut(){
         boolean moveOk = this.ge.action(this, Directions.dirHaut, Actions.bouger) ;
         if (moveOk) {
             this.ancienneDirection = this.directionActuel;
@@ -313,7 +341,7 @@ public class SnoBees extends Personnage{
             }
         }
         return destructionOk ;
-    }
+    }*/
     
     public void setComportement(typeSnobees t){
         ts = t;
