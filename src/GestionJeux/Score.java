@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 public class Score {
     private int score;
     private int hs ;
+    
     private static final String chemin="topScore.txt";
     private final int nbTopScoreEnregistre=5;
     
@@ -54,7 +55,6 @@ public class Score {
             score += 500;
         else if(s >=50 && s<60)
             score+=10;
-        
     }
     
     /**
@@ -75,6 +75,8 @@ public class Score {
             FileWriter fw = new FileWriter(f, true);
             //Création de la string à ajouter
             String txt = n+" "+Integer.toString(score)+"\n";
+            System.out.println(txt);
+            System.out.print("fefzef");
             //Ajout de la string créée
             fw.write(txt);
             //Fermeture 
@@ -85,6 +87,8 @@ public class Score {
             Logger.getLogger(Score.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    
     
     /**
      * Trie le fichier des scores après le dernier ajout
@@ -161,8 +165,8 @@ public class Score {
                     tmp=ls.get(j).split(" "); //Décomposition du string
                     if(li.get(i)==(Integer.parseInt(tmp[1]))){ //Après la récupération du score on vérifie si c'est le score qu'on cherche
                         //Si c'est ce qu'on cherche
-                        topScore[j][0] = tmp[0];//On ajoute le nom dans la premiere case
-                        topScore[j][1] = tmp[1];//On ajoute le score dans la seconde
+                        topScore[i][0] = tmp[0];//On ajoute le nom dans la premiere case
+                        topScore[i][1] = tmp[1];//On ajoute le score dans la seconde
                         trouver = true; //On indique qu'on l'a trouvé
                         ls.remove(j); //On l'enleve de l'ancienne liste pour éviter de le récupérer si deux joueurs ont eut égalité
                     }
@@ -179,7 +183,7 @@ public class Score {
             
             //ECRITURE DES SCORES TRIES
             for(int i=0;i<nbTopScoreEnregistre;i++){
-                fw.write(topScore[i][0]+" "+topScore[i][1]);
+                fw.write(topScore[i][0]+" "+topScore[i][1]+"\n");
                 //fw.write(nl.get(i)+"\n"); //On écrit dans le fichier les scores triés qui sont dans la liste définitive
             }
             fw.close();//On ferme l'outile d'écriture
