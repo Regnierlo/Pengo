@@ -41,6 +41,18 @@ public class Fenetre extends JFrame{
         hud.setScore("kk");
     }
     
+    public void setHighScore(String score){
+        hud.setHighScore("kk");
+    }
+    
+    public void setNiveau(int n){
+        hud.setNiveau(n);
+    }
+    
+    public void setNbVie(int c){
+        hud.setNbVie(c);
+    }
+    
     private void build(){
         this.setSize(400,750) ;
         this.setLocationRelativeTo(null) ;

@@ -11,6 +11,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -19,11 +21,11 @@ import javax.swing.JTextField;
 
 public class EntrerPseudo extends JDialog{
     
-    private JTextField pseudo ;
-    private JButton valider ;
+    String chemin="";
+    private JTextField pseudo = new JTextField("AAA");
+    private JButton valider = new JButton("V A L I D E R");
     private ImageIcon imagePseudo ;
-    private ImageIcon ok ;
-    private ImageIcon ok_hover ;
+    private boolean disparu;
     
    /* JPanel imagePanel = new JPanel(new BorderLayout()){
         @Override
@@ -34,23 +36,9 @@ public class EntrerPseudo extends JDialog{
     };*/
     
     public EntrerPseudo(){
-        this.setResizable(false);
-        pseudo = new JTextField("AAA") ;
-        
+        disparu=false;
         try{
-            imagePseudo = new ImageIcon(Picture.chemin+"src/Images/pseudo.png");
-        }catch(NullPointerException e){     
-            System.out.println("Pas d'image");
-        }
-        
-        try{
-           ok = new ImageIcon(Picture.chemin+"src/Images/pseudo_ok.png");
-        }catch(NullPointerException e){     
-            System.out.println("Pas d'iamge");
-        }
-        
-        try{
-           ok_hover = new ImageIcon(Picture.chemin+"src/Images/pseudo_ok_hover.png");
+            imagePseudo = new ImageIcon(chemin+"src/Images/pseudo.png");
         }catch(NullPointerException e){     
             System.out.println("Pas d'iamge");
         }
@@ -60,38 +48,45 @@ public class EntrerPseudo extends JDialog{
     
     
     private void constructionDialog(){
-        
         this.setSize(400,200);
         this.setBackground(Color.black);
+        Font police = new Font("Courier",Font.BOLD, 24);
         this.setLocationRelativeTo(null);
         this.setLayout(new BorderLayout());
-        this.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
-        
-        
-        Font police = new Font("Courier",Font.BOLD, 24);
         pseudo.setFont(police);
         pseudo.setPreferredSize(new Dimension(400,25));
         pseudo.setBackground(Color.BLACK);
         pseudo.setForeground(Color.WHITE);
         pseudo.setHorizontalAlignment(JTextField.CENTER);
         
-        valider.setIcon(ok);
+        Font policeBouton = new Font("Courier",Font.PLAIN, 14);
+        valider.setFont(policeBouton);
+        valider.setBackground(Color.BLACK);
+        valider.setForeground(Color.YELLOW);
+        
         
         valider.addActionListener(new validerPseudo());
         
         this.getContentPane().add(new JLabel(imagePseudo),BorderLayout.NORTH);
         this.getContentPane().add(pseudo, BorderLayout.CENTER);
+        
         this.getContentPane().add(valider, BorderLayout.SOUTH);
-        
         this.setVisible(true);
-        
-        
+        this.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
+    }
+    
+    public String getPseudo(){
+        return pseudo.getText();
+    }
+    
+    public boolean getEtat(){
+        return disparu;
     }
     
     class validerPseudo implements ActionListener{
         public void actionPerformed(ActionEvent e){
-            valider.setIcon(ok_hover);
-            System.out.println(pseudo.getText());
+            setVisible(false);
+            disparu=true;
         }
     }
             

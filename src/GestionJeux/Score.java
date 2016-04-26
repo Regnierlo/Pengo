@@ -19,11 +19,13 @@ import java.util.logging.Logger;
 
 public class Score {
     private int score;
+    private int hs ;
     private static final String chemin="topScore.txt";
     private final int nbTopScoreEnregistre=5;
     
     public Score(){
         score = 0;
+        hs = rechercheHS();
     }
     
     public void pointBlocSpeciaux(boolean contreMur){
@@ -41,7 +43,7 @@ public class Score {
         score += 100;
     }
     
-    public void pointFinNiveau(int s, String name){
+    public void pointFinNiveau(int s){
         if(s < 20)
             score += 5000;
         else if(s >= 20 && s <30)
@@ -53,7 +55,6 @@ public class Score {
         else if(s >=50 && s<60)
             score+=10;
         
-        writeScore(name);
     }
     
     /**
@@ -61,7 +62,7 @@ public class Score {
      *
      * @param n Le nom du joueur
      */
-    private void writeScore(String n){
+    public void writeScore(String n){
         
         //Ajout du nom à la fin dans le fichier score
         try {
@@ -90,6 +91,42 @@ public class Score {
      * 
      * @param f Fichier à trier
      */
+    
+    public int getHS(){
+        return hs ;
+    }
+    
+    private int rechercheHS(){
+        int r=-1;
+        BufferedReader br = null ;
+        
+        try{
+            String ligne ;
+            String[] tmp ;
+            File f = new File(chemin);
+            
+            br=new BufferedReader(new FileReader(f));
+            if((ligne=br.readLine())!=null){
+                tmp = ligne.split(" ");
+                r = Integer.parseInt(tmp[1]);
+            }
+            br.close();
+        }
+        catch(FileNotFoundException ex){
+            Logger.getLogger(Score.class.getName()).log(Level.SEVERE,null, ex);
+        }
+        catch(IOException ex){
+            Logger.getLogger(Score.class.getName()).log(Level.SEVERE,null, ex);
+        }finally{
+            try{
+                br.close();
+            } catch(Exception ex){
+                Logger.getLogger(Score.class.getName()).log(Level.SEVERE,null, ex);
+            }
+        }
+        return r ;
+    }
+    
     private void trierScore(File f){
         //Déclaration d'un BefferedReader à null
         BufferedReader br = null;
@@ -184,10 +221,6 @@ public class Score {
     
     public static String[][] getTopScore(){
         String[][] topScore = new String[5][2];
-        for(int i = 0 ; i < 5 ; i++){
-            topScore[i][0]="Nom "+i;
-            topScore[i][1]="152" + i;
-        }
         
         BufferedReader br=null;
         File f = new File(chemin);
@@ -195,8 +228,16 @@ public class Score {
         try{
             String ligne;
             String tmp[];
-            
+            int i=0;
             br=new BufferedReader(new FileReader(f));
+            
+            while((ligne=br.readLine()) != null && i<5){
+                tmp=ligne.split(" "); //Décomposition de la ligne avec " " comme séparateur
+                topScore[i][0] = tmp[0];
+                topScore[i][1] = tmp[1];
+                i++;
+            }
+            br.close(); //On ferme le bufferedReader
             
             
         }catch(FileNotFoundException ex){
@@ -209,17 +250,6 @@ public class Score {
             } catch (IOException ex) {
             }
         }
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
         
         return topScore ;

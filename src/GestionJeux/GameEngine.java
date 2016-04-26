@@ -7,17 +7,15 @@ package GestionJeux;
 
 import Personnages.*;
 import Ressources.*;
+import Vue.EntrerPseudo;
 import Vue.Fenetre;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 
-/**
- *
- * @author loisr
- */
 public class GameEngine {
     
     // Déclaration des variables
@@ -35,11 +33,13 @@ public class GameEngine {
     private final Fenetre fenetre_principale ;
     private Thread tChecker ;
     private int niveau;
+    private EntrerPseudo pseudo;
+    private final JFrame Menu;
     
     private boolean niveauFini ;
     
-    public GameEngine(){
-        
+    public GameEngine(JFrame me){
+        Menu=me;
         //Instanciation des variables
         nbSnoBeesActif=0;
         nbSnoBeesCache=0;
@@ -54,6 +54,7 @@ public class GameEngine {
         scoreAttribue = false;
         niveau = 1;
         
+        fenetre_principale.setVisible(true);
         //Initialisation de la carte
         init() ;
         ThreadCheckEndGame();
@@ -79,7 +80,7 @@ public class GameEngine {
                 finNiveau();
             }
         };
-       // tChecker.start();
+        tChecker.start();
     }
     
     private KeyListener[] getKeyListener(){
@@ -171,7 +172,23 @@ public class GameEngine {
             if(p.get(i).getJoueur())
                 fenetre_principale.addKeyListener(p.get(i));
            
+        fenetre_principale.setNiveau(niveau);
+        fenetre_principale.setHighScore(String.valueOf(s.getHS()));
+        fenetre_principale.setNbVie(getNbVie());
         majAfficheCarte();
+    }
+    
+    private int getNbVie(){
+        int r = -1;
+        
+        for(int i=0;i<p.size();i++){
+            if(p.get(i) instanceof P_Pengo){
+                P_Pengo pen = (P_Pengo)p.get(i);
+                r = pen.getVie();
+            }
+        }
+        
+        return r;
     }
     
     private synchronized void finNiveau(){
@@ -183,10 +200,22 @@ public class GameEngine {
                     fenetre_principale.removeKeyListener(p.get(i));
             }
             majAfficheCarte();
-            s.pointFinNiveau(tempsSec(), name);
+            s.pointFinNiveau(tempsSec());
+            fenetre_principale.setVisible(false);
+            pseudo = new EntrerPseudo();
+            while(!pseudo.getEtat()){
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            name = pseudo.getPseudo();
+            s.writeScore(name);
             System.out.println("\n\n\n\n\n\n\n\n\n\nVous avez vaincus "+name+" !");
             System.out.println("Fini en : "+temps());
             System.out.println("Avec un score total de : "+s.getScore());
+            Menu.setVisible(true);
         }
     }
     
@@ -253,11 +282,13 @@ public class GameEngine {
             else
                 s.pointBlocSpeciaux(false);
             bonusBlocsSpeciaux = true;
+            fenetre_principale.setScore(String.valueOf(s.getScore()));
         }
     }
     
     public void snobeeEcrase(){
         s.pointSnobeesEcrase();
+        fenetre_principale.setScore(String.valueOf(s.getScore()));
         //checkFinJeu();
     }
     
@@ -404,6 +435,7 @@ public class GameEngine {
             if(p.get(i) instanceof P_Pengo){
                 P_Pengo pen = (P_Pengo) p.get(i);
                 pen.delVie();
+                fenetre_principale.setNbVie(getNbVie());
                 i_pen = i;
                 pen.mort();
                 m.changeCarte(Map.elementCarte.pengoMort, pen.getCoordonnees());
