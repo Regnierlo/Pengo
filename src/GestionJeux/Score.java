@@ -19,8 +19,7 @@ import java.util.logging.Logger;
 
 public class Score {
     private int score;
-    private int hs ;
-    
+    private int hs; //High Score
     private static final String chemin="topScore.txt";
     private final int nbTopScoreEnregistre=5;
     
@@ -88,6 +87,43 @@ public class Score {
         }
     }
     
+    public int getHS(){
+        return hs;
+    }
+    
+    private int rechercheHS(){
+        int r=-1;
+        
+        BufferedReader br = null;
+        
+        try{
+            String ligne;
+            String[] tmp;
+            File f = new File(chemin);
+            
+            br=new BufferedReader(new FileReader(f));
+            
+            if((ligne=br.readLine()) != null){
+                tmp=ligne.split(" ");
+                r = Integer.parseInt(tmp[1]);
+            }
+            br.close();
+            
+        }catch(FileNotFoundException ex){
+            Logger.getLogger(Score.class.getName()).log(Level.SEVERE, null, ex);
+        }catch(IOException ex){
+            Logger.getLogger(Score.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                br.close();
+            } catch (Exception ex) {
+                Logger.getLogger(Score.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        return r;
+    }
+    
     
     
     /**
@@ -95,42 +131,6 @@ public class Score {
      * 
      * @param f Fichier à trier
      */
-    
-    public int getHS(){
-        return hs ;
-    }
-    
-    private int rechercheHS(){
-        int r=-1;
-        BufferedReader br = null ;
-        
-        try{
-            String ligne ;
-            String[] tmp ;
-            File f = new File(chemin);
-            
-            br=new BufferedReader(new FileReader(f));
-            if((ligne=br.readLine())!=null){
-                tmp = ligne.split(" ");
-                r = Integer.parseInt(tmp[1]);
-            }
-            br.close();
-        }
-        catch(FileNotFoundException ex){
-            Logger.getLogger(Score.class.getName()).log(Level.SEVERE,null, ex);
-        }
-        catch(IOException ex){
-            Logger.getLogger(Score.class.getName()).log(Level.SEVERE,null, ex);
-        }finally{
-            try{
-                br.close();
-            } catch(Exception ex){
-                Logger.getLogger(Score.class.getName()).log(Level.SEVERE,null, ex);
-            }
-        }
-        return r ;
-    }
-    
     private void trierScore(File f){
         //Déclaration d'un BefferedReader à null
         BufferedReader br = null;
