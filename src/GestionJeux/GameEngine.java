@@ -150,9 +150,6 @@ public class GameEngine {
      * Permet d'initialiser le niveau (création des threads de Pengo et de SnoBees et des différents blocs).
      */
     private void init(){
-        /*try (Scanner scan = new Scanner(System.in)) {
-            name = scan.nextLine();
-        }*/
         p = m.initThread(this) ;
         b = m.initBloc() ;
         mur = m.initMur() ;
@@ -237,10 +234,6 @@ public class GameEngine {
             if(p.get(i).getJoueur())
                 fenetre_principale.removeKeyListener(p.get(i));
         }
-        
-        for(int i=0;i<p.size();i++){
-            p.get(i).arreter();
-        }
 
         majAfficheCarte();
         s.pointFinNiveau(tempsSec());
@@ -250,6 +243,7 @@ public class GameEngine {
         }
         else{
             niveau--;
+            bonusBlocsSpeciaux = false;
             System.out.println("NIVEAU "+niveau);
             m.setNiveau(niveau);
             System.out.println(m);
@@ -479,17 +473,20 @@ public class GameEngine {
                 i_pen = i;
                 pen.mort();
                 m.changeCarte(Map.elementCarte.pengoMort, pen.getCoordonnees());
+                majAfficheCarte();
                 if(pen.getVie() < 0)
                     gameOver();
+                pen.renaissance();
             }
             else{
                 p.get(i).pause();
             }
         }
         try {
-            Thread.sleep(1000);
+            Thread.sleep(500);
             m.changeCarte(Map.elementCarte.pengoMort2, p.get(i_pen).getCoordonnees());
-            Thread.sleep(1000);
+            majAfficheCarte();
+            Thread.sleep(500);
             
             for(int i=0;i<p.size();i++){
                 p.get(i).reprise();
@@ -504,6 +501,7 @@ public class GameEngine {
         P_Pengo pen = (P_Pengo)p.get(i_pen);
         pen.renaissance();
         m.changeCarte(Map.elementCarte.pengo, pen.getCoordonnees());
+        majAfficheCarte();
     }
     
     /**
@@ -588,8 +586,6 @@ public class GameEngine {
         int action = -1 ;
         //Si l'isBlockOrIsMur est un P_Pengo
         if(o instanceof P_Pengo){
-            //On part du principe qu'aucune vie n'est perdu
-            boolean vieEnMoins = false;
             //Cast de l'isBlockOrIsMur passé en paramètre pour l'utiliser
             P_Pengo pen = (P_Pengo) o;
             Coordonnees temp=new Coordonnees(pen.getCoordonnees());
