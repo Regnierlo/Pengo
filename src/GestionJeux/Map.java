@@ -554,6 +554,9 @@ public class Map {
         };
         t.start();
     }
+    public boolean isBlocDestructible(Coordonnees c){
+        return elementCarte.blocGlace.equalsName(carteActuelle[c.getY()][c.getX()]);
+    }
     
     public boolean isMur(Coordonnees c, Personnage.Directions dir){
         boolean res;

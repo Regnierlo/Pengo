@@ -31,8 +31,8 @@ public class PressEntry extends JFrame implements KeyListener{
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         
-        panel1 = new Entry(Picture.chemin+"src/Images/press_entry_1.png");
-        panel2 = new Entry(Picture.chemin+"src/Images/press_entry_2.png");
+        panel1 = new Entry("src/Images/press_entry_1.png");
+        panel2 = new Entry("src/Images/press_entry_2.png");
         
         this.getContentPane().add(panel1);
         this.setVisible(true);

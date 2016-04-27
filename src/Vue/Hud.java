@@ -88,7 +88,7 @@ public class Hud extends JPanel{
         nbNiveau = new JPanel();
         nbNiveau.setLayout(new BoxLayout(nbNiveau,BoxLayout.LINE_AXIS));
         nbNiveau.setBackground(Color.BLACK);
-        nbNiveau.add(new LabelHud(1,"  NIVEAUX  "));
+        nbNiveau.add(new LabelHud(1,"  LEVEL  "));
         
         try{
             niveau = new JLabel(new ImageIcon(Picture.chemin+"src/Images/niveau1.png"));

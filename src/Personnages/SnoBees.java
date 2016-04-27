@@ -49,7 +49,7 @@ public class SnoBees extends Personnage{
         itsAlive = 7;
         nait = true;
         ts = type;
-       // ancienneDirection=Directions.dirHaut ;
+       
     }
 
     @Override
@@ -72,11 +72,11 @@ public class SnoBees extends Personnage{
                         algoIdiot() ; 
                         break ;
                     case miRamboMiIdiot : 
-                        algoMiIdiotMiSnobo(); 
+                        algoSnobo(2); 
                         break ;
                     case rambo : 
-                        sommeil = 500 ;
-                        algoSnobo(); 
+                        sommeil = 400 ;
+                        algoSnobo(7); 
                         break ;
                 }
                 ge.majAfficheCarte();
@@ -99,7 +99,6 @@ public class SnoBees extends Personnage{
         /// se promène sans rien détruire, dans la boolDirection qu'il aime bien.
         boolean fait = false ;
         int random ; 
-        //do{
             random = (int)(Math.random()*16+1);
             switch (random) {
                 case 1 : case 2 : case 3 : case 4 : fait = bougeBas() ; break ;
@@ -107,7 +106,7 @@ public class SnoBees extends Personnage{
                 case 9 : case 10 : case 11 : case 12 : fait = bougeGauche() ; break ;
                 case 13 : case 14 : case 15 : case 16 : fait = bougeDroite() ; break ;
             } 
-        //} while(fait!=true && this.stop!=true && this.vaMourirParBloc);
+        
     }
     
     private void algoMiIdiotMiSnobo(){
@@ -119,75 +118,92 @@ public class SnoBees extends Personnage{
         
     }
     
-    private void algoSnobo(){
-        boolean fait = false  ;
+    private void algoSnobo(int detection){
+        boolean fait =false   ;
         Coordonnees coordPengo = null ;
-        int ligne = 0 ;
-        int colonne = 0 ;
-        int deplacementSnobo ;
-        do{
-            coordPengo = ge.PengoDetected(1, this.coord);
+        char possible ='P' ;
+        int ligne ;
+        int colonne ;
+        
+            coordPengo = ge.PengoDetected(detection, this.coord);
             
             if(coordPengo!=null){
+                System.out.println("PENGO DETECTED. EXTERMINATE, EXTERMINATE");
                 ligne = this.coord.getY() - coordPengo.getY() ;
                 colonne = this.coord.getX() - coordPengo.getX() ;
-                if(ligne==0) deplacementSnobo = 2 ;
+                System.out.println("colonne : " + this.coord.getX() +"et pengo" + coordPengo.getX());
+                System.out.println("ligne : " + this.coord.getY()+"et pengo" + coordPengo.getY());
+                System.out.println("ligne to = " + ligne + " et colonne to = "+colonne);
+                if(ligne >0){
+                    possible = ge.AvancerDetruire(this.coord, Directions.dirHaut);
+                    System.out.println("possible "+possible);
+                    if(possible=='D'){
+                        detruire(Directions.dirHaut);
+                        System.out.println("destruction en haut");
+                    }
+                    else if(possible=='A')
+                        bougeHaut();
+                }
+                else if(ligne <0){
+                    possible = ge.AvancerDetruire(this.coord, Personnage.Directions.dirBas);
+                    System.out.println("possible "+possible);
+                    if(possible=='D'){
+                        detruire(Directions.dirBas);
+                        System.out.println("destruction en bas");
+                    }
+                    else if(possible=='A')
+                        bougeBas();
+                }
+                if(colonne > 0 && ligne==0){
+                            possible = ge.AvancerDetruire(this.coord, Personnage.Directions.dirGauche);
+                            System.out.println("possible "+possible);
+                            if(possible=='D'){
+                                detruire(Directions.dirGauche);
+                                System.out.println("destruction à gauche");
+                            }
+                            else if(possible=='A')
+                                bougeGauche();
+                    }
                 else 
-                    if(colonne==0) deplacementSnobo = 0 ;
-                    else 
-                        if(ligne>=colonne) deplacementSnobo = 1 ;
-                        else
-                            deplacementSnobo = 3 ;
-                
-                if(!fait && deplacementSnobo<2){
-                        if(ligne>0){
-                            fait = detruire(Directions.dirHaut) ;
-                            if(!fait)
-                                fait = bougeHaut() ;
-                            if(!fait)
-                                deplacementSnobo =3 ;
-                        }
-                        else {
-                            fait = detruire(Directions.dirBas) ;
-                            if(!fait)
-                                fait = bougeBas() ;
-                            if(!fait)
-                                deplacementSnobo =3 ;
-                        }
-                    /// Va soit à gauche soit à droite
-                }
-                if(!fait && deplacementSnobo>1){    
-                    if(colonne>0){
-                        fait = detruire(Directions.dirGauche) ;
-                        if(!fait)
-                            fait = bougeGauche() ;
+                    if(colonne<0 && ligne==0)
+                        if(possible!='A' && possible!='D'){
+                            possible = ge.AvancerDetruire(this.coord, Personnage.Directions.dirDroite);
+                            System.out.println("possible "+possible);
+                            if(possible=='D'){
+                                System.out.println("destruction à droite");
+                                detruire(Directions.dirDroite);
+                            }
+                            else if(possible=='A')
+                                bougeDroite();
                     }
+            }
+            else{
+                if(detection>5){
+                    possible = ge.AvancerDetruire(this.coord, Personnage.Directions.dirDroite);
+                    if(possible =='D')
+                        fait = detruire(Directions.dirDroite);
                     else {
-                        fait = detruire(Directions.dirDroite) ;
-                        if (!fait)
-                            fait = bougeDroite();
+                        possible = ge.AvancerDetruire(this.coord, Personnage.Directions.dirGauche);
+                        if(possible =='D')
+                            fait = detruire(Directions.dirGauche);
+                        else{
+                            possible = ge.AvancerDetruire(this.coord, Personnage.Directions.dirHaut);
+                            if(possible=='D')
+                                fait = detruire(Directions.dirHaut);
+                            else{
+                                possible = ge.AvancerDetruire(this.coord, Personnage.Directions.dirBas);
+                                if(possible=='D')
+                                    fait = detruire(Directions.dirBas);
+                            }       
+                        }     
                     }
-                } 
-            }
-            while(!fait){
-                deplacementSnobo = (int)(Math.random()*4+1);
-                switch (deplacementSnobo) {
-                    case 1 : if(!fait) fait = detruire(Directions.dirBas) ; 
-                    case 2:  if(!fait) fait = detruire(Directions.dirHaut) ; 
-                    case 3 : if(!fait) fait = detruire(Directions.dirGauche) ; 
-                    case 4 : if(!fait) fait = detruire(Directions.dirDroite) ; break ;
+                    if(!fait)
+                        algoIdiot();
                 }
-                if(!fait)
-                    switch (deplacementSnobo) {
-                        case 1 : if(!fait) fait = bougeBas() ;  break ;
-                        case 2: if(!fait) fait = bougeHaut() ;  break ; 
-                        case 3 : if(!fait) fait = bougeGauche() ; break ;
-                        case 4 : if(!fait) fait = bougeDroite() ;  break ;
-                    }
+                else
+                    algoIdiot();
             }
-            
-        } while(!fait) ;
-        
+    
     }
     
     public void setNait(boolean b){
@@ -292,7 +308,7 @@ public class SnoBees extends Personnage{
         return this.ge.action(this, directionActuel, Actions.pousser_detruire);
     }
     */
-    private boolean bougeHaut(){
+   /* private boolean bougeHaut(){
         ancienneDirection = directionActuel;
         directionActuel = Directions.dirHaut;
         return this.ge.action(this, directionActuel, Actions.bouger);
@@ -318,9 +334,9 @@ public class SnoBees extends Personnage{
     
     private boolean detruire(Directions directionAnctuel){
         return this.ge.action(this, directionActuel, Actions.pousser_detruire);
-    }
+    }*/
     
-    /*private boolean bougeHaut(){
+    private boolean bougeHaut(){
         boolean moveOk = this.ge.action(this, Directions.dirHaut, Actions.bouger) ;
         if (moveOk) {
             this.ancienneDirection = this.directionActuel;
@@ -366,7 +382,7 @@ public class SnoBees extends Personnage{
         boolean destructionOk = this.ge.action(this, dir, Actions.pousser_detruire) ;
         if(destructionOk){
             directionActuel = dir ;
-            switch (dir){
+            switch (directionActuel){
                 case dirHaut : bougeHaut() ; break ;
                 case dirBas : bougeBas() ; break ;
                 case dirGauche : bougeGauche() ; break ;
@@ -374,7 +390,7 @@ public class SnoBees extends Personnage{
             }
         }
         return destructionOk ;
-    }*/
+    }
     
     public void setComportement(typeSnobees t){
         ts = t;

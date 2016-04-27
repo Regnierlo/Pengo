@@ -273,7 +273,8 @@ public class Calcul_Vue {
                             SnoBees sb = jesus.getSnobee(new Coordonnees(j,i));
                             //System.out.println("------> Direction du snobee : " + sb.getDirectionActuel());
                             try{
-                                switch (jesus.getSnobee(new Coordonnees(j,i)).getDirectionActuel()) {
+                                
+                               switch (sb.getDirectionActuel()) {
 
                             /// FIN si va en haut
                                 case dirHaut:
@@ -290,9 +291,9 @@ public class Calcul_Vue {
                                     break;
                             /// FIN si va à droite
                                 case dirDroite:
-                                    if(jesus.getSnobee(new Coordonnees(j,i)).getAncienneDirection().equals(Personnage.Directions.dirDroite)
-                                            && jesus.getSnobee(new Coordonnees(j,i)).getBoolDirection()
-                                            && jesus.getSnobee(new Coordonnees(j,i)).getVaMourirParBloc()!=true){
+                                    if(sb.getAncienneDirection().equals(sb.getDirectionActuel())
+                                            && sb.getBoolDirection()
+                                            && sb.getVaMourirParBloc()!=true){
                                         tabCoordonnees[0][nbCoordonnees]= 1 ;
                                         tabCoordonnees[1][nbCoordonnees]= 13 ;
                                     }
@@ -303,9 +304,9 @@ public class Calcul_Vue {
                                     break;
                             /// FIN si va en bas
                                 case dirBas:
-                                    if(jesus.getSnobee(new Coordonnees(j,i)).getAncienneDirection().equals(Personnage.Directions.dirBas)
-                                            && jesus.getSnobee(new Coordonnees(j,i)).getBoolDirection() 
-                                            && jesus.getSnobee(new Coordonnees(j,i)).getVaMourirParBloc()!=true){
+                                    if(sb.getAncienneDirection().equals(sb.getDirectionActuel())
+                                            && sb.getBoolDirection() 
+                                            && sb.getVaMourirParBloc()!=true){
                                         tabCoordonnees[0][nbCoordonnees]= 1 ;
                                         tabCoordonnees[1][nbCoordonnees]= 14 ;
                                     }
@@ -316,9 +317,9 @@ public class Calcul_Vue {
                                     break;
                             /// FIN si va à gauche
                                 case dirGauche:
-                                    if(jesus.getSnobee(new Coordonnees(j,i)).getAncienneDirection().equals(Personnage.Directions.dirGauche)
-                                            && jesus.getSnobee(new Coordonnees(j,i)).getBoolDirection()
-                                            && jesus.getSnobee(new Coordonnees(j,i)).getVaMourirParBloc()!=true){
+                                    if(sb.getAncienneDirection().equals(sb.getDirectionActuel())
+                                            && sb.getBoolDirection()
+                                            && sb.getVaMourirParBloc()!=true){
                                         tabCoordonnees[0][nbCoordonnees]= 1 ;
                                         tabCoordonnees[1][nbCoordonnees]= 15 ;
 
@@ -349,31 +350,32 @@ public class Calcul_Vue {
                         
                         // Si poussé
                         case "Y" : {
-                            if(jesus.getSnobee(new Coordonnees(j,i))!=null)
-                            switch (jesus.getSnobee(new Coordonnees(j,i)).getDirectionActuel()) {
-                            /// FIN si va en haut
-                                case dirHaut:
-                                    tabCoordonnees[0][nbCoordonnees]= 0 ;
-                                    tabCoordonnees[1][nbCoordonnees]= 16 ;
-                                    break;
-                            /// FIN si va à droite
-                                case dirDroite:
-                                    tabCoordonnees[0][nbCoordonnees]= 1 ;
-                                    tabCoordonnees[1][nbCoordonnees]= 16 ;
-                                    break;
-                            /// FIN si va en bas
-                                case dirBas:
-                                    tabCoordonnees[0][nbCoordonnees]= 1 ;
-                                    tabCoordonnees[1][nbCoordonnees]= 17 ;
-                                    break;
-                            /// FIN si va à gauche
-                                case dirGauche:
-                                    tabCoordonnees[0][nbCoordonnees]= 0 ;
-                                    tabCoordonnees[1][nbCoordonnees]= 17 ;
-                                    break;
-                                default:
-                                    break;
-                            }   
+                            try{
+                                switch (jesus.getSnobee(new Coordonnees(j,i)).getDirectionActuel()) {
+                                /// FIN si va en haut
+                                    case dirHaut:
+                                        tabCoordonnees[0][nbCoordonnees]= 0 ;
+                                        tabCoordonnees[1][nbCoordonnees]= 16 ;
+                                        break;
+                                /// FIN si va à droite
+                                    case dirDroite:
+                                        tabCoordonnees[0][nbCoordonnees]= 1 ;
+                                        tabCoordonnees[1][nbCoordonnees]= 16 ;
+                                        break;
+                                /// FIN si va en bas
+                                    case dirBas:
+                                        tabCoordonnees[0][nbCoordonnees]= 1 ;
+                                        tabCoordonnees[1][nbCoordonnees]= 17 ;
+                                        break;
+                                /// FIN si va à gauche
+                                    case dirGauche:
+                                        tabCoordonnees[0][nbCoordonnees]= 0 ;
+                                        tabCoordonnees[1][nbCoordonnees]= 17 ;
+                                        break;
+                                    default:
+                                        break;
+                                }  
+                            } catch(NullPointerException e){}
                         } break ;    
                         
                         /// SI SNOBEE MI IDIOT MI RAMBO
@@ -471,7 +473,9 @@ public class Calcul_Vue {
                         
                         
                         case "R" : {
-                            switch (jesus.getSnobee(new Coordonnees(j,i)).getDirectionActuel()) {
+                            SnoBees r = jesus.getSnobee(new Coordonnees(j,i));
+                            try{
+                            switch (r.getDirectionActuel()) {
                                 case dirHaut:
                                     tabCoordonnees[0][nbCoordonnees]= 1 ;
                                     tabCoordonnees[1][nbCoordonnees]= 27 ;
@@ -491,6 +495,7 @@ public class Calcul_Vue {
                                 default:
                                     break;
                             }
+                            } catch(NullPointerException e){}
                         } break ;
                         
                         case "L" : {
@@ -507,7 +512,7 @@ public class Calcul_Vue {
                         
                         // Si poussé
                         case "T" : {
-                            //try{
+                            try{
                                 switch (jesus.getSnobee(new Coordonnees(j,i)).getDirectionActuel()) {
                                 /// FIN si va en haut
                                     case dirHaut:
@@ -532,9 +537,9 @@ public class Calcul_Vue {
                                     default:
                                         break;
                                 }  
-                            /*}catch(NullPointerException e){
+                            }catch(NullPointerException e){
                                 System.out.println("kldsjqm");
-                            }*/
+                            }
                             } break ;
                         
                         case "G" : {

@@ -9,6 +9,7 @@ import Personnages.*;
 import Ressources.*;
 import Vue.EntrerPseudo;
 import Vue.Fenetre;
+import Vue.GameOver;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +42,7 @@ public class GameEngine {
     private final JFrame Menu;
     private boolean jeuFini;
     private boolean niveauFini ;
+    private GameOver gameover ;
     
     public GameEngine(JFrame me){
         Menu=me;
@@ -73,13 +75,13 @@ public class GameEngine {
             @Override
             public void run(){
                 do{
-                    System.out.println("\t\t\t\t\tNB SNOBEES : "+(getNbSnoBees()));
+                    //System.out.println("\t\t\t\t\tNB SNOBEES : "+(getNbSnoBees()));
                     if(getNbSnoBees()== 0 )
                         finNiveau();
                     else if(getNbVie() < 0 )
                         jeuFini = true;
                     
-                    //System.out.println("\t\t\t\t\tNB SNOBEES : "+(nbSnoBeesActif+nbSnoBeesCache));
+                    System.out.println("\t\t\t\t\tNB SNOBEES : "+(nbSnoBeesActif+nbSnoBeesCache));
                 }while(!jeuFini);
                 System.out.println("FIN DU JEU");
                 finJeu();
@@ -206,6 +208,9 @@ public class GameEngine {
             }
             majAfficheCarte();
             fenetre_principale.setVisible(false);
+            if(getNbVie()<0)
+                gameover = new GameOver();
+            
             pseudo = new EntrerPseudo();
             while(!pseudo.getEtat()){
                 try {
@@ -219,6 +224,9 @@ public class GameEngine {
             System.out.println("\n\n\n\n\n\n\n\n\n\nVous avez vaincus "+name+" !");
             System.out.println("Fini en : "+temps());
             System.out.println("Avec un score total de : "+s.getScore());
+            
+            if(getNbVie()<0)
+                gameover.setVisible(false);
             Menu.setVisible(true);
         }
     }
@@ -237,7 +245,7 @@ public class GameEngine {
         majAfficheCarte();
         s.pointFinNiveau(tempsSec());
 
-        if(niveau==-1){
+        if(niveau==-3){
             jeuFini = true;
         }
         else{
@@ -252,51 +260,52 @@ public class GameEngine {
     
     public void snobeePousseParBloc(Coordonnees c, Personnage.Directions dir) {
         Coordonnees cn;// = new Coordonnees(c.getX()-1, c.getY());
-        
+        SnoBees sb =  this.getSnobee(c);
+        sb.stopper();
+        sb.setParalyse(false);
+        sb.setVaMourirParBloc(true);
         switch(dir){
             
             case dirHaut:
                 cn = new Coordonnees(c.getX(), c.getY()-1);
-                c = cn;
-                cn.setCoordonnees(new Coordonnees(c.getX(), c.getY()-1));
+                sb.setDirection(Personnage.Directions.dirHaut);
                 break;
             case dirBas:
                 cn = new Coordonnees(c.getX(), c.getY()+1);
+                sb.setDirection(Personnage.Directions.dirBas);
                 break;
             case dirDroite:
                 cn = new Coordonnees(c.getX()+1, c.getY());
+                sb.setDirection(Personnage.Directions.dirDroite);
                 break;
             case dirGauche:
                 cn = new Coordonnees(c.getX()-1, c.getY());
+                sb.setDirection(Personnage.Directions.dirGauche);
                 break;
             default:
                 cn = new Coordonnees(c.getX(), c.getY()); 
+                sb.setDirection(sb.getDirectionActuel());
                 break ;
         }
         
-        int i_sno =0;
+      /*  int i_sno =0;
         for(int i=0;i<p.size();i++){
             if(p.get(i).getCoordonnees().comp(c)){
                 i_sno = i;
             }
-        }
-        SnoBees sb = (SnoBees) p.get(i_sno);
-        sb.setDirection(dir);
-        sb.stopper();
-        sb.setParalyse(false);
+        }*/
         
-        sb.setVaMourirParBloc(true);
-        
-        
-        if(m.move(sb, c, cn, this)){
-            sb.getCoordonnees().setCoordonnees(cn);
-            
-        }
-        else{
+            if(m.move(sb, c, cn, this)){
+                sb.getCoordonnees().setCoordonnees(cn);
+            }
+            else{
             snobeeMort(sb);
             snobeeEcrase();
             checkNombreSnobees();
         }
+       
+        
+        
     }
     
     private void gameOver(){
@@ -447,7 +456,7 @@ public class GameEngine {
                 }
             }
         }
-        if(niveau==3){
+        if(niveau==-3){
             for(int i=0;i<p.size();i++){
                 if(p.get(i) instanceof SnoBees){
                     SnoBees sb = (SnoBees)p.get(i);
@@ -505,7 +514,7 @@ public class GameEngine {
     public void majAfficheCarte(){
         if(!niveauFini){
             //System.out.print("\033[2J\033[1;1H"); // Clear console
-            //System.out.println(m);
+            System.out.println(m);
             fenetre_principale.setCarte(m.getCarte());
         }
     }
@@ -525,19 +534,21 @@ public class GameEngine {
                         for(int j=0;j<bg.getFinDestruction();j++){
                             majAfficheCarte();
                         }
+                        m.detruireBloc(c, this);
                     }
-                    m.detruireBloc(c, this);
                     i_b = i;
                     if(bg.getContientSnobees()){
                         SnoBees sb=null;
-                        for (Personnage p1 : p) {
-                            if(p.get(i).getCoordonnees().comp(c))
-                                if(p.get(i) instanceof SnoBees){
-                                    sb = (SnoBees)p.get(i);
+                        for (int j=0;j<p.size();j++) {
+                            if(p.get(j).getCoordonnees().comp(c))
+                                if(p.get(j) instanceof SnoBees){
+                                    sb = (SnoBees)p.get(j);
                                 }
                         }
-                        if(sb!=null)
+                        if(sb!=null){
                             snobeeMort(sb);
+                            m.changeCarte(Map.elementCarte.rien, c);
+                        }
                     }
                 }
             }
@@ -773,14 +784,12 @@ public class GameEngine {
                     else if (act.equals(Personnage.Actions.pousser_detruire)) {
                         action = 1 ;
                         if(!m.isMur(c, dir)){
-                            if(m.isBlockOrIsMur(c)){
-                                if(m.isBlockOrIsMur(new Coordonnees(c.getX(), c.getY()-1))){
+                                if(m.isBlocDestructible(c)){
                                     destructionBloc(c);
                                 }
                                 else{
                                     destructionOK = false ;
                                 }
-                            }
                         }
                     }
                     break;
@@ -797,12 +806,12 @@ public class GameEngine {
                         action = 1 ;
                         if(!m.isMur(c, dir)){
                             if(m.isBlockOrIsMur(c)){
-                                if(m.isBlockOrIsMur(new Coordonnees(c.getX(), c.getY()+1))){
+                                if(m.isBlocDestructible(c))
                                     destructionBloc(c);
-                                }
-                                else{
+                                
+                                else
                                     destructionOK = false ;
-                                }
+                                
                             }
                         }
                         
@@ -821,15 +830,15 @@ public class GameEngine {
                     else if(act.equals(Personnage.Actions.pousser_detruire)){
                         action = 1 ;
                         if(!m.isMur(c, dir)){
-                            if(m.isBlockOrIsMur(c)){
-                                if(m.isBlockOrIsMur(new Coordonnees(c.getX()+1, c.getY()))){
-                                    destructionBloc(c);
-                                }
-                                else{
-                                    destructionOK = false ;
-                                }
+                            
+                            if(m.isBlocDestructible(c)){
+                                destructionBloc(c);
+                            }
+                            else{
+                                destructionOK = false ;
                             }
                         }
+                        
                     }
                     break;
                 case dirGauche :
@@ -844,14 +853,12 @@ public class GameEngine {
                     else if(act.equals(Personnage.Actions.pousser_detruire)){
                         action = 1 ;
                         if(!m.isMur(c, dir)){
-                            if(m.isBlockOrIsMur(c)){
-                                if(m.isBlockOrIsMur(new Coordonnees(c.getX()-1, c.getY()))){
-                                    destructionBloc(c);
-                                }
-                                else{
-                                    destructionOK = false ;
-                                }
+                            if(m.isBlocDestructible(c)){
+                                destructionBloc(c);
                             }
+                            else
+                                destructionOK = false ;
+                            
                         }
                     }
                     break;
@@ -888,6 +895,58 @@ public class GameEngine {
                 }
         }
         return pengoCoord ;
+    }
+    
+    public char AvancerDetruire(Coordonnees c, Personnage.Directions dir){
+        char retour = '/' ;
+        Coordonnees cn = new Coordonnees(c.getX(),c.getY());
+        switch(dir){
+            case dirHaut :
+                cn.setY(cn.getY()-1);
+                if(m.isBlockOrIsMur(cn)){
+                    if(m.isBlocDestructible(cn) )
+                        retour = 'D';
+                    else
+                        retour = 'P' ;
+                }
+                else
+                    retour = 'A' ;
+                break ;
+            case dirBas :
+                cn.setY(cn.getY()+1);
+                if(m.isBlockOrIsMur(cn)){
+                    if(m.isBlocDestructible(cn) )
+                        retour = 'D';
+                    else
+                        retour = 'P' ;
+                }
+                else
+                    retour = 'A' ;
+                break ;   
+            case dirDroite :
+                cn.setX(cn.getX()+1);
+                if(m.isBlockOrIsMur(cn)){
+                    if(m.isBlocDestructible(cn) )
+                        retour = 'D';
+                    else
+                        retour = 'P' ;
+                }
+                else
+                    retour = 'A' ;
+                break ;
+            case dirGauche :
+                cn.setX(cn.getX()-1);
+                if(m.isBlockOrIsMur(cn)){
+                    if(m.isBlocDestructible(cn) )
+                        retour = 'D';
+                    else
+                        retour = 'P' ;
+                }
+                else
+                    retour = 'A' ;
+                break ; 
+        }
+        return retour ;
     }
     
 

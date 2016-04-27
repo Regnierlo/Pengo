@@ -11,8 +11,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -21,11 +19,14 @@ import javax.swing.JTextField;
 
 public class EntrerPseudo extends JDialog{
     
-    String chemin="";
     private JTextField pseudo = new JTextField("AAA");
-    private JButton valider = new JButton("V A L I D E R");
+    private JButton valider ;
     private ImageIcon imagePseudo ;
+    private ImageIcon imageOK ;
     private boolean disparu;
+    private Dimension dimension ; 
+    private int height;
+    private int width;
     
    /* JPanel imagePanel = new JPanel(new BorderLayout()){
         @Override
@@ -37,12 +38,20 @@ public class EntrerPseudo extends JDialog{
     
     public EntrerPseudo(){
         disparu=false;
+        dimension = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        height = (int)dimension.getHeight();
+        width  = (int)dimension.getWidth();
+
         try{
-            imagePseudo = new ImageIcon(chemin+"src/Images/pseudo.png");
+            imagePseudo = new ImageIcon(Picture.chemin+"src/Images/pseudo.png");
         }catch(NullPointerException e){     
             System.out.println("Pas d'iamge");
         }
-        
+        try{
+            imageOK = new ImageIcon(Picture.chemin+"src/Images/pseudo_ok.png");
+        }catch(NullPointerException e){     
+            System.out.println("Pas d'image");
+        }
         constructionDialog();
     }
     
@@ -51,7 +60,7 @@ public class EntrerPseudo extends JDialog{
         this.setSize(400,200);
         this.setBackground(Color.black);
         Font police = new Font("Courier",Font.BOLD, 24);
-        this.setLocationRelativeTo(null);
+        this.setLocation((width/3)*2,height/3);
         this.setLayout(new BorderLayout());
         pseudo.setFont(police);
         pseudo.setPreferredSize(new Dimension(400,25));
@@ -59,10 +68,11 @@ public class EntrerPseudo extends JDialog{
         pseudo.setForeground(Color.WHITE);
         pseudo.setHorizontalAlignment(JTextField.CENTER);
         
-        Font policeBouton = new Font("Courier",Font.PLAIN, 14);
-        valider.setFont(policeBouton);
-        valider.setBackground(Color.BLACK);
-        valider.setForeground(Color.YELLOW);
+        //Font policeBouton = new Font("Courier",Font.PLAIN, 14);
+        valider = new JButton();
+        valider.setIcon(imageOK);
+        valider.setBorderPainted(false);
+        valider.setFocusPainted(false);
         
         
         valider.addActionListener(new validerPseudo());

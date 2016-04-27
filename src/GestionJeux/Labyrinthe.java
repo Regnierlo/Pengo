@@ -72,18 +72,18 @@ public class Labyrinthe {
                 nbCompanionCube-- ;
                 
                 do{
-                    randomLigneTemp=(int)(Math.random()*14)+1 ;
+                    randomLigneTemp=(int)(Math.random()*12)+2 ;
                 }while( randomLigne==(randomLigneTemp+1) || randomLigne==(randomLigneTemp-1) ) ;
                 
                 do{
-                    randomColonneTemp=(int)(Math.random()*8)+1 ;
+                    randomColonneTemp=(int)(Math.random()*6)+2 ;
                 } while( (randomColonne==(randomColonneTemp+1)) || (randomColonne==(randomColonneTemp-1))) ;
                 randomLigne = randomLigneTemp ;
                 randomColonne = randomColonneTemp ;
                 
             }
             else{
-                randomLigne=(int)(Math.random()*14)+1 ;
+                randomLigne=(int)(Math.random()*12)+2 ;
                 randomColonne=(int)(Math.random()*8)+1 ;
             }
         
