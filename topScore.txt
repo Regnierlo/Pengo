@@ -1,5 +1,5 @@
-A 10400
-Lois 5400
-Re 5400
-Marie 5400
-Prout 5400
+Django 10400
+Pffff 9700
+fuu 7400
+M 5600
+Patate 5400
