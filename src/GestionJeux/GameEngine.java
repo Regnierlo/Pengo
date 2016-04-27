@@ -879,20 +879,21 @@ public class GameEngine {
     public Coordonnees PengoDetected(int perimetreDeSecurite, Coordonnees snobee){
         boolean iSeePengo = false ;
         Coordonnees pengoCoord = null ;
-        double random = 1 ;
+        double random = 1.0 ;
         
         for(int i = 0 ; i < p.size() ; i++){
             if(iSeePengo) {
                random = Math.random() ;
             }
             if(random > 0.5)
-                if((p.get(i).getCoordonnees().getX())  < (snobee.getX() + perimetreDeSecurite) 
-                    && (p.get(i).getCoordonnees().getX() ) > (snobee.getX() - perimetreDeSecurite) 
-                    && (p.get(i).getCoordonnees().getY() < (snobee.getY() + perimetreDeSecurite))
-                    && (p.get(i).getCoordonnees().getY() > (snobee.getY() - perimetreDeSecurite))){
-                        iSeePengo = true ;
-                        pengoCoord = p.get(i).getCoordonnees() ;
-                }
+                if(p.get(i) instanceof P_Pengo)
+                    if((p.get(i).getCoordonnees().getX())  < (snobee.getX() + perimetreDeSecurite) 
+                        && (p.get(i).getCoordonnees().getX() ) > (snobee.getX() - perimetreDeSecurite) 
+                        && (p.get(i).getCoordonnees().getY() < (snobee.getY() + perimetreDeSecurite))
+                        && (p.get(i).getCoordonnees().getY() > (snobee.getY() - perimetreDeSecurite))){
+                           iSeePengo = true ;
+                          pengoCoord = p.get(i).getCoordonnees() ;
+                    }
         }
         return pengoCoord ;
     }

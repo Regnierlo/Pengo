@@ -79,10 +79,7 @@ public abstract class Personnage extends Thread
      * Permet de savoir si le thread doit continuer a utiliser le run.
      */
     protected boolean fini=false;
-    /**
-     * Permet d'orienter le personnage.
-     */
-    protected Orientation orientation;
+
     /**
      * Tableau contenant les images pour les animations
      */

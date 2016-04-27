@@ -18,8 +18,10 @@ public class SnoBees extends Personnage{
     private boolean cacheDansBloc;
     private int naissance;
     private final int itsAlive;
-    private boolean nait;
+    private boolean nait ;
+    
     public enum typeSnobees{
+        
         normal("normal"),
         miRamboMiIdiot("miRambo"),
         rambo("rambo");
@@ -33,11 +35,12 @@ public class SnoBees extends Personnage{
         public boolean equalsName(String otherName) {
             return (otherName == null) ? false : name.equals(otherName);
         }
-
+        
         public String toString() {
            return this.name;
         }
     }
+    
     private typeSnobees ts;
     
     public SnoBees(Coordonnees c, boolean joueur, GameEngine g, boolean cache, typeSnobees type){
@@ -49,13 +52,11 @@ public class SnoBees extends Personnage{
         itsAlive = 7;
         nait = true;
         ts = type;
-       
     }
 
     @Override
     public void run() {
-        
-        int sommeil = 700 ;
+        int sommeil = 1000 ;
         if(nait){
             naissance();
             nait = false;
@@ -69,19 +70,21 @@ public class SnoBees extends Personnage{
                 */
                 switch (ts) {
                     case normal :
+                        sommeil = 500 ;
                         algoIdiot() ; 
                         break ;
                     case miRamboMiIdiot : 
+                        sommeil = 350 ;
                         algoSnobo(2); 
                         break ;
                     case rambo : 
-                        sommeil = 400 ;
+                        sommeil = 200 ;
                         algoSnobo(7); 
                         break ;
                 }
                 ge.majAfficheCarte();
                 try {
-                    Thread.sleep(sommeil-(2*this.vitesse));
+                    Thread.sleep(sommeil);
                 } catch (Exception e) {
                 }
             }
@@ -106,17 +109,9 @@ public class SnoBees extends Personnage{
                 case 9 : case 10 : case 11 : case 12 : fait = bougeGauche() ; break ;
                 case 13 : case 14 : case 15 : case 16 : fait = bougeDroite() ; break ;
             } 
-        
     }
     
-    private void algoMiIdiotMiSnobo(){
-        /// Il est insouciant mais quand Pengo rentre dans son périmètre de sécurité il se sent menacé et commence à détruire des blocs
-        boolean fait = false ;
-        
-        
-        
-        
-    }
+    
     
     private void algoSnobo(int detection){
         boolean fait =false   ;
@@ -128,38 +123,29 @@ public class SnoBees extends Personnage{
             coordPengo = ge.PengoDetected(detection, this.coord);
             
             if(coordPengo!=null){
-                System.out.println("PENGO DETECTED. EXTERMINATE, EXTERMINATE");
+               // System.out.println("PENGO DETECTED. EXTERMINATE, EXTERMINATE");
                 ligne = this.coord.getY() - coordPengo.getY() ;
                 colonne = this.coord.getX() - coordPengo.getX() ;
-                System.out.println("colonne : " + this.coord.getX() +"et pengo" + coordPengo.getX());
-                System.out.println("ligne : " + this.coord.getY()+"et pengo" + coordPengo.getY());
-                System.out.println("ligne to = " + ligne + " et colonne to = "+colonne);
                 if(ligne >0){
-                    possible = ge.AvancerDetruire(this.coord, Directions.dirHaut);
-                    System.out.println("possible "+possible);
+                    possible = ge.AvancerDetruire(this.coord, Directions.dirHaut);      System.out.println("possible "+possible);
                     if(possible=='D'){
                         detruire(Directions.dirHaut);
-                        System.out.println("destruction en haut");
                     }
                     else if(possible=='A')
                         bougeHaut();
                 }
                 else if(ligne <0){
-                    possible = ge.AvancerDetruire(this.coord, Personnage.Directions.dirBas);
-                    System.out.println("possible "+possible);
+                    possible = ge.AvancerDetruire(this.coord, Personnage.Directions.dirBas);           System.out.println("possible "+possible);
                     if(possible=='D'){
                         detruire(Directions.dirBas);
-                        System.out.println("destruction en bas");
                     }
                     else if(possible=='A')
                         bougeBas();
                 }
                 if(colonne > 0 && ligne==0){
-                            possible = ge.AvancerDetruire(this.coord, Personnage.Directions.dirGauche);
-                            System.out.println("possible "+possible);
+                            possible = ge.AvancerDetruire(this.coord, Personnage.Directions.dirGauche);     System.out.println("possible "+possible);
                             if(possible=='D'){
                                 detruire(Directions.dirGauche);
-                                System.out.println("destruction à gauche");
                             }
                             else if(possible=='A')
                                 bougeGauche();
@@ -167,10 +153,8 @@ public class SnoBees extends Personnage{
                 else 
                     if(colonne<0 && ligne==0)
                         if(possible!='A' && possible!='D'){
-                            possible = ge.AvancerDetruire(this.coord, Personnage.Directions.dirDroite);
-                            System.out.println("possible "+possible);
+                            possible = ge.AvancerDetruire(this.coord, Personnage.Directions.dirDroite);          System.out.println("possible "+possible);
                             if(possible=='D'){
-                                System.out.println("destruction à droite");
                                 detruire(Directions.dirDroite);
                             }
                             else if(possible=='A')
