@@ -50,7 +50,6 @@ public class BoutonMenu extends JButton implements MouseListener {
     
     @Override
     public void mouseReleased(MouseEvent event){
-        
     }
 
     @Override

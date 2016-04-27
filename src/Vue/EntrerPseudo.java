@@ -28,14 +28,6 @@ public class EntrerPseudo extends JDialog{
     private int height;
     private int width;
     
-   /* JPanel imagePanel = new JPanel(new BorderLayout()){
-        @Override
-        protected void paintComponent(Graphics g){
-            super.paintComponent(g);
-            g.drawImage(imagePseudo.getImage(),0,0,this);
-        }
-    };*/
-    
     public EntrerPseudo(){
         disparu=false;
         dimension = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
@@ -93,6 +85,7 @@ public class EntrerPseudo extends JDialog{
         return disparu;
     }
     
+    /// si appuyer sur valider
     class validerPseudo implements ActionListener{
         public void actionPerformed(ActionEvent e){
             setVisible(false);

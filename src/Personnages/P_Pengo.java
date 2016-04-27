@@ -9,10 +9,6 @@ import GestionJeux.GameEngine;
 import Ressources.Coordonnees;
 import java.awt.event.KeyEvent;
 
-/**
- *
- * @author loisr
- */
 public class P_Pengo extends Personnage{
 
     private int vie;
@@ -25,7 +21,6 @@ public class P_Pengo extends Personnage{
         mort = false;
         enAction = false;
         vie=3;
-        
     }
     
     @Override

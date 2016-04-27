@@ -267,16 +267,12 @@ public class Calcul_Vue {
                             } break ;
                         
                         
-                        
+                        //// Snobee normal se promène
                         case "E" : {
-                        /// Si le snobee va en haut
                             SnoBees sb = jesus.getSnobee(new Coordonnees(j,i));
                             //System.out.println("------> Direction du snobee : " + sb.getDirectionActuel());
                             try{
-                                
                                switch (sb.getDirectionActuel()) {
-
-                            /// FIN si va en haut
                                 case dirHaut:
                                     if(sb.getAncienneDirection().equals(sb.getDirectionActuel()) 
                                             && sb.getBoolDirection() 
@@ -289,7 +285,7 @@ public class Calcul_Vue {
                                         tabCoordonnees[1][nbCoordonnees]= 12 ;
                                     }
                                     break;
-                            /// FIN si va à droite
+                            /// si va à droite
                                 case dirDroite:
                                     if(sb.getAncienneDirection().equals(sb.getDirectionActuel())
                                             && sb.getBoolDirection()
@@ -302,7 +298,7 @@ public class Calcul_Vue {
                                         tabCoordonnees[1][nbCoordonnees]= 13 ;
                                     }
                                     break;
-                            /// FIN si va en bas
+                            /// si va en bas
                                 case dirBas:
                                     if(sb.getAncienneDirection().equals(sb.getDirectionActuel())
                                             && sb.getBoolDirection() 
@@ -315,7 +311,7 @@ public class Calcul_Vue {
                                         tabCoordonnees[1][nbCoordonnees]= 14 ;
                                     }
                                     break;
-                            /// FIN si va à gauche
+                            /// si va à gauche
                                 case dirGauche:
                                     if(sb.getAncienneDirection().equals(sb.getDirectionActuel())
                                             && sb.getBoolDirection()
@@ -431,6 +427,7 @@ public class Calcul_Vue {
                             }
                         } break ;
                         
+                        /// si paralysé 
                         case "J" : {
                             double random = Math.random();
                             if(random < 0.5){
@@ -471,6 +468,7 @@ public class Calcul_Vue {
                             }   
                         } break ;    
                         
+                        /// Snobee méchant
                         
                         case "R" : {
                             SnoBees r = jesus.getSnobee(new Coordonnees(j,i));
@@ -542,21 +540,26 @@ public class Calcul_Vue {
                             }
                             } break ;
                         
+                            /// bloc de glace
                         case "G" : {
                             tabCoordonnees[0][nbCoordonnees]= 0 ;
                             tabCoordonnees[1][nbCoordonnees]= 31 ;
                         } break ;
                         
+                        /// bloc spécial
                         case "S" :{
                             tabCoordonnees[0][nbCoordonnees]= 0 ;
                             tabCoordonnees[1][nbCoordonnees]= 32 ;
                         }break;
                         
+                        /// bloc empoissonné
                         case "C" :{
                             tabCoordonnees[0][nbCoordonnees]= 1 ;
                             tabCoordonnees[1][nbCoordonnees]= 31 ;
                         } break ;
                         
+                        
+                        /// chemin lumineux
                         case " " :{
                             tabCoordonnees[0][nbCoordonnees]= 1 ;
                             tabCoordonnees[1][nbCoordonnees]= 32 ;

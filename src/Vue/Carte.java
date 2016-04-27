@@ -27,6 +27,7 @@ public class Carte extends JPanel{
         }
     }
     
+    /// Nouvelles coordonnées données via le tableau de String de GameEngine et calculées par Calcul_Vue
     void setCalcul(int[][] nouvellesCoordonnees){
         tabCoordonnees = nouvellesCoordonnees ;
         repaint();
@@ -38,7 +39,7 @@ public class Carte extends JPanel{
         Graphics2D g2 = (Graphics2D) g ;
         l = 0 ;
         
-      
+      //// affichage des images
        for(int i = 0 ; i < 16 ; i++){
             for(int j = 0 ; j < 10 ; j++){
                     g2.drawImage(tabPictures.getPicture(tabCoordonnees[0][l],tabCoordonnees[1][l]),j*32, i*32,this);

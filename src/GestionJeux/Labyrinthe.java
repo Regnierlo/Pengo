@@ -134,6 +134,7 @@ public class Labyrinthe {
         }         
     }
     
+    /// On remplace des blocs de glace déjà placés par des blocs contenant des oeufs de snobees
     private void blocEmpoisonne(int nbBE){
         int randomLigne = (int)(Math.random()*14)+1 ;
         int randomLigneTemp ;
@@ -156,7 +157,7 @@ public class Labyrinthe {
            }
         }
     }
-    
+    /// On place les Snobees dans le chemin
     private void snoBees(int nbSB){
         int randomLigne = (int)(Math.random()*15)+1 ;
         int randomLigneTemp ;
@@ -181,6 +182,7 @@ public class Labyrinthe {
         }while(nbSB >0);
     }
     
+    /// On insère le labyrinthe temporaire dans le labyrinthe final
     private void finalisation(){
         for(int i = 0 ; i < nbLigne ; i++)
             for(int j = 0 ; j < nbColonne ; j++){
@@ -209,6 +211,7 @@ public class Labyrinthe {
         }
     }
     
+    /// On créé un nouveau chemin
     private void setPosition(int x, int y){
         position[0][casePosition] = x ;
         position[1][casePosition] = y ;
@@ -217,6 +220,7 @@ public class Labyrinthe {
         nbCasesNonVisitee-- ;
     }
   
+    /// On place des murs en plus s'il y a des intersections, afin d'éviter d'avoir des chemins plus large qu'une cellule
     private void mettreMurIntersection(int x, int y){
         if(x>=1 && x<=(nbLigneTemp-2) && y>=1 && y<=(nbColonneTemp-2)){
             if( labyrinthe_temporaire[x][y]=='.' ){
@@ -243,7 +247,6 @@ public class Labyrinthe {
                         setMur(x-1,y);
                 }
             }
-        
     }
     
     private void mettreMurTriangle(int x, int y){
@@ -276,6 +279,7 @@ public class Labyrinthe {
                 }       
     }
     
+    /// On place un mur
     private void setMur(int x, int y){
         if( ( x>= 0 ) && ( x < nbLigneTemp )  && ( y >= 0 ) && ( y < nbColonneTemp ) ){
             if( labyrinthe_temporaire[x][y]=='x' ){
@@ -287,9 +291,7 @@ public class Labyrinthe {
         }
     }
     
-    
-    
-    
+    /// Algorithme principal : création aléatoire du labyrinthe
     private void creationLabyrinthe(){
         int ligne ;
         int colonne ;
@@ -385,6 +387,7 @@ public class Labyrinthe {
         while(nbCasesNonVisitee>0);
     }
     
+    /// Regarde quelles cases ont été visitées (c'est à dire celles qui contiennent un bloc ou un chemin)
     private char regardeAutour(int x, int y){
         int i ;
         boolean test ;

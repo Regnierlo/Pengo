@@ -159,8 +159,6 @@ public class Map {
                     m.add(new Mur(new Coordonnees(j,i)));
             }
         }
-        
-        
         return m ;
     }
     
@@ -264,7 +262,6 @@ public class Map {
                                 default:
                                     break;
                             }
-
                     }
                     else if(null != sb.getComportement())
                         switch (sb.getComportement()) {

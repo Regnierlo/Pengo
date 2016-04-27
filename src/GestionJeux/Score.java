@@ -93,22 +93,17 @@ public class Score {
     
     private int rechercheHS(){
         int r=-1;
-        
         BufferedReader br = null;
-        
         try{
             String ligne;
             String[] tmp;
             File f = new File(chemin);
-            
-            br=new BufferedReader(new FileReader(f));
-            
+            br=new BufferedReader(new FileReader(f));   
             if((ligne=br.readLine()) != null){
                 tmp=ligne.split(" ");
                 r = Integer.parseInt(tmp[1]);
             }
-            br.close();
-            
+            br.close();   
         }catch(FileNotFoundException ex){
             Logger.getLogger(Score.class.getName()).log(Level.SEVERE, null, ex);
         }catch(IOException ex){
@@ -123,8 +118,6 @@ public class Score {
         
         return r;
     }
-    
-    
     
     /**
      * Trie le fichier des scores après le dernier ajout
@@ -254,8 +247,6 @@ public class Score {
             } catch (IOException ex) {
             }
         }
-        
-        
         return topScore ;
     }
     

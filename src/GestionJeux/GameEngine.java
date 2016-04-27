@@ -17,10 +17,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 
-/**
- *
- * @author loisr
- */
 public class GameEngine {
     
     // Déclaration des variables
@@ -282,13 +278,6 @@ public class GameEngine {
                 break ;
         }
         
-      /*  int i_sno =0;
-        for(int i=0;i<p.size();i++){
-            if(p.get(i).getCoordonnees().comp(c)){
-                i_sno = i;
-            }
-        }*/
-        
             if(m.move(sb, c, cn, this)){
                 sb.getCoordonnees().setCoordonnees(cn);
             }
@@ -297,9 +286,6 @@ public class GameEngine {
             snobeeEcrase();
             checkNombreSnobees();
         }
-       
-        
-        
     }
     
     private void gameOver(){
@@ -492,11 +478,7 @@ public class GameEngine {
                 p.get(i).reprise();
             }
         } catch (InterruptedException ex) {
-            Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
-        
-            
-            
-            
+            Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex); 
         }
         P_Pengo pen = (P_Pengo)p.get(i_pen);
         pen.renaissance();
@@ -1016,8 +998,6 @@ public class GameEngine {
         }
         return r ;
     }
-    
-    
     
     public SnoBees getSnobee(Coordonnees c){
         SnoBees r=null;

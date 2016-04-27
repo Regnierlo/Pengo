@@ -5,10 +5,6 @@
  */
 package Ressources;
 
-/**
- *
- * @author loisr
- */
 public class Mur {
     private boolean tremble;
     private Coordonnees coord;

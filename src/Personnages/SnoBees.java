@@ -120,21 +120,22 @@ public class SnoBees extends Personnage{
         int ligne ;
         int colonne ;
         
+            /// On regarde si Pengo est dans le périmètre du snobee dans un rayon de "detection"
             coordPengo = ge.PengoDetected(detection, this.coord);
-            
+            /// Si Pengo trouvé
             if(coordPengo!=null){
                // System.out.println("PENGO DETECTED. EXTERMINATE, EXTERMINATE");
                 ligne = this.coord.getY() - coordPengo.getY() ;
                 colonne = this.coord.getX() - coordPengo.getX() ;
-                if(ligne >0){
+                if(ligne >0){///Pengo au dessus de Snobee
                     possible = ge.AvancerDetruire(this.coord, Directions.dirHaut);      System.out.println("possible "+possible);
-                    if(possible=='D'){
+                    if(possible=='D'){ /// On détruit le bloc
                         detruire(Directions.dirHaut);
                     }
-                    else if(possible=='A')
+                    else if(possible=='A') /// on avance
                         bougeHaut();
                 }
-                else if(ligne <0){
+                else if(ligne <0){ /// Pengo au dessous
                     possible = ge.AvancerDetruire(this.coord, Personnage.Directions.dirBas);           System.out.println("possible "+possible);
                     if(possible=='D'){
                         detruire(Directions.dirBas);
@@ -162,7 +163,7 @@ public class SnoBees extends Personnage{
                     }
             }
             else{
-                if(detection>5){
+                if(detection>5){ /// Si Snobee très méchant : détruit tout ce qu'il peut
                     possible = ge.AvancerDetruire(this.coord, Personnage.Directions.dirDroite);
                     if(possible =='D')
                         fait = detruire(Directions.dirDroite);
@@ -184,7 +185,7 @@ public class SnoBees extends Personnage{
                     if(!fait)
                         algoIdiot();
                 }
-                else
+                else /// si Snobee pas trop méchant ne va pas intentionnellement détruire tout sur son passage
                     algoIdiot();
             }
     
@@ -260,66 +261,7 @@ public class SnoBees extends Personnage{
         }
     }
     
-    /*private boolean bougeHaut(){
-        ancienneDirection = directionActuel;
-        directionActuel = Directions.dirHaut;
-        this.boolDirection = this.ancienneDirection.equals(Directions.dirHaut) && !boolDirection ;
-        return this.ge.action(this, directionActuel, Actions.bouger);
-    }
-    
-    private boolean bougeBas(){
-        ancienneDirection = directionActuel;
-        directionActuel=Directions.dirBas;
-        this.boolDirection = this.ancienneDirection.equals(Directions.dirBas) && !boolDirection ;
-        return this.ge.action(this, directionActuel, Actions.bouger);
-    }
-    
-    private boolean bougeDroite(){
-        ancienneDirection = directionActuel;
-        directionActuel=Directions.dirDroite;
-        this.boolDirection = this.ancienneDirection.equals(Directions.dirDroite) && !boolDirection ;
-        return this.ge.action(this, directionActuel, Actions.bouger);
-    }
-
-    private boolean bougeGauche(){
-        ancienneDirection = directionActuel;
-        directionActuel=Directions.dirGauche;
-        this.boolDirection = this.ancienneDirection.equals(Directions.dirGauche) && !boolDirection ;
-        return this.ge.action(this, directionActuel, Actions.bouger);
-    }
-    
-    private boolean detruire(Directions directionAnctuel){
-        return this.ge.action(this, directionActuel, Actions.pousser_detruire);
-    }
-    */
-   /* private boolean bougeHaut(){
-        ancienneDirection = directionActuel;
-        directionActuel = Directions.dirHaut;
-        return this.ge.action(this, directionActuel, Actions.bouger);
-    }
-    
-    private boolean bougeBas(){
-        ancienneDirection = directionActuel;
-        directionActuel=Directions.dirBas;
-        return this.ge.action(this, directionActuel, Actions.bouger);
-    }
-    
-    private boolean bougeDroite(){
-        ancienneDirection = directionActuel;
-        directionActuel=Directions.dirDroite;
-        return this.ge.action(this, directionActuel, Actions.bouger);
-    }
-
-    private boolean bougeGauche(){
-        ancienneDirection = directionActuel;
-        directionActuel=Directions.dirGauche;
-        return this.ge.action(this, directionActuel, Actions.bouger);
-    }
-    
-    private boolean detruire(Directions directionAnctuel){
-        return this.ge.action(this, directionActuel, Actions.pousser_detruire);
-    }*/
-    
+   
     private boolean bougeHaut(){
         boolean moveOk = this.ge.action(this, Directions.dirHaut, Actions.bouger) ;
         if (moveOk) {

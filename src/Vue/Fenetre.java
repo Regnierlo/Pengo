@@ -61,8 +61,6 @@ public class Fenetre extends JFrame{
         this.setLocationRelativeTo(null) ;
         this.setLayout(new BorderLayout());
         
-        
-        
         this.setResizable(false) ;
         this.setAlwaysOnTop(true) ;
         this.setBackground(Color.BLACK);
@@ -91,8 +89,8 @@ public class Fenetre extends JFrame{
        
     }
     
+    
     private void lancerJeu(GameEngine gameEngine){
-        
         cv = new Calcul_Vue(gameEngine) ;
         this.setVisible(true) ;
     }
